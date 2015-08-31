@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <!-- 控制台输出日志 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{mm:ss} %-5level %logger{36} : %msg%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="slf4j" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="DayFile"/>
+    </logger>
+    <!--根logger控制-->
+    <root level="debug">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
