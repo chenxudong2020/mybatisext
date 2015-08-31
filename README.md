@@ -29,6 +29,7 @@ Mapper接口继承CommonMapper或AutoMapper自动添加系统自带方法进行�
 六、内置ActiveRecord功能
 
 不用任何配置也可以操作数据库，适合导入导出数据，有如下功能：
+
 1. 支持原生SQL语句
 2. 支持MyBatis脚本语句
 3. 支持对象操作
