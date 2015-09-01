@@ -36,4 +36,56 @@ Mapper接口继承Table或DB自动添加系统自带方法进行简单的操作�
 4. 支持自定义字段和属性映射
 5. 简单的分页方言支持
 
+**对数据库操作**
+```
+//创建数据库连接
+DB db = MybatisExt.open("org.hsqldb.jdbcDriver", "jdbc:hsqldb:mem:db_name", "sa", "");
+//执行创建表操作
+db.update("create table person(id bigint primary key,name varchar(30),age int)");
+//执行sql插入操作
+int count = db.update("insert into person(id,name,age)values(?,?,?)", IdWorker.getId(), "bobo", 28);
+//执行MyBatis脚本插入操作
+Record rec = new Record();
+rec.put("id", IdWorker.getId());
+rec.put("name", "hh");
+rec.put("age", 30);
+count = db.updateScript("insert into person(id,name,age)values(#{id},#{name},#{age})", rec);
+//sql脚本查询
+List<Record> list = db.list("select id,name,age from person where name=?", "bobo");
+List<Person> listPerson = db.list(SQL_SELECT, Person.class, "bobo")
+//MyBatis脚本查询
+listPerson = db.queryScript("select * from person where name=#{name}", Person.class, "bobo");
+```
+
+**对数据库表操作**
+
+```
+//获取表操作对象
+Table<Record, Long> table = db.active("person", Person.class, "id", Long.class);
+//插入操作
+InsertSQL insertSql = new InsertSQL("id", "name", "age").values(1, "bobo", 28);
+int count = table.excute(insertSql);
+count = table.update("insert into person(id,name,age)values(?,?,?)", 2, "hh", 25);
+Person person = new Person();
+person.setId(3L);
+person.setAge(26);
+person.setName("wahaha");
+count = table.updateScript("insert into person(id,name,age) values(#{id},#{name},#{age})", person);
+//查询操作
+List<Person> personList = table.list("select * from person");
+personList = table.queryScript("select * from person where name=#{name}", "bobo");
+Person persion = table.one("select * from person limit 1");
+personList = table.queryScript("select * from person where name=#{name}", "bobo");
+SelectSQL selectSql = new SelectSQL("id", "name").where("name", "bobo").and("id", 1L).orderBy("id", "asc");
+selectSql=table.excute(selectSql);
+```
+
+具体可参见源码中的测试用例
+
+
+
+
+
+
+
 
