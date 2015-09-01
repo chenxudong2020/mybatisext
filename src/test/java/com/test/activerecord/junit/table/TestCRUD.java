@@ -97,7 +97,7 @@ public class TestCRUD extends BaseTest {
 
 	@Test
 	public void _2testSelect() {
-		Person person = table1.getSelect().selectById(1L, "id", "name");
+		Person person = table1.getSelect().selectById(1L);
 		Assert.assertNotNull(person);
 
 		table1.getSelect().list("name", "bobo", "id");

@@ -8,6 +8,7 @@ import java.lang.reflect.Proxy;
 import org.apache.ibatis.transaction.Transaction;
 
 import com.github.mybatisext.activerecord.Table;
+import com.github.mybatisext.annotation.Trans;
 
 
 /**
@@ -23,7 +24,7 @@ public class TableProxy<TABLE, ID> implements InvocationHandler {
 	Table<TABLE, ID> table;
 
 
-	public TableProxy( Table<TABLE, ID> table ) {
+	TableProxy( Table<TABLE, ID> table ) {
 		this.table = table;
 	}
 
@@ -31,7 +32,7 @@ public class TableProxy<TABLE, ID> implements InvocationHandler {
 	@Override
 	public Object invoke( Object proxy, Method method, Object[] args ) throws Throwable {
 
-		if ( method.getAnnotations().length == 0 ) {
+		if ( method.getAnnotation(Trans.class) == null ) {
 			return method.invoke(table, args);
 		}
 

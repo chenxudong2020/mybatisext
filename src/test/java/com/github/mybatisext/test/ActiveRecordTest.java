@@ -1,8 +1,3 @@
-/**
- * ActiveRecordTest.java com.github.mybatisext.test Copyright (c) 2015,
- * 北京微课创景教育科技有限公司版权所有.
- */
-
 package com.github.mybatisext.test;
 
 import org.junit.Test;

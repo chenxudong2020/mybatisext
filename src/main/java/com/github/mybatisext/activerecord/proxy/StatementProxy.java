@@ -12,6 +12,7 @@ import com.github.mybatisext.activerecord.statement.Delete;
 import com.github.mybatisext.activerecord.statement.Insert;
 import com.github.mybatisext.activerecord.statement.Select;
 import com.github.mybatisext.activerecord.statement.Update;
+import com.github.mybatisext.annotation.Trans;
 
 public class StatementProxy implements InvocationHandler {
 
@@ -19,13 +20,19 @@ public class StatementProxy implements InvocationHandler {
 
 	Object primary;
 
-	public StatementProxy(DB db, Object primary) {
+
+	StatementProxy( DB db, Object primary ) {
 		this.db = db;
 		this.primary = primary;
 	}
 
+
 	@Override
-	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+	public Object invoke( Object proxy, Method method, Object[] args ) throws Throwable {
+
+		if ( method.getAnnotation(Trans.class) == null ) {
+			return method.invoke(primary, args);
+		}
 		Transaction trans = db.getDBMeta().getTransaction();
 		Object result = null;
 		try {
@@ -35,10 +42,10 @@ public class StatementProxy implements InvocationHandler {
 			result = method.invoke(primary, args);
 			// 提交
 			trans.commit();
-		} catch (Exception e) {
+		} catch ( Exception e ) {
 			// 回滚
 			trans.rollback();
-			if (e instanceof InvocationTargetException) {
+			if ( e instanceof InvocationTargetException ) {
 				throw ((InvocationTargetException) e).getCause();
 			}
 			throw e;
@@ -52,11 +59,12 @@ public class StatementProxy implements InvocationHandler {
 		return result;
 	}
 
+
 	@SuppressWarnings("unchecked")
-	public static <T> T getStatementProxy(DB db, Object primary) {
+	public static <T> T getStatementProxy( DB db, Object primary ) {
 		StatementProxy proxy = new StatementProxy(db, primary);
-		T statementProxy = (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
-				new Class<?>[] { Insert.class, Update.class, Select.class, Delete.class }, proxy);
+		T statementProxy = (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class<?>[ ] {
+				Insert.class, Update.class, Select.class, Delete.class }, proxy);
 		return statementProxy;
 	}
 }

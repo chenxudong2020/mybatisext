@@ -5,11 +5,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.transaction.Transaction;
 
 import com.github.mybatisext.activerecord.DB;
+import com.github.mybatisext.annotation.Trans;
 
 /**
  * 数据库操作代理
@@ -23,13 +22,15 @@ public class DBProxy implements InvocationHandler {
 
 	DB db;
 
-	DBProxy(DB realDB) {
+
+	DBProxy( DB realDB ) {
 		db = realDB;
 	}
 
+
 	@Override
-	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-		if (method.getAnnotation(Select.class) == null && method.getAnnotation(Update.class) == null) {
+	public Object invoke( Object proxy, Method method, Object[] args ) throws Throwable {
+		if ( method.getAnnotation(Trans.class) == null ) {
 			return method.invoke(db, args);
 		}
 		Transaction trans = db.getDBMeta().getTransaction();
@@ -41,10 +42,10 @@ public class DBProxy implements InvocationHandler {
 			result = method.invoke(db, args);
 			// 提交
 			trans.commit();
-		} catch (Exception e) {
+		} catch ( Exception e ) {
 			// 回滚
 			trans.rollback();
-			if (e instanceof InvocationTargetException) {
+			if ( e instanceof InvocationTargetException ) {
 				throw ((InvocationTargetException) e).getCause();
 			}
 			throw e;
@@ -59,10 +60,11 @@ public class DBProxy implements InvocationHandler {
 
 	}
 
-	public static DB getDBProxy(DB realDB) {
+
+	public static DB getDBProxy( DB realDB ) {
 		DBProxy proxy = new DBProxy(realDB);
 		DB dbProxy = (DB) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
-				new Class[] { DB.class }, proxy);
+			new Class[ ] { DB.class }, proxy);
 		return dbProxy;
 	}
 

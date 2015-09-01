@@ -2,13 +2,10 @@ package com.github.mybatisext.activerecord;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.mapping.MappedStatement;
 
 import com.github.mybatisext.activerecord.meta.DBMeta;
+import com.github.mybatisext.annotation.Trans;
 import com.github.mybatisext.helper.Page;
 
 public interface DB {
@@ -38,21 +35,21 @@ public interface DB {
 	 */
 	// 自定义sql语句进行查询操作,返回结果集
 
-	@Select("")
+	@Trans
 	public List<Record> list( String sql, Object... parameter );
 
 
-	@Select("")
+	@Trans
 	public Page<Record> paging( Page<Record> page, String sql, Object... parameter );
 
 
 	// 结果转换为提供的类
 
-	@Select("")
+	@Trans
 	public <T> List<T> list( String sql, Class<T> type, Object... parameter );
 
 
-	@Select("")
+	@Trans
 	public <T> Page<T> paging( Page<T> page, String sql, Class<T> type, Object... parameter );
 
 
@@ -63,52 +60,46 @@ public interface DB {
 	 * @return
 	 */
 
-	@Select("")
+	@Trans
 	public Record one( String sql, Object... parameter );
 
 
-	@Select("")
+	@Trans
 	public <T> T one( String sql, Class<T> type, Object... parameter );
 
 
 	// 执行增删改操作，返回影响行数
-	@Update("")
-	@Delete("")
-	@Insert("")
+	@Trans
 	public int update( String sql, Object... parameter );
 
 
 	// 数量统计
-	@Select("")
+	@Trans
 	public int count( String sql, Object... parameter );
 
 
 	// 执行脚本
-	@Select("")
+	@Trans
 	public <T> List<T> queryScript( String script, Class<T> type, Object parameter );
 
 
-	@Select("")
+	@Trans
 	public int countScript( String script, Object parameter );
 
 
-	@Select("")
+	@Trans
 	public <T> Page<T> pagingScript( Page<T> page, String script, Class<T> type, Object parameter );
 
 
-	@Update("")
-	@Delete("")
-	@Insert("")
+	@Trans
 	public int updateScript( String script, Object parameter );
 
 
 	// 语句
-	@Select("")
+	@Trans
 	public <TABLE> List<TABLE> query( MappedStatement statement, Object parameter );
 
 
-	@Update("")
-	@Delete("")
-	@Insert("")
+	@Trans
 	public int update( MappedStatement statement, Object parameter );
 }

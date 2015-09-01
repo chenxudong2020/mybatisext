@@ -32,25 +32,25 @@ public class MapperTest extends DaoTests {
 		user.setId(1L);
 
 		//根据指定id插入
-		userMapper.insert(user);
+		userMapper.getInsert().insert(user);
 
 		user = new User();
 		user.setAge(13);
 		user.setName("lei");
 		//自动生成id
-		userMapper.insert(user);
+		userMapper.getInsert().insert(user);
 	}
 
 
 	@After
 	public void testDelete() {
-		userMapper.deleteById(1L);
+		userMapper.getDelete().deleteById(1L);
 	}
 
 
 	@Test
 	public void testSelectById() {
-		User user = userMapper.selectById(1L);
+		User user = userMapper.getSelect().selectById(1L);
 		Assert.assertEquals(user.getId().longValue(), 1L);
 	}
 }

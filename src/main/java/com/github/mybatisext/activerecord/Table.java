@@ -11,6 +11,7 @@ import com.github.mybatisext.activerecord.statement.Delete;
 import com.github.mybatisext.activerecord.statement.Insert;
 import com.github.mybatisext.activerecord.statement.Select;
 import com.github.mybatisext.activerecord.statement.Update;
+import com.github.mybatisext.annotation.Trans;
 import com.github.mybatisext.helper.Page;
 
 public interface Table<TABLE, ID> {
@@ -60,60 +61,56 @@ public interface Table<TABLE, ID> {
 	public Update<TABLE, ID> getUpdate();
 
 
-	@org.apache.ibatis.annotations.Insert("")
+	@Trans
 	public int excute( InsertSQL insertSql );
 
 
-	@org.apache.ibatis.annotations.Select("")
+	@Trans
 	public List<TABLE> excute( SelectSQL selectSql );
 
 
-	@org.apache.ibatis.annotations.Update("")
+	@Trans
 	public int excute( UpdateSQL updateSql );
 
 
-	@org.apache.ibatis.annotations.Delete("")
+	@Trans
 	public int excute( DeleteSQL deleteSql );
 
 
 	//脚本执行
-	@org.apache.ibatis.annotations.Select("")
+	@Trans
 	public List<TABLE> queryScript( String script, Object parameter );
 
 
-	@org.apache.ibatis.annotations.Insert("")
-	@org.apache.ibatis.annotations.Update("")
-	@org.apache.ibatis.annotations.Delete("")
+	@Trans
 	public int updateScript( String script, Object parameter );
 
 
-	@org.apache.ibatis.annotations.Select("")
+	@Trans
 	Page<TABLE> pagingScript( Page<TABLE> page, String script, Object parameter );
 
 
-	@org.apache.ibatis.annotations.Select("")
+	@Trans
 	List<TABLE> pagingScript( int pageNo, int size, String script, Object parameter );
 
 
 	//以下sql操作方法
-	@org.apache.ibatis.annotations.Select("")
+	@Trans
 	public List<TABLE> list( String sql, Object... parameter );
 
 
-	@org.apache.ibatis.annotations.Select("")
+	@Trans
 	public Page<TABLE> paging( Page<TABLE> page, String sql, Object... parameter );
 
 
-	@org.apache.ibatis.annotations.Select("")
+	@Trans
 	public TABLE one( String sql, Object... parameter );
 
 
-	@org.apache.ibatis.annotations.Insert("")
-	@org.apache.ibatis.annotations.Update("")
-	@org.apache.ibatis.annotations.Delete("")
+	@Trans
 	public int update( String sql, Object... parameter );
 
 
-	@org.apache.ibatis.annotations.Select("")
+	@Trans
 	List<TABLE> paging( int pageNo, int size, String sql, Object... parameter );
 }

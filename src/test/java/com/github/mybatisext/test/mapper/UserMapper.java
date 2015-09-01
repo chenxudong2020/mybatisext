@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.github.mybatisext.activerecord.Table;
 import com.github.mybatisext.annotation.TableName;
 import com.github.mybatisext.helper.Page;
-import com.github.mybatisext.mapper.AutoMapper;
 import com.github.mybatisext.test.entity.User;
 
 
@@ -16,7 +16,7 @@ import com.github.mybatisext.test.entity.User;
  *
  */
 @TableName(name = "T_USER", type = User.class)
-public interface UserMapper extends AutoMapper<User, Long> {
+public interface UserMapper extends Table<User, Long> {
 
 
 	List<User> selectByName( @Param("name") String name );

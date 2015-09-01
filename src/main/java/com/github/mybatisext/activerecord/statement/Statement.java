@@ -1,8 +1,3 @@
-/**
- * Statement.java com.github.mybatisext.activerecord.statement Copyright (c)
- * 2015, 北京微课创景教育科技有限公司版权所有.
- */
-
 package com.github.mybatisext.activerecord.statement;
 
 import com.github.mybatisext.activerecord.Table;

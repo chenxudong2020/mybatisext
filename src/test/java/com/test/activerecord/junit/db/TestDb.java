@@ -1,8 +1,3 @@
-/**
- * TestDb.java com.test.activerecord.junit.db Copyright (c) 2015,
- * 北京微课创景教育科技有限公司版权所有.
- */
-
 package com.test.activerecord.junit.db;
 
 import java.util.List;

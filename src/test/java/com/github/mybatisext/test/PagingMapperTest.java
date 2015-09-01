@@ -40,14 +40,14 @@ public class PagingMapperTest extends DaoTests {
 			list.add(user);
 		}
 
-		userMapper.insertBatch(list);
+		userMapper.getInsert().insert(list);
 	}
 
 
 	@After
 	public void testDelete() {
 		for ( int i = 0 ; i < 50 ; i++ ) {
-			userMapper.deleteById((long) i);
+			userMapper.getDelete().deleteById((long) i);
 		}
 	}
 

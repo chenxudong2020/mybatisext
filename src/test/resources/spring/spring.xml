@@ -36,7 +36,7 @@
 	<bean class="com.github.mybatisext.interceptor.DefaultMyBatisExtFactory">
 		<property name="interceptors">
 			<list>
-				<bean class="com.github.mybatisext.interceptor.AutoMapperInterceptor" />
+				<bean class="com.github.mybatisext.interceptor.TableMapperInterceptor" />
 			</list>
 		</property>
 	</bean>
