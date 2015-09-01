@@ -8,11 +8,10 @@ MybatisExt项目扩展自Mybatis，具有以下特点:
 **二、内置的拦截器(plugin)**
 
 1. SQL语句打印和性能监控功能(SQLPrintPlugin)
-2. 批量执行功能(BatchPlugin)
-3. 主键自动生成功能(IdentityPlugin)
-4. MySQL查询语句性能分析功能(IndexingPlugin)
-5. 分页拦截器(PagingPlugin)
-6. XML文件修改后自动加载功能(XMLMapperLoader)
+2. 主键自动生成功能(IdentityPlugin)
+3. MySQL查询语句性能分析功能(IndexingPlugin)
+4. 分页拦截器(PagingPlugin)
+5. XML文件修改后自动加载功能(XMLMapperLoader)
 
 **三、扩展Mybatis，实现拦截Mapper接口方法功能**
 
