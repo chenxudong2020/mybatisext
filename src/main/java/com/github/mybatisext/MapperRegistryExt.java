@@ -12,9 +12,7 @@ import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
 
-import com.github.mybatisext.helper.ApplicationContentHolder;
 import com.github.mybatisext.interceptor.MyBatisInterceptor;
-import com.github.mybatisext.interceptor.MyBatisInterceptorFactory;
 
 /**
  * @author songrubo
@@ -26,24 +24,19 @@ public class MapperRegistryExt extends MapperRegistry {
 
 	private Map<Class<?>, MapperProxyFactory<?>> knownMappers;
 
-	MyBatisInterceptor[] interceptor;
+	MyBatisInterceptor[] interceptors;
 
 
 	@SuppressWarnings("unchecked")
-	public MapperRegistryExt( Configuration config ) {
+	public MapperRegistryExt( Configuration config, MyBatisInterceptor[] interceptors ) {
 		super(config);
+		this.interceptors = interceptors;
 		try {
 			Field field = MapperRegistry.class.getDeclaredField("knownMappers");
 			field.setAccessible(true);
 			knownMappers = (Map<Class<?>, MapperProxyFactory<?>>) field.get(this);
 		} catch ( Exception e ) {
 			logger.error(e.getMessage(), e);
-		}
-		try {
-			MyBatisInterceptorFactory myBatisExt = ApplicationContentHolder.getBean(MyBatisInterceptorFactory.class);
-			interceptor = myBatisExt.getMyBatisInterceptor();
-		} catch ( Exception e ) {
-			// ignore
 		}
 	}
 
@@ -58,7 +51,7 @@ public class MapperRegistryExt extends MapperRegistry {
 		try {
 			Class<T> mapperInterface = mapperProxyFactory.getMapperInterface();
 			final MapperProxyExt<T> mapperProxy = new MapperProxyExt<T>(sqlSession, mapperInterface,
-					mapperProxyFactory.getMethodCache(), interceptor);
+					mapperProxyFactory.getMethodCache(), interceptors);
 			return (T) Proxy.newProxyInstance(mapperInterface.getClassLoader(), new Class[ ] { mapperInterface },
 				mapperProxy);
 		} catch ( Exception e ) {

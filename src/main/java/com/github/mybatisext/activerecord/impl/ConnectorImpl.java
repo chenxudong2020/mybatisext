@@ -14,7 +14,7 @@ import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
 import com.github.mybatisext.activerecord.Connector;
 import com.github.mybatisext.activerecord.DB;
 import com.github.mybatisext.activerecord.proxy.DBProxy;
-import com.github.mybatisext.helper.ApplicationContentHolder;
+import com.github.mybatisext.helper.SqlSessionFactoryHolder;
 
 public class ConnectorImpl implements Connector {
 
@@ -24,7 +24,10 @@ public class ConnectorImpl implements Connector {
 	@Override
 	public DB open() {
 		// spring配置
-		SqlSessionFactory factory = ApplicationContentHolder.getBean(SqlSessionFactory.class);
+		SqlSessionFactory factory = SqlSessionFactoryHolder.getSqlSessionFactory();
+		if ( factory == null ) {
+			throw new RuntimeException("请初始化SqlSessionFactoryBeanExt");
+		}
 		DB db = new DBImpl(factory);
 		return DBProxy.getDBProxy(db);
 	}

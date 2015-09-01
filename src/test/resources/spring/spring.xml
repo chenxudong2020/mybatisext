@@ -16,6 +16,12 @@
 	<bean id="sqlSessionFactory" class="com.github.mybatisext.SqlSessionFactoryBeanExt">
 		<property name="dataSource" ref="dataSource" />
 		<property name="typeAliasesPackage" value="com.github.mybatisext.test.entity" />
+		<!-- 拦截器配置 -->
+		<property name="interceptors">
+			<list>
+				<bean class="com.github.mybatisext.interceptor.GenericMapperInterceptor" />
+			</list>
+		</property>
 		<property name="plugins">
 			<list>
 				<bean class="com.github.mybatisext.plugin.SQLPrintPlugin" />
@@ -32,17 +38,8 @@
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.github.mybatisext.test.mapper" />
 	</bean>
-	<!-- 拦截器配置,可访问接口注解 commonMapper支持 -->
-	<bean class="com.github.mybatisext.interceptor.DefaultMyBatisExtFactory">
-		<property name="interceptors">
-			<list>
-				<bean class="com.github.mybatisext.interceptor.TableMapperInterceptor" />
-			</list>
-		</property>
-	</bean>
 	<!-- mapper.xml文件自动加载 -->
 	<bean class="com.github.mybatisext.plugin.XMLMapperLoader" />
-
 
 	<!-- 运行时加虚拟机参数-Denvironment=LOCAL|DEVELOP|TEST|PRODUCT 代表四个环境,不加是生产环境 -->
 	<bean id="environment" class="com.github.mybatisext.environment.EnvironmentDetect">
