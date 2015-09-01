@@ -22,6 +22,7 @@
 				<bean class="com.github.mybatisext.interceptor.GenericMapperInterceptor" />
 			</list>
 		</property>
+		<!-- plugin配置 -->
 		<property name="plugins">
 			<list>
 				<bean class="com.github.mybatisext.plugin.SQLPrintPlugin" />
