@@ -35,7 +35,7 @@
 		</property>
 	</bean>
 
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.github.mybatisext.test.mapper" />
 	</bean>
 	<!-- mapper.xml文件自动加载 -->
