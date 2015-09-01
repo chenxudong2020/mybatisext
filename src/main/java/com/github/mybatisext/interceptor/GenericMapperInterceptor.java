@@ -17,7 +17,7 @@ import com.github.mybatisext.annotation.TableName;
  * @version  1.0.0	 
  */
 @SuppressWarnings("unchecked")
-public class TableMapperInterceptor implements MyBatisInterceptor {
+public class GenericMapperInterceptor implements MyBatisInterceptor {
 
 	protected DB db;
 
@@ -27,21 +27,26 @@ public class TableMapperInterceptor implements MyBatisInterceptor {
 	public Object invoke( MyBatisInvocation handler ) throws Throwable {
 		Method method = handler.getMethod();
 		Class<?> mapperClass = handler.getMapperInterface();
-
+		if ( db == null ) {
+			getDB();
+		}
 		TableName tableName = mapperClass.getAnnotation(TableName.class);
 		if ( tableName != null ) {
 			if ( tableName.type() == Void.class ) {
 				throw new RuntimeException("请在TableName注解中指定实体类型");
 			}
-			if ( db == null ) {
-				getDB();
-			}
+
 			if ( db != null ) {
+				//继承Table接口
 				if ( Table.class == method.getDeclaringClass() ) {
 					Table table = db.active(tableName.name(), tableName.type(), tableName.id(), tableName.idType());
 					return method.invoke(table, handler.getArgs());
 				}
 			}
+		}
+		//页可以继承DB接口
+		if ( DB.class == method.getDeclaringClass() ) {
+			return method.invoke(db, handler.getArgs());
 		}
 		return handler.execute();
 
