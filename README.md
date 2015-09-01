@@ -20,7 +20,7 @@ MybatisExt项目扩展自Mybatis，具有以下特点:
 
 **四、内置默认生成的增、删、改、查方法**
 
-Mapper接口继承CommonMapper或AutoMapper自动添加系统自带方法进行简单的操作，如果不合适可以继续在接口中和xml文件中添加自定义方法。
+Mapper接口继承Table或DB自动添加系统自带方法进行简单的操作，如果不合适可以继续在接口中和xml文件中添加自定义方法。
 
 **五、自带了entity、mapper和xml生成工具**
 
