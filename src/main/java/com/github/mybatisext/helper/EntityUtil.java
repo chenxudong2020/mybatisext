@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
  * @date 2014-11-8
  * @version v1.0
  */
+@SuppressWarnings("hiding")
 public class EntityUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(EntityUtil.class);
@@ -147,8 +148,8 @@ public class EntityUtil {
 
 	private void processTable( String table ) {
 		StringBuffer sb = new StringBuffer(table.length());
-		table = table.toLowerCase();
-		String[] tables = table.split("_");
+		String tableName = table.toLowerCase();
+		String[] tables = tableName.split("_");
 		String temp = null;
 		for ( int i = 1 ; i < tables.length ; i++ ) {
 			temp = tables[i].trim();
@@ -638,6 +639,7 @@ public class EntityUtil {
 		PreparedStatement pstate = conn.prepareStatement("show table status");
 		ResultSet results = pstate.executeQuery();
 		while ( results.next() ) {
+
 			String tableName = results.getString("NAME");
 			String comment = results.getString("COMMENT");
 			maps.put(tableName, comment);

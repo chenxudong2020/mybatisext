@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
  * @date	 2015-5-8
  * @version  V1.0.0
  */
+@SuppressWarnings("hiding")
 public class AutoEntityUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(AutoEntityUtil.class);
@@ -148,8 +149,8 @@ public class AutoEntityUtil {
 
 	private void processTable( String table ) {
 		StringBuffer sb = new StringBuffer(table.length());
-		table = table.toLowerCase();
-		String[] tables = table.split("_");
+		String tableName = table.toLowerCase();
+		String[] tables = tableName.split("_");
 		String temp = null;
 		for ( int i = 1 ; i < tables.length ; i++ ) {
 			temp = tables[i].trim();
@@ -203,17 +204,6 @@ public class AutoEntityUtil {
 
 
 	/**
-	 * 将实体类名首字母改为小写
-	 *
-	 * @param beanName
-	 * @return String
-	 */
-	private String processResultMapId( String beanName ) {
-		return beanName.substring(0, 1).toLowerCase() + beanName.substring(1);
-	}
-
-
-	/**
 	 * 构建类上面的注释
 	 *
 	 * @param bw
@@ -233,25 +223,6 @@ public class AutoEntityUtil {
 		bw.write(" *");
 		bw.newLine();
 		bw.write(" */");
-		return bw;
-	}
-
-
-	/**
-	 * 构建方法上面的注释
-	 *
-	 * @param bw
-	 * @param text
-	 * @return
-	 * @throws IOException
-	 */
-	private BufferedWriter buildMethodComment( BufferedWriter bw, String text ) throws IOException {
-		bw.newLine();
-		bw.write("\t/**");
-		bw.newLine();
-		bw.write("\t * " + text);
-		bw.newLine();
-		bw.write("\t */");
 		return bw;
 	}
 
@@ -348,7 +319,7 @@ public class AutoEntityUtil {
 		bw.newLine();
 		bw.write("import cn.vko.mybatis.annotation.TableName;");
 		bw.newLine();
-		bw.write("import cn.vko.mybatis.ext.mapper.CommonMapper;");
+		bw.write("import com.github.mybatisext.activerecord.Table;");
 		bw.newLine();
 
 
@@ -356,7 +327,7 @@ public class AutoEntityUtil {
 		bw.newLine();
 		bw.write("@TableName(table = \"" + tableName + "\", entity = " + beanName + ".class)");
 		bw.newLine();
-		bw.write("public interface " + mapperName + " extends CommonMapper<" + beanName + ">{");
+		bw.write("public interface " + mapperName + " extends Table<" + beanName + ",Long>{");
 		bw.newLine();
 		bw.newLine();
 
@@ -394,8 +365,7 @@ public class AutoEntityUtil {
 
 
 		// 下面开始写SqlMapper中的方法
-		// this.outputSqlMapperMethod(bw, columns, types);
-		buildSQL(bw, columns, types);
+		buildSQL(bw, columns);
 
 		bw.write("</mapper>");
 		bw.flush();
@@ -403,7 +373,7 @@ public class AutoEntityUtil {
 	}
 
 
-	private void buildSQL( BufferedWriter bw, List<String> columns, List<String> types ) throws IOException {
+	private void buildSQL( BufferedWriter bw, List<String> columns ) throws IOException {
 		int size = columns.size();
 		// 通用结果列
 		bw.write("\t<!-- 通用查询结果列-->");
