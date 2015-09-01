@@ -61,7 +61,7 @@ listPerson = db.queryScript("select * from person where name=#{name}", Person.cl
 
 ```
 //获取表操作对象
-Table<Record, Long> table = db.active("person", Person.class, "id", Long.class);
+Table<Person, Long> table = db.active("person", Person.class, "id", Long.class);
 //插入操作
 InsertSQL insertSql = new InsertSQL("id", "name", "age").values(1, "bobo", 28);
 int count = table.excute(insertSql);
@@ -78,6 +78,28 @@ Person persion = table.one("select * from person limit 1");
 personList = table.queryScript("select * from person where name=#{name}", "bobo");
 SelectSQL selectSql = new SelectSQL("id", "name").where("name", "bobo").and("id", 1L).orderBy("id", "asc");
 selectSql=table.excute(selectSql);
+```
+**无sql操作**
+
+```
+DB db = MybatisExt.open("org.hsqldb.jdbcDriver", "jdbc:hsqldb:mem:db_name", "sa", "");
+Table<Record, Long> table = db.active("person");
+//插入
+Record rec=new Record();
+rec.put("id", IdWorker.getId());
+rec.put("name", "hh");
+rec.put("age", 30);
+table.getInsert().insert(rec);
+
+//查询
+rec=table.getSelect().one("name","hh");
+
+//更新
+table.getUpdate().update(...);
+
+//删除
+table.getDelete().delete(...);
+
 ```
 
 具体可参见源码中的测试用例

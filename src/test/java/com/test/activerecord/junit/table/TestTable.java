@@ -84,7 +84,7 @@ public class TestTable extends BaseTest {
 		Assert.assertEquals(1, personList.size());
 
 		SelectSQL selectSql = new SelectSQL("id", "name").where("name", "bobo").and("id", 1L).orderBy("id", "asc");
-		table1.excute(selectSql);
+		personList = table1.excute(selectSql);
 	}
 
 
