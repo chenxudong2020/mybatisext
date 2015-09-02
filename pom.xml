@@ -11,6 +11,7 @@
 		<spring.version>4.1.7.RELEASE</spring.version>
 		<velocity.version>1.7</velocity.version>
 		<mybatis-spring.version>1.2.3</mybatis-spring.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<name>MyBatis-ext</name>
@@ -111,6 +112,7 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -125,7 +127,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
 	<profiles>
 		<profile>
 			<id>release</id>
