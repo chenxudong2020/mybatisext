@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.helper;
+package com.ext_ext.mybatisext.test;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -19,25 +19,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
  * 自动生成MyBatis的实体类、实体映射XML文件、Mapper
- * <p>
  *
- * @date	 2015-5-8
- * @version  V1.0.0
+ * @date 2014-11-8
+ * @version v1.0
  */
 @SuppressWarnings("hiding")
-public class AutoEntityUtil {
+public class EntityUtil {
 
-	private static final Logger logger = LoggerFactory.getLogger(AutoEntityUtil.class);
+	private static final Logger logger = LoggerFactory.getLogger(EntityUtil.class);
 
 
 	/**
-	 ********************************** 使用前必读*********************
-	 **															 **
-	 ** 使用前请将moduleName更改为自己模块的名称即可（一般情况下与数据库名一致），其他无须改动     **
-	 **															 **
-	 **************************************************************
+	 ********************************** 使用前必读*******************
+	 **
+	 ** 使用前请将moduleName更改为自己模块的名称即可（一般情况下与数据库名一致），其他无须改动。
+	 **
+	 ***********************************************************
 	 */
 	private final String type_char = "char";
 
@@ -61,10 +59,11 @@ public class AutoEntityUtil {
 
 	private final String type_double = "double";
 
+
 	/**
 	 * MYSQL数据库实例名 对应模块名称（根据自己模块做相应调整!!!务必修改^_^）
 	 */
-	public static String moduleName = "vvvv";
+	public static String moduleName = "vvvvv";
 
 	private final String bean_path = "d:/" + moduleName + "/entity_bean";
 
@@ -75,7 +74,7 @@ public class AutoEntityUtil {
 	/**
 	 * 代码目录结构 例如 springmvc 生成结构为: springmvc.entity.User
 	 */
-	private final String package_path = "net.vvvvv." + moduleName;
+	private final String package_path = "net.vvvv." + moduleName;
 
 	private final String bean_package = package_path + ".entity";
 
@@ -83,9 +82,9 @@ public class AutoEntityUtil {
 
 	private final String driverName = "com.mysql.jdbc.Driver";
 
-	private final String user = "vvvvvvv";
+	private final String user = "vvvv";
 
-	private final String password = "vvvvvv";
+	private final String password = "vvvv";
 
 	private final String url = "jdbc:mysql://192.168.1.251:3306/" + moduleName + "?characterEncoding=utf8";
 
@@ -104,13 +103,13 @@ public class AutoEntityUtil {
 	public static void main( String[] args ) {
 		try {
 			// 创建目录
-			Runtime.getRuntime().exec("cmd /c mkdir D:\\" + AutoEntityUtil.moduleName);
+			Runtime.getRuntime().exec("cmd /c mkdir D:\\" + EntityUtil.moduleName);
 
 			// 自动生成代码
-			new AutoEntityUtil().generate();
+			new EntityUtil().generate();
 
 			// 自动打开生成文件的目录
-			Runtime.getRuntime().exec("cmd /c start explorer D:\\" + AutoEntityUtil.moduleName);
+			Runtime.getRuntime().exec("cmd /c start explorer D:\\" + EntityUtil.moduleName);
 		} catch ( ClassNotFoundException e ) {
 			logger.error(e.getMessage(), e);
 		} catch ( SQLException e ) {
@@ -204,6 +203,17 @@ public class AutoEntityUtil {
 
 
 	/**
+	 * 将实体类名首字母改为小写
+	 *
+	 * @param beanName
+	 * @return String
+	 */
+	private String processResultMapId( String beanName ) {
+		return beanName.substring(0, 1).toLowerCase() + beanName.substring(1);
+	}
+
+
+	/**
 	 * 构建类上面的注释
 	 *
 	 * @param bw
@@ -216,13 +226,28 @@ public class AutoEntityUtil {
 		bw.newLine();
 		bw.write("/**");
 		bw.newLine();
-		bw.write(" *");
-		bw.newLine();
 		bw.write(" * " + text);
 		bw.newLine();
-		bw.write(" *");
-		bw.newLine();
 		bw.write(" */");
+		return bw;
+	}
+
+
+	/**
+	 * 构建方法上面的注释
+	 *
+	 * @param bw
+	 * @param text
+	 * @return
+	 * @throws IOException
+	 */
+	private BufferedWriter buildMethodComment( BufferedWriter bw, String text ) throws IOException {
+		bw.newLine();
+		bw.write("\t/**");
+		bw.newLine();
+		bw.write("\t * " + text);
+		bw.newLine();
+		bw.write("\t */");
 		return bw;
 	}
 
@@ -304,7 +329,7 @@ public class AutoEntityUtil {
 	 *
 	 * @throws IOException
 	 */
-	private void buildMapper( String tableName ) throws IOException {
+	private void buildMapper() throws IOException {
 		File folder = new File(mapper_path);
 		if ( !folder.exists() ) {
 			folder.mkdirs();
@@ -317,18 +342,41 @@ public class AutoEntityUtil {
 		bw.newLine();
 		bw.write("import " + bean_package + "." + beanName + ";");
 		bw.newLine();
-		bw.write("import cn.vko.mybatis.annotation.TableName;");
-		bw.newLine();
-		bw.write("import com.ext_ext.mybatisext.activerecord.Table;");
-		bw.newLine();
-
-
+		bw.write("import org.apache.ibatis.annotations.Param;");
 		bw = buildClassComment(bw, mapperName + "数据库操作接口类");
 		bw.newLine();
-		bw.write("@TableName(table = \"" + tableName + "\", entity = " + beanName + ".class)");
+		bw.write("public interface " + mapperName + " {");
 		bw.newLine();
-		bw.write("public interface " + mapperName + " extends Table<" + beanName + ",Long>{");
 		bw.newLine();
+		// ----------定义Mapper中的方法Begin----------
+		bw = buildMethodComment(bw, "查询（根据主键ID查询）");
+		bw.newLine();
+		bw.write("\t" + beanName + " selectById( @Param(\"id\") Long id );");
+		bw.newLine();
+		bw.newLine();
+		bw = buildMethodComment(bw, "删除（根据主键ID删除）");
+		bw.newLine();
+		bw.write("\t" + "int deleteById( @Param(\"id\") Long id );");
+		bw.newLine();
+		bw.newLine();
+		bw = buildMethodComment(bw, "添加");
+		bw.newLine();
+		bw.write("\t" + "int insert( " + beanName + " record );");
+		bw.newLine();
+		bw.newLine();
+		bw = buildMethodComment(bw, "添加 （匹配有值的字段）");
+		bw.newLine();
+		bw.write("\t" + "int insertSelective( " + beanName + " record );");
+		bw.newLine();
+		bw.newLine();
+		bw = buildMethodComment(bw, "修改 （匹配有值的字段）");
+		bw.newLine();
+		bw.write("\t" + "int updateByIdSelective( " + beanName + " record );");
+		bw.newLine();
+		bw.newLine();
+		bw = buildMethodComment(bw, "修改（根据主键ID修改）");
+		bw.newLine();
+		bw.write("\t" + "int updateById( " + beanName + " record );");
 		bw.newLine();
 
 		// ----------定义Mapper中的方法End----------
@@ -363,9 +411,25 @@ public class AutoEntityUtil {
 		bw.newLine();
 		bw.newLine();
 
+		/*
+		 * bw.write("\t<!--实体映射-->"); bw.newLine();
+		 * bw.write("\t<resultMap id=\"" + this.processResultMapId(beanName) +
+		 * "ResultMap\" type=\"" + beanName + "\">"); bw.newLine();
+		 * bw.write("\t\t<!--" + comments.get(0) + "-->"); bw.newLine();
+		 * bw.write("\t\t<id property=\"" + this.processField(columns.get(0)) +
+		 * "\" column=\"" + columns.get(0) + "\" />"); bw.newLine(); int size =
+		 * columns.size(); for ( int i = 1 ; i < size ; i++ ) {
+		 * bw.write("\t\t<!--" + comments.get(i) + "-->"); bw.newLine();
+		 * bw.write("\t\t<result property=\"" +
+		 * this.processField(columns.get(i)) + "\" column=\"" + columns.get(i) +
+		 * "\" />"); bw.newLine(); } bw.write("\t</resultMap>");
+		 * 
+		 * bw.newLine(); bw.newLine(); bw.newLine();
+		 */
 
 		// 下面开始写SqlMapper中的方法
-		buildSQL(bw, columns);
+		// this.outputSqlMapperMethod(bw, columns, types);
+		buildSQL(bw, columns, types);
 
 		bw.write("</mapper>");
 		bw.flush();
@@ -373,7 +437,7 @@ public class AutoEntityUtil {
 	}
 
 
-	private void buildSQL( BufferedWriter bw, List<String> columns ) throws IOException {
+	private void buildSQL( BufferedWriter bw, List<String> columns, List<String> types ) throws IOException {
 		int size = columns.size();
 		// 通用结果列
 		bw.write("\t<!-- 通用查询结果列-->");
@@ -394,6 +458,173 @@ public class AutoEntityUtil {
 		bw.newLine();
 		bw.newLine();
 
+		// 查询（根据主键ID查询）
+		bw.write("\t<!-- 查询（根据主键ID查询） -->");
+		bw.newLine();
+		bw.write("\t<select id=\"selectById\" resultType=\""
+				+ processResultMapId(beanName) + "\" parameterType=\"java.lang." + processType(types.get(0)) + "\">");
+		bw.newLine();
+		bw.write("\t\t SELECT");
+		bw.newLine();
+		bw.write("\t\t <include refid=\"Base_Column_List\" />");
+		bw.newLine();
+		bw.write("\t\t FROM " + tableName);
+		bw.newLine();
+		bw.write("\t\t WHERE " + columns.get(0) + " = #{" + processField(columns.get(0)) + "}");
+		bw.newLine();
+		bw.write("\t</select>");
+		bw.newLine();
+		bw.newLine();
+		// 查询完
+
+		// 删除（根据主键ID删除）
+		bw.write("\t<!--删除：根据主键ID删除-->");
+		bw.newLine();
+		bw.write("\t<delete id=\"deleteById\" parameterType=\"java.lang." + processType(types.get(0)) + "\">");
+		bw.newLine();
+		bw.write("\t\t DELETE FROM " + tableName);
+		bw.newLine();
+		bw.write("\t\t WHERE " + columns.get(0) + " = #{" + processField(columns.get(0)) + "}");
+		bw.newLine();
+		bw.write("\t</delete>");
+		bw.newLine();
+		bw.newLine();
+		// 删除完
+
+		// 添加insert方法
+		bw.write("\t<!-- 添加 -->");
+		bw.newLine();
+		bw.write("\t<insert id=\"insert\" parameterType=\"" + processResultMapId(beanName) + "\">");
+		bw.newLine();
+		bw.write("\t\t INSERT INTO " + tableName);
+		bw.newLine();
+		bw.write(" \t\t(");
+		for ( int i = 0 ; i < size ; i++ ) {
+			bw.write(columns.get(i));
+			if ( i != size - 1 ) {
+				bw.write(",");
+			}
+		}
+		bw.write(") ");
+		bw.newLine();
+		bw.write("\t\t VALUES ");
+		bw.newLine();
+		bw.write(" \t\t(");
+		for ( int i = 0 ; i < size ; i++ ) {
+			bw.write("#{" + processField(columns.get(i)) + "}");
+			if ( i != size - 1 ) {
+				bw.write(",");
+			}
+		}
+		bw.write(") ");
+		bw.newLine();
+		bw.write("\t</insert>");
+		bw.newLine();
+		bw.newLine();
+		// 添加insert完
+
+		// --------------- insert方法（匹配有值的字段）
+		bw.write("\t<!-- 添加 （匹配有值的字段）-->");
+		bw.newLine();
+		bw.write("\t<insert id=\"insertSelective\" parameterType=\"" + processResultMapId(beanName) + "\">");
+		bw.newLine();
+		bw.write("\t\t INSERT INTO " + tableName);
+		bw.newLine();
+		bw.write("\t\t <trim prefix=\"(\" suffix=\")\" suffixOverrides=\",\" >");
+		bw.newLine();
+
+		String tempField = null;
+		for ( int i = 0 ; i < size ; i++ ) {
+			tempField = processField(columns.get(i));
+			bw.write("\t\t\t<if test=\"" + tempField + " != null\">");
+			bw.newLine();
+			bw.write("\t\t\t\t " + columns.get(i) + ",");
+			bw.newLine();
+			bw.write("\t\t\t</if>");
+			bw.newLine();
+		}
+
+		bw.newLine();
+		bw.write("\t\t </trim>");
+		bw.newLine();
+
+		bw.write("\t\t <trim prefix=\"values (\" suffix=\")\" suffixOverrides=\",\" >");
+		bw.newLine();
+
+		tempField = null;
+		for ( int i = 0 ; i < size ; i++ ) {
+			tempField = processField(columns.get(i));
+			bw.write("\t\t\t<if test=\"" + tempField + " != null\">");
+			bw.newLine();
+			bw.write("\t\t\t\t #{" + tempField + "},");
+			bw.newLine();
+			bw.write("\t\t\t</if>");
+			bw.newLine();
+		}
+
+		bw.write("\t\t </trim>");
+		bw.newLine();
+		bw.write("\t</insert>");
+		bw.newLine();
+		bw.newLine();
+		// --------------- 完毕
+
+		// 修改update方法
+		bw.write("\t<!-- 修 改-->");
+		bw.newLine();
+		bw.write("\t<update id=\"updateByIdSelective\" parameterType=\"" + processResultMapId(beanName) + "\">");
+		bw.newLine();
+		bw.write("\t\t UPDATE " + tableName);
+		bw.newLine();
+		bw.write(" \t\t <set> ");
+		bw.newLine();
+
+		tempField = null;
+		for ( int i = 1 ; i < size ; i++ ) {
+			tempField = processField(columns.get(i));
+			bw.write("\t\t\t<if test=\"" + tempField + " != null\">");
+			bw.newLine();
+			bw.write("\t\t\t\t " + columns.get(i) + " = #{" + tempField + "},");
+			bw.newLine();
+			bw.write("\t\t\t</if>");
+			bw.newLine();
+		}
+
+		bw.newLine();
+		bw.write(" \t\t </set>");
+		bw.newLine();
+		bw.write("\t\t WHERE " + columns.get(0) + " = #{" + processField(columns.get(0)) + "}");
+		bw.newLine();
+		bw.write("\t</update>");
+		bw.newLine();
+		bw.newLine();
+		// update方法完毕
+
+		// ----- 修改（匹配有值的字段）
+		bw.write("\t<!-- 修 改-->");
+		bw.newLine();
+		bw.write("\t<update id=\"updateById\" parameterType=\"" + processResultMapId(beanName) + "\">");
+		bw.newLine();
+		bw.write("\t\t UPDATE " + tableName);
+		bw.newLine();
+		bw.write("\t\t SET ");
+
+		bw.newLine();
+		tempField = null;
+		for ( int i = 1 ; i < size ; i++ ) {
+			tempField = processField(columns.get(i));
+			bw.write("\t\t\t " + columns.get(i) + " = #{" + tempField + "}");
+			if ( i != size - 1 ) {
+				bw.write(",");
+			}
+			bw.newLine();
+		}
+
+		bw.write("\t\t WHERE " + columns.get(0) + " = #{" + processField(columns.get(0)) + "}");
+		bw.newLine();
+		bw.write("\t</update>");
+		bw.newLine();
+		bw.newLine();
 	}
 
 
@@ -408,6 +639,7 @@ public class AutoEntityUtil {
 		PreparedStatement pstate = conn.prepareStatement("show table status");
 		ResultSet results = pstate.executeQuery();
 		while ( results.next() ) {
+
 			String tableName = results.getString("NAME");
 			String comment = results.getString("COMMENT");
 			maps.put(tableName, comment);
@@ -441,7 +673,7 @@ public class AutoEntityUtil {
 			// this.outputBaseBean();
 			String tableComment = tableComments.get(tableName);
 			buildEntityBean(columns, types, comments, tableComment);
-			buildMapper(tableName);
+			buildMapper();
 			buildMapperXml(columns, types, comments);
 		}
 		conn.close();
