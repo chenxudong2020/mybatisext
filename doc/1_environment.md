@@ -8,7 +8,7 @@
 
 在spring配置如下代码
 
-![输入图片说明](http://git.oschina.net/uploads/images/2015/0901/152341_abc1017b_337255.png "在这里输入图片标题")
+![输入图片说明](http://git.oschina.net/uploads/images/2015/0902/130504_a1776952_337255.png "在这里输入图片标题")
 
 可以根据环境加载相应配置
 
