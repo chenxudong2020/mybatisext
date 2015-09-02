@@ -13,37 +13,36 @@
 		<property name="password" value="${jdbc.password}" />
 	</bean>
 	<!-- Mybatis相关配置 -->
-	<bean id="sqlSessionFactory" class="com.github.mybatisext.SqlSessionFactoryBeanExt">
+	<bean id="sqlSessionFactory" class="com.ext_ext.mybatisext.SqlSessionFactoryBeanExt">
 		<property name="dataSource" ref="dataSource" />
-		<property name="typeAliasesPackage" value="com.github.mybatisext.test.entity" />
+		<property name="typeAliasesPackage" value="com.ext_ext.mybatisext.test.entity" />
 		<!-- 拦截器配置 -->
 		<property name="interceptors">
 			<list>
-				<bean class="com.github.mybatisext.interceptor.GenericMapperInterceptor" />
+				<bean class="com.ext_ext.mybatisext.interceptor.GenericMapperInterceptor" />
 			</list>
 		</property>
 		<!-- plugin配置 -->
 		<property name="plugins">
 			<list>
-				<bean class="com.github.mybatisext.plugin.SQLPrintPlugin" />
-				<bean class="com.github.mybatisext.plugin.IndexingPlugin" />
-				<bean class="com.github.mybatisext.plugin.paging.PagingPlugin">
-					<!-- <property name="dialect"> <bean class="com.github.mybatisext.activerecord.dialect.impl.MysqlDialect" /> </property> -->
+				<bean class="com.ext_ext.mybatisext.plugin.SQLPrintPlugin" />
+				<bean class="com.ext_ext.mybatisext.plugin.IndexingPlugin" />
+				<bean class="com.ext_ext.mybatisext.plugin.paging.PagingPlugin">
+					<!-- <property name="dialect"> <bean class="com.ext_ext.mybatisext.activerecord.dialect.impl.MysqlDialect" /> </property> -->
 				</bean>
-				<bean class="com.github.mybatisext.plugin.IdentityPlugin" />
-				<bean class="com.github.mybatisext.plugin.BatchPlugin" />
+				<bean class="com.ext_ext.mybatisext.plugin.IdentityPlugin" />
 			</list>
 		</property>
 	</bean>
 
 	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.github.mybatisext.test.mapper" />
+		<property name="basePackage" value="com.ext_ext.mybatisext.test.mapper" />
 	</bean>
 	<!-- mapper.xml文件自动加载 -->
-	<bean class="com.github.mybatisext.plugin.XMLMapperLoader" />
+	<bean class="com.ext_ext.mybatisext.plugin.XMLMapperLoader" />
 
-	<!-- 运行时加虚拟机参数-Denvironment=LOCAL|DEVELOP|TEST|PRODUCT 代表四个环境,不加是生产环境 -->
-	<bean id="environment" class="com.github.mybatisext.environment.EnvironmentDetect">
+	<!-- 运行时加虚拟机参数-Denv=LOCAL|DEVELOP|TEST|PRODUCT 代表四个环境,不加是生产环境 -->
+	<bean id="environment" class="com.ext_ext.mybatisext.environment.EnvironmentDetect">
 		<property name="resources">
 			<list>
 				<value>classpath:properties/*.properties</value>
@@ -51,7 +50,7 @@
 		</property>
 	</bean>
 	<!-- Properties读取配置 -->
-	<bean class="com.github.mybatisext.environment.ConfigPropertyConfigurer">
+	<bean class="com.ext_ext.mybatisext.environment.ConfigPropertyConfigurer">
 		<property name="environment" ref="environment" />
 		<property name="ignoreResourceNotFound" value="true" />
 		<property name="ignoreUnresolvablePlaceholders" value="true" />
