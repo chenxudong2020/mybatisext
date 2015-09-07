@@ -103,14 +103,15 @@ table.getDelete().delete(...);
 
 具体可参见源码中的测试用例
 
+```
 <dependency>
     <groupId>com.ext-ext</groupId>
     <artifactId>mybatis-ext</artifactId>
     <version>0.0.1</version>
 </dependency>
+```
 
 欢迎使用并提交问题.
-
 
 
 
