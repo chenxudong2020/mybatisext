@@ -23,7 +23,7 @@ Mapper接口继承Table或DB自动添加系统自带方法进行简单的操作�
 
 **五、自带了entity、mapper和xml生成工具**
 
-自动生成代码工具，不需要配置，可根据需求自行修改AutoEntityUtil或者EntityUtil
+自动生成代码工具，不需要配置，可根据需求自行修改AutoEntityUtil或者EntityUtil(在test项目里面)
 
 **六、内置ActiveRecord功能**
 
