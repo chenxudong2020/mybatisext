@@ -51,7 +51,7 @@ rec.put("age", 30);
 count = db.updateScript("insert into person(id,name,age)values(#{id},#{name},#{age})", rec);
 //sql脚本查询
 List<Record> list = db.list("select id,name,age from person where name=?", "bobo");
-List<Person> listPerson = db.list(SQL_SELECT, Person.class, "bobo")
+List<Person> listPerson = db.list("select * from person where name=?", Person.class, "bobo")
 //MyBatis脚本查询
 listPerson = db.queryScript("select * from person where name=#{name}", Person.class, "bobo");
 ```
@@ -112,7 +112,6 @@ table.getDelete().delete(...);
 ```
 
 欢迎使用并提交问题.
-
 
 
 
