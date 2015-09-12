@@ -7,32 +7,25 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ext_ext.mybatisext.helper.Page;
 import com.ext_ext.mybatisext.test.entity.User;
-import com.ext_ext.mybatisext.test.mapper.UserMapper;
-
 
 /**
  * 
  * <p>
-
- * @author   宋汝波
- * @date	 2014年11月24日 
- * @version  1.0.0	 
+ * 
+ * @author 宋汝波
+ * @date 2014年11月24日
+ * @version 1.0.0
  */
 public class PagingMapperTest extends DaoTests {
-
-	@Autowired
-	UserMapper userMapper;
-
 
 	@Before
 	public void testInsert() {
 		List<User> list = new ArrayList<User>();
 
-		for ( int i = 0 ; i < 10 ; i++ ) {
+		for (int i = 0; i < 10; i++) {
 			User user = new User();
 			user.setAge(1);
 			user.setName("li");
@@ -45,14 +38,12 @@ public class PagingMapperTest extends DaoTests {
 		userMapper.selectByName("li");
 	}
 
-
 	@After
 	public void testDelete() {
-		for ( int i = 0 ; i < 10 ; i++ ) {
+		for (int i = 0; i < 10; i++) {
 			userMapper.getDelete().deleteById((long) i);
 		}
 	}
-
 
 	@Test
 	public void testPaging() {
@@ -60,7 +51,6 @@ public class PagingMapperTest extends DaoTests {
 		page = userMapper.selectByNamePaging(page, "li");
 
 		Assert.assertEquals(page.getCount(), 10);
-
 
 	}
 }
