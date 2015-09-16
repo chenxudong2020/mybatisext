@@ -64,7 +64,7 @@ public class AutoEntityUtil {
 	/**
 	 * MYSQL数据库实例名 对应模块名称（根据自己模块做相应调整!!!务必修改^_^）
 	 */
-	public static String moduleName = "vvvv";
+	public static String moduleName = "baoming";
 
 	private final String bean_path = "d:/" + moduleName + "/entity_bean";
 
@@ -75,7 +75,7 @@ public class AutoEntityUtil {
 	/**
 	 * 代码目录结构 例如 springmvc 生成结构为: springmvc.entity.User
 	 */
-	private final String package_path = "net.vvvvv." + moduleName;
+	private final String package_path = "com.ext_ext." + moduleName;
 
 	private final String bean_package = package_path + ".entity";
 
@@ -83,11 +83,11 @@ public class AutoEntityUtil {
 
 	private final String driverName = "com.mysql.jdbc.Driver";
 
-	private final String user = "vvvvvvv";
+	private final String user = "root";
 
-	private final String password = "vvvvvv";
+	private final String password = "password";
 
-	private final String url = "jdbc:mysql://192.168.1.251:3306/" + moduleName + "?characterEncoding=utf8";
+	private final String url = "jdbc:mysql://127.0.0.1:3306/" + moduleName + "?characterEncoding=utf8";
 
 	private String tableName = null;
 
@@ -317,7 +317,7 @@ public class AutoEntityUtil {
 		bw.newLine();
 		bw.write("import " + bean_package + "." + beanName + ";");
 		bw.newLine();
-		bw.write("import cn.vko.mybatis.annotation.TableName;");
+		bw.write("import com.ext_ext.mybatisext.annotation.TableName;");
 		bw.newLine();
 		bw.write("import com.ext_ext.mybatisext.activerecord.Table;");
 		bw.newLine();
@@ -325,7 +325,7 @@ public class AutoEntityUtil {
 
 		bw = buildClassComment(bw, mapperName + "数据库操作接口类");
 		bw.newLine();
-		bw.write("@TableName(table = \"" + tableName + "\", entity = " + beanName + ".class)");
+		bw.write("@TableName(name = \"" + tableName + "\", type = " + beanName + ".class)");
 		bw.newLine();
 		bw.write("public interface " + mapperName + " extends Table<" + beanName + ",Long>{");
 		bw.newLine();
