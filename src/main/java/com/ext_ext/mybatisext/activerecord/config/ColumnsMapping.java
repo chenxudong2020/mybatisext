@@ -46,8 +46,8 @@ public class ColumnsMapping {
 
 	public <TABLE, ID> Map<String, String> propertyColumnMapping( TableMeta<TABLE, ID> meta ) {
 		// 根据属性名称得到数据库字段名称
-
-		Map<String, String> result = propertyMappingCache.get(meta.getName());
+		String key = meta.getName() + "_" + meta.getType().getName();
+		Map<String, String> result = propertyMappingCache.get(key);
 		if ( result != null ) {
 			return result;
 		}
@@ -65,13 +65,14 @@ public class ColumnsMapping {
 			}
 		}
 		// 如果是map类型是空的
-		propertyMappingCache.put(meta.getName(), result);
+		propertyMappingCache.put(key, result);
 		return result;
 	}
 
 
 	public <TABLE, ID> List<ParameterMapping> getParameterMapping( TableMeta<TABLE, ID> meta ) {
-		List<ParameterMapping> parameterMappings = parameterMappingCache.get(meta.getName());
+		String key = meta.getName() + "_" + meta.getType().getName();
+		List<ParameterMapping> parameterMappings = parameterMappingCache.get(key);
 		if ( parameterMappings != null ) {
 			return parameterMappings;
 		}
@@ -86,13 +87,14 @@ public class ColumnsMapping {
 			parameterMappings.add(mapping.build());
 
 		}
-		parameterMappingCache.put(meta.getName(), parameterMappings);
+		parameterMappingCache.put(key, parameterMappings);
 		return parameterMappings;
 	}
 
 
 	public <TABLE, ID> List<ResultMapping> getResultMapping( TableMeta<TABLE, ID> meta ) {
-		List<ResultMapping> columnMap = columnMappingCache.get(meta.getName());
+		String key = meta.getName() + "_" + meta.getType().getName();
+		List<ResultMapping> columnMap = columnMappingCache.get(key);
 		if ( columnMap != null ) {
 			return columnMap;
 		}
@@ -100,10 +102,11 @@ public class ColumnsMapping {
 		ColumnMappingAdaptor adaptor = MybatisExt.adaptor;
 		columnMap = new ArrayList<ResultMapping>();
 
-		Map<String, Class<?>> entityType = null;
+		//Map<String, Class<?>> entityType = null;
 		if ( !meta.isMapType() ) {
 			//有实体类对应根据实体类建立关系
-			entityType = PropertyHelper.getPropertiesType(meta.getType());
+			//entityType = PropertyHelper.getPropertiesType(meta.getType());
+			return columnMap;
 		}
 		Transaction trans = dbMeta.getTransaction();
 		PreparedStatement st = null;
@@ -126,12 +129,12 @@ public class ColumnsMapping {
 					property = adaptor.adaptor(meta.getName(), column);
 				}
 				ResultMapping.Builder mapping = null;
-				if ( entityType != null ) {
-					mapping = new ResultMapping.Builder(config, property, column, entityType.get(property));
-				} else {
-					JdbcType type = JdbcType.forCode(rsmd.getColumnType(i));
-					mapping = new ResultMapping.Builder(config, property, column, registry.getTypeHandler(type));
-				}
+				//if ( entityType != null ) {
+				//	mapping = new ResultMapping.Builder(config, property, column, entityType.get(property));
+				//} else {
+				JdbcType type = JdbcType.forCode(rsmd.getColumnType(i));
+				mapping = new ResultMapping.Builder(config, property, column, registry.getTypeHandler(type));
+				//}
 				columnMap.add(mapping.build());
 			}
 		} catch ( Exception e ) {
@@ -139,7 +142,7 @@ public class ColumnsMapping {
 		} finally {
 			CloseHelper.close(trans, st, rs);
 		}
-		columnMappingCache.put(meta.getName(), columnMap);
+		columnMappingCache.put(key, columnMap);
 		return columnMap;
 	}
 }

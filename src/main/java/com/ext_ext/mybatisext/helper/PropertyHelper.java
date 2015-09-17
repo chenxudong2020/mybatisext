@@ -73,7 +73,7 @@ public class PropertyHelper {
 
 		for ( String getter : getters ) {
 			Class<?> value = metaClass.getGetterType(getter);
-			result.put(getter, value);
+			result.put(getter.toLowerCase(), value);
 		}
 
 		return result;
