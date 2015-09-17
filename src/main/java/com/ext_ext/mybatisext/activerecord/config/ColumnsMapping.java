@@ -98,20 +98,26 @@ public class ColumnsMapping {
 		if ( columnMap != null ) {
 			return columnMap;
 		}
-
+		Configuration config = dbMeta.getConfiguration();
 		ColumnMappingAdaptor adaptor = MybatisExt.adaptor;
 		columnMap = new ArrayList<ResultMapping>();
 
-		//Map<String, Class<?>> entityType = null;
+		Map<String, Class<?>> entityType = null;
 		if ( !meta.isMapType() ) {
 			//有实体类对应根据实体类建立关系
-			//entityType = PropertyHelper.getPropertiesType(meta.getType());
+			entityType = PropertyHelper.getPropertiesType(meta.getType());
+			for ( Map.Entry<String, Class<?>> data : entityType.entrySet() ) {
+				ResultMapping.Builder mapping = new ResultMapping.Builder(config, data.getKey(), data.getKey(),
+						data.getValue());
+				columnMap.add(mapping.build());
+			}
+
 			return columnMap;
 		}
 		Transaction trans = dbMeta.getTransaction();
 		PreparedStatement st = null;
 		ResultSet rs = null;
-		Configuration config = dbMeta.getConfiguration();
+
 		TypeHandlerRegistry registry = config.getTypeHandlerRegistry();
 		try {
 			Connection conn = trans.getConnection();
@@ -129,12 +135,8 @@ public class ColumnsMapping {
 					property = adaptor.adaptor(meta.getName(), column);
 				}
 				ResultMapping.Builder mapping = null;
-				//if ( entityType != null ) {
-				//	mapping = new ResultMapping.Builder(config, property, column, entityType.get(property));
-				//} else {
 				JdbcType type = JdbcType.forCode(rsmd.getColumnType(i));
 				mapping = new ResultMapping.Builder(config, property, column, registry.getTypeHandler(type));
-				//}
 				columnMap.add(mapping.build());
 			}
 		} catch ( Exception e ) {
