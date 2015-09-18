@@ -58,7 +58,7 @@ public class SQLPrintPlugin implements Interceptor {
 					logger.warn(sql);
 					System.err.println(sql);
 				} else {
-					logger.trace(sql);
+					logger.debug(sql);
 				}
 			}
 
