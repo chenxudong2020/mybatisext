@@ -36,6 +36,9 @@ public class BoundSqlProxy extends BoundSql {
 	@Override
 	public String getSql() {
 		int start = (page.getPageNo() - 1) * page.getPageSize();
+		if ( start < 0 ) {
+			throw new RuntimeException("页码必须从1开始");
+		}
 		if ( dialect != null ) {
 			return dialect.getPagingSQL(start, page.getPageSize(), proxy.getSql());
 		}

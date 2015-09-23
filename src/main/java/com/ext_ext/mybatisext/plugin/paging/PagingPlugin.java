@@ -238,6 +238,9 @@ public class PagingPlugin implements Interceptor {
 	 */
 	protected String getLimitString( String sql, Page<?> page ) {
 		int start = (page.getPageNo() - 1) * page.getPageSize();
+		if ( start < 0 ) {
+			throw new RuntimeException("页码必须从1开始");
+		}
 		if ( getDialect() != null ) {
 			return getDialect().getPagingSQL(start, page.getPageSize(), sql);
 		}

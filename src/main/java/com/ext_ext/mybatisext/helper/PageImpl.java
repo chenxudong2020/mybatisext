@@ -22,6 +22,16 @@ public class PageImpl<T> implements Page<T> {
 	int count;
 
 
+	public PageImpl() {
+
+	}
+
+
+	public PageImpl( int pageSize ) {
+		this.pageSize = pageSize;
+	}
+
+
 	@Override
 	public int getPageNo() {
 
