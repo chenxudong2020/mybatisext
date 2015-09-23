@@ -9,7 +9,7 @@ import com.ext_ext.mybatisext.helper.Page;
 /**
  * Page is not a domain object but is used to store and fetch page information.
  *
- * @author king.zhu
+ * @author bobo
  */
 @SuppressWarnings({ "serial" })
 public class PageImpl<T> implements Page<T>, Serializable {
