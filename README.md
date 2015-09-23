@@ -1,5 +1,6 @@
 MybatisExt项目扩展自Mybatis，具有以下特点:
 
+
 **一、运行环境支持**
 
 通过指定虚拟机参数，自动加载properties文件中的指定代码块（velocity实现）
