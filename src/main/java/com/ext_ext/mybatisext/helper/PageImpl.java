@@ -27,7 +27,8 @@ public class PageImpl<T> implements Page<T> {
 	}
 
 
-	public PageImpl( int pageSize ) {
+	public PageImpl( int pageNo, int pageSize ) {
+		this.pageNo = pageNo;
 		this.pageSize = pageSize;
 	}
 
