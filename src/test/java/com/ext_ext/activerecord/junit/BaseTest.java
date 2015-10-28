@@ -17,7 +17,7 @@ public class BaseTest {
 	@BeforeClass
 	public static void beforeTest() {
 		db = MybatisExt.open("org.hsqldb.jdbcDriver", "jdbc:hsqldb:mem:db_name", "sa", "");
-		String creatTable = "create table person(id bigint primary key,name varchar(30),age int)";
+		String creatTable = "create table person(id bigint identity primary key,name varchar(30),age int)";
 		db.update(creatTable);
 		table = db.active("person");
 	}

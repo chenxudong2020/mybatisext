@@ -22,6 +22,7 @@ public abstract class InsertSQLBuilder {
 		sql.append(" </trim> ");
 		sql.append(" VALUES ");
 		sql.append(" <foreach collection=\"list\" item=\"item\" separator=\",\"> ");
+
 		boolean comma = false;
 		sql.append("(");
 		for ( Map.Entry<String, String> property : mapping.entrySet() ) {
@@ -51,24 +52,23 @@ public abstract class InsertSQLBuilder {
 		sql.append(" <trim prefix=\"(\" suffix=\")\" suffixOverrides=\",\"> ");
 
 		for ( Map.Entry<String, String> property : mapping.entrySet() ) {
+			sql.append("<if test=\"" + property.getValue() + "!=null\">");
 			sql.append(property.getValue());
 			sql.append(",");
+			sql.append("</if>");
+
 
 		}
 		sql.append(" </trim> ");
-		sql.append(" VALUES ");
-		boolean comma = false;
-		sql.append("(");
+		sql.append("<trim prefix=\"VALUES (\" suffix=\")\" suffixOverrides=\",\">");
 		for ( Map.Entry<String, String> property : mapping.entrySet() ) {
-			if ( comma ) {
-				sql.append(",");
-			}
+			sql.append("<if test=\"" + property.getValue() + "!=null\">");
 			sql.append("#{");
 			sql.append(property.getValue());
-			sql.append("}");
-			comma = true;
+			sql.append("},");
+			sql.append("</if>");
 		}
-		sql.append(")");
+		sql.append("</trim>");
 		sql.append(" </script>");
 
 		return sql.toString();

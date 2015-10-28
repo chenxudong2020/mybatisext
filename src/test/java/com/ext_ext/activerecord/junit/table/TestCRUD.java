@@ -44,10 +44,11 @@ public class TestCRUD extends BaseTest {
 		Person person = new Person();
 		person.setAge(28);
 		person.setName("bobo");
-		person.setId(1L);
-
+		//person.setId(1L);
 		int count = table1.getInsert().insert(person);
 		Assert.assertEquals(1, count);
+		//自增主键
+		Assert.assertEquals(0, person.getId().longValue());
 
 
 		List<Person> list = new ArrayList<Person>();

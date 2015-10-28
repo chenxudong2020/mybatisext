@@ -182,6 +182,10 @@ public class DBImpl implements DB {
 			prepare = conn.prepareStatement(sql);
 			setPs(prepare, parameter);
 			count = prepare.executeUpdate();
+			//			ResultSet result = prepare.getGeneratedKeys();
+			//			if ( result.next() ) {
+			//				result.getLong(1);
+			//			}
 		} catch ( SQLException e ) {
 			logger.error("", e);
 			throw new RuntimeException(e);
@@ -338,7 +342,8 @@ public class DBImpl implements DB {
 		SqlSource sqlSource = dbMeta.getXMLDriver().createSqlSource(dbMeta.getConfiguration(), sql.toString(),
 			parameter.getClass());
 		MappedStatement.Builder statement = new MappedStatement.Builder(dbMeta.getConfiguration(),
-				"DB.update(String,Object)", sqlSource, SqlCommandType.UNKNOWN);
+				"DB.updateScript(String,Object)", sqlSource, SqlCommandType.UNKNOWN);
+
 		MappedStatement update = statement.build();
 
 		return update(update, parameter);

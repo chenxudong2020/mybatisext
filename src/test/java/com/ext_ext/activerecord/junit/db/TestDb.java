@@ -31,15 +31,24 @@ public class TestDb extends BaseTest {
 
 	@Test
 	public void _1testInsert() {
-		int count = db.update("insert into person(id,name,age)values(?,?,?)", IdWorker.getId(), "bobo", 28);
-		Assert.assertEquals(1, count);
 
 		Record rec = new Record();
-		rec.put("id", IdWorker.getId());
+		//rec.put("id", IdWorker.getId());
 		rec.put("name", "hh");
 		rec.put("age", 30);
-		count = db.updateScript("insert into person(id,name,age)values(#{id},#{name},#{age})", rec);
+		int count = db.updateScript("insert into person(name,age)values(#{name},#{age})", rec);
 
+		Assert.assertEquals(1, count);
+
+
+		Person person = new Person();
+		person.setName("1111");
+		person.setAge(66);
+		count = db.updateScript("insert into person(name,age)values(#{name},#{age})", person);
+
+		Assert.assertEquals(1, count);
+
+		count = db.update("insert into person(id,name,age)values(?,?,?)", IdWorker.getId(), "bobo", 28);
 		Assert.assertEquals(1, count);
 
 	}
@@ -95,11 +104,11 @@ public class TestDb extends BaseTest {
 
 		page = db.paging(page, "select * from person");
 
-		Assert.assertEquals(2, page.getCount());
+		Assert.assertEquals(3, page.getCount());
 
 		Page<Person> pagePerson = new PageImpl<Person>();
 		pagePerson = db.paging(pagePerson, "select * from person", Person.class);
-		Assert.assertEquals(2, pagePerson.getCount());
+		Assert.assertEquals(3, pagePerson.getCount());
 
 
 		db.pagingScript(pagePerson, "select * from person where name=#{name}", Person.class, "bobo");

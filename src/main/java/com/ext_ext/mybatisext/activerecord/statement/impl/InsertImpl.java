@@ -2,6 +2,7 @@ package com.ext_ext.mybatisext.activerecord.statement.impl;
 
 import java.util.List;
 
+import org.apache.ibatis.executor.keygen.Jdbc3KeyGenerator;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.mapping.SqlSource;
@@ -38,7 +39,12 @@ public class InsertImpl<TABLE, ID> extends BaseStatement<TABLE, ID> implements I
 		// 插入对象
 		String insertEntitySQL = InsertSQLBuilder.buildInsertEntitySQL(tableMeta);
 		SqlSource sqlSourceEntity = driver.createSqlSource(configuration, insertEntitySQL, tableMeta.getType());
-		insertEntityStatement = getUpdateStatement(id_insert_entity, sqlSourceEntity, SqlCommandType.INSERT);
+		MappedStatement.Builder statement = new MappedStatement.Builder(configuration, id_insert_entity,
+				sqlSourceEntity, SqlCommandType.INSERT);
+		//支持主键自动生成
+		statement.keyGenerator(new Jdbc3KeyGenerator());
+		statement.keyProperty(tableMeta.getIdName());
+		insertEntityStatement = statement.build();
 	}
 
 

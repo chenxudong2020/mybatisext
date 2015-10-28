@@ -4,13 +4,18 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.executor.keygen.Jdbc3KeyGenerator;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
+import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.mapping.SqlCommandType;
+import org.apache.ibatis.mapping.SqlSource;
 
 import com.ext_ext.mybatisext.activerecord.DB;
 import com.ext_ext.mybatisext.activerecord.Record;
 import com.ext_ext.mybatisext.activerecord.Table;
 import com.ext_ext.mybatisext.activerecord.config.ColumnsMapping;
+import com.ext_ext.mybatisext.activerecord.meta.DBMeta;
 import com.ext_ext.mybatisext.activerecord.meta.TableMeta;
 import com.ext_ext.mybatisext.activerecord.proxy.StatementProxy;
 import com.ext_ext.mybatisext.activerecord.sql.DeleteSQL;
@@ -313,9 +318,21 @@ public class TableImpl<TABLE, ID> implements Table<TABLE, ID> {
 
 	@Override
 	public int updateScript( String script, Object parameter ) {
+		DBMeta dbmeta = tm.getDb().getDBMeta();
+		StringBuilder sql = new StringBuilder("<script>");
+		sql.append(script);
+		sql.append("</script>");
+		SqlSource sqlSource = dbmeta.getXMLDriver().createSqlSource(dbmeta.getConfiguration(), sql.toString(),
+			parameter.getClass());
+		MappedStatement.Builder statement = new MappedStatement.Builder(dbmeta.getConfiguration(),
+				"Table.updateScript(String,Object)", sqlSource, SqlCommandType.UNKNOWN);
 
+		//插入的时候,自增Id支持
+		statement.keyGenerator(new Jdbc3KeyGenerator());
+		statement.keyProperty(tm.getIdName());
+		MappedStatement updateStatement = statement.build();
 
-		return tm.getDb().updateScript(script, parameter);
+		return tm.getDb().update(updateStatement, parameter);
 
 	}
 

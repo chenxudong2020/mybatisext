@@ -43,19 +43,23 @@ public class TestTable extends BaseTest {
 
 	@Test
 	public void _1testInsert() {
-		InsertSQL insertSql = new InsertSQL("id", "name", "age").values(1, "bobo", 28);
-		int count = table1.excute(insertSql);
-		Assert.assertEquals(1, count);
-
-		count = table1.update("insert into person(id,name,age)values(?,?,?)", 2, "hh", 25);
-		Assert.assertEquals(1, count);
 
 
 		Person person = new Person();
-		person.setId(3L);
+		//person.setId(3L);
 		person.setAge(26);
 		person.setName("wahaha");
-		count = table1.updateScript("insert into person(id,name,age) values(#{id},#{name},#{age})", person);
+		int count = table1.updateScript("insert into person(id,name,age) values(#{id},#{name},#{age})", person);
+		Assert.assertEquals(1, count);
+		//自增Id
+		Assert.assertEquals(0, person.getId().longValue());
+
+
+		InsertSQL insertSql = new InsertSQL("id", "name", "age").values(1, "bobo", 28);
+		count = table1.excute(insertSql);
+		Assert.assertEquals(1, count);
+
+		count = table1.update("insert into person(id,name,age)values(?,?,?)", 2, "hh", 25);
 		Assert.assertEquals(1, count);
 
 	}
@@ -131,7 +135,7 @@ public class TestTable extends BaseTest {
 		Assert.assertEquals(1, count);
 		count = table1.updateScript("delete from person where id=#{id}", 2L);
 		Assert.assertEquals(1, count);
-		DeleteSQL deleteSql = new DeleteSQL("id", "=", 3L);
+		DeleteSQL deleteSql = new DeleteSQL("id", "=", 0L);
 		count = table1.excute(deleteSql);
 		Assert.assertEquals(1, count);
 	}
