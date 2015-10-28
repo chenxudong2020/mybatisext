@@ -33,11 +33,14 @@ public class DBProxy implements InvocationHandler {
 		if ( method.getAnnotation(Trans.class) == null ) {
 			return method.invoke(db, args);
 		}
-		Transaction trans = db.getDBMeta().getTransaction();
-		Object result = null;
-		try {
+		Transaction trans = TransactionHolder.get();
+		if ( trans == null ) {
+			trans = db.getDBMeta().getTransaction();
 			// 放置连接
 			TransactionHolder.set(trans);
+		}
+		Object result = null;
+		try {
 			// 调用接口
 			result = method.invoke(db, args);
 			// 提交

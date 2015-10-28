@@ -36,12 +36,14 @@ public class TableProxy<TABLE, ID> implements InvocationHandler {
 			return method.invoke(table, args);
 		}
 
-		Transaction trans = table.getTableMeta().getDb().getDBMeta().getTransaction();
-
-		Object result = null;
-		try {
+		Transaction trans = TransactionHolder.get();
+		if ( trans == null ) {
+			trans = table.getTableMeta().getDb().getDBMeta().getTransaction();
 			// 放置连接
 			TransactionHolder.set(trans);
+		}
+		Object result = null;
+		try {
 			// 调用接口
 			result = method.invoke(table, args);
 			// 提交

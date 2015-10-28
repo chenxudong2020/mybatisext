@@ -27,9 +27,9 @@ public abstract class TransactionHolder {
 
 	public static Transaction get() {
 		Transaction trans = holder.get();
-		if ( trans == null ) {
+		/*if ( trans == null ) {
 			throw new RuntimeException("没有分配数据库连接");
-		}
+		}*/
 		return trans;
 	}
 
