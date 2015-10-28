@@ -1,10 +1,13 @@
 package com.ext_ext.mybatisext.test;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.ext_ext.mybatisext.activerecord.Record;
 import com.ext_ext.mybatisext.test.entity.User;
 
 /**
@@ -34,14 +37,23 @@ public class MapperTest extends DaoTests {
 		userMapper.getInsert().insert(user);
 	}
 
+
 	@After
 	public void testDelete() {
 		userMapper.getDelete().deleteById(1L);
 	}
 
+
 	@Test
 	public void testSelectById() {
 		User user = userMapper.getSelect().selectById(1L);
 		Assert.assertEquals(user.getId().longValue(), 1L);
+	}
+
+
+	@Test
+	public void testDb() {
+		List<Record> list = userMapper.getTableMeta().getDb().list("select * from T_USER");
+		System.out.println(list.size());
 	}
 }

@@ -1,5 +1,6 @@
 package com.ext_ext.mybatisext.test;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
@@ -18,12 +19,21 @@ import com.ext_ext.mybatisext.test.mapper.UserMapper;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring/spring.xml" })
 public class DaoTests {
+
 	@Autowired
 	protected UserMapper userMapper;
+
 
 	@Before
 	public void before() {
 		String creatTable = "create table T_USER(id bigint primary key,name varchar(30),age int)";
+		userMapper.update(creatTable);
+	}
+
+
+	@After
+	public void after() {
+		String creatTable = "drop table T_USER";
 		userMapper.update(creatTable);
 	}
 }
