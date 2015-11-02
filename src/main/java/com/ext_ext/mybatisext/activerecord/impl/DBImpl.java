@@ -29,7 +29,7 @@ import com.ext_ext.mybatisext.activerecord.DB;
 import com.ext_ext.mybatisext.activerecord.Record;
 import com.ext_ext.mybatisext.activerecord.Table;
 import com.ext_ext.mybatisext.activerecord.meta.DBMeta;
-import com.ext_ext.mybatisext.activerecord.proxy.TableProxy;
+import com.ext_ext.mybatisext.activerecord.proxy.DBProxy;
 import com.ext_ext.mybatisext.activerecord.proxy.TransactionHolder;
 import com.ext_ext.mybatisext.annotation.TableName;
 import com.ext_ext.mybatisext.helper.CloseHelper;
@@ -46,8 +46,17 @@ public class DBImpl implements DB {
 	protected DBMeta dbMeta;
 
 
+	protected DB dbProxy;
+
+
 	public DBImpl( SqlSessionFactory factory ) {
 		dbMeta = new DBMeta(factory);
+		dbProxy = DBProxy.getDBProxy(this);
+	}
+
+
+	public DB getDBProxy() {
+		return dbProxy;
 	}
 
 
@@ -208,13 +217,11 @@ public class DBImpl implements DB {
 		if ( table != null ) {
 			return table;
 		}
-		table = new TableImpl<TABLE, ID>(this, name, tableType, idField, idType);
-		// 返回代理对象
-		Table<TABLE, ID> tableProxy = TableProxy.getTableProxy(table);
+		table = new TableImpl<TABLE, ID>(dbProxy, name, tableType, idField, idType).getTableProxy();
 
 		// 加入缓存
-		tableCache.put(key.toString(), tableProxy);
-		return tableProxy;
+		tableCache.put(key.toString(), table);
+		return table;
 	}
 
 

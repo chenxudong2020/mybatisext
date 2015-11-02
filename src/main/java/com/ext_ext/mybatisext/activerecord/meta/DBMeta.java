@@ -60,6 +60,12 @@ public class DBMeta {
 	}
 
 
+	/**
+	 * 获取连接
+	 * <p>
+	 *
+	 * @return
+	*/
 	public Transaction getTransaction() {
 		Environment environment = configuration.getEnvironment();
 		DataSource ds = environment.getDataSource();

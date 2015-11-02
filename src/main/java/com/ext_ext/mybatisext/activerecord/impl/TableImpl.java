@@ -18,6 +18,7 @@ import com.ext_ext.mybatisext.activerecord.config.ColumnsMapping;
 import com.ext_ext.mybatisext.activerecord.meta.DBMeta;
 import com.ext_ext.mybatisext.activerecord.meta.TableMeta;
 import com.ext_ext.mybatisext.activerecord.proxy.StatementProxy;
+import com.ext_ext.mybatisext.activerecord.proxy.TableProxy;
 import com.ext_ext.mybatisext.activerecord.sql.DeleteSQL;
 import com.ext_ext.mybatisext.activerecord.sql.InsertSQL;
 import com.ext_ext.mybatisext.activerecord.sql.SelectSQL;
@@ -48,14 +49,17 @@ public class TableImpl<TABLE, ID> implements Table<TABLE, ID> {
 
 	protected Delete<TABLE, ID> delete;
 
+	protected Table<TABLE, ID> tableProxy;
+
 
 	public TableImpl( DB db, String name, Class<TABLE> tableType, String idField, Class<ID> idType ) {
+		tableProxy = TableProxy.getTableProxy(this);
 
 		tm.setDb(db);
 		tm.setIdName(idField);
 		tm.setIdType(idType);
 		tm.setName(name);
-		tm.setTable(this);
+		tm.setTable(tableProxy);
 		tm.setType(tableType);
 
 		// 映射关系
@@ -75,6 +79,11 @@ public class TableImpl<TABLE, ID> implements Table<TABLE, ID> {
 		update = StatementProxy.getStatementProxy(tm.getDb(), new UpdateImpl<TABLE, ID>(tm));
 		delete = StatementProxy.getStatementProxy(tm.getDb(), new DeleteImpl<TABLE, ID>(tm));
 
+	}
+
+
+	public Table<TABLE, ID> getTableProxy() {
+		return tableProxy;
 	}
 
 

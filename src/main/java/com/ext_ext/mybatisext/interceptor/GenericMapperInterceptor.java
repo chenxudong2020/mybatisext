@@ -7,7 +7,6 @@ import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 import com.ext_ext.mybatisext.activerecord.DB;
 import com.ext_ext.mybatisext.activerecord.MybatisExt;
 import com.ext_ext.mybatisext.activerecord.Table;
-import com.ext_ext.mybatisext.activerecord.proxy.TransactionHolder;
 import com.ext_ext.mybatisext.annotation.TableName;
 
 /**
@@ -31,9 +30,6 @@ public class GenericMapperInterceptor implements MyBatisInterceptor {
 		Class<?> mapperClass = handler.getMapperInterface();
 		if ( db == null ) {
 			getDB(handler);
-		}
-		if ( TransactionHolder.get() == null ) {
-			TransactionHolder.set(db.getDBMeta().getTransaction());
 		}
 		TableName tableName = mapperClass.getAnnotation(TableName.class);
 		if ( tableName != null ) {
