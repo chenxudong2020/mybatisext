@@ -7,7 +7,6 @@ import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.mapping.SqlSource;
 
-import com.ext_ext.mybatisext.activerecord.Table;
 import com.ext_ext.mybatisext.activerecord.meta.TableMeta;
 import com.ext_ext.mybatisext.activerecord.sql.InsertSQLBuilder;
 import com.ext_ext.mybatisext.activerecord.statement.Insert;
@@ -60,12 +59,5 @@ public class InsertImpl<TABLE, ID> extends BaseStatement<TABLE, ID> implements I
 
 	}
 
-
-	@Override
-	public Table<TABLE, ID> getTable() {
-
-		return tableMeta.getTable();
-
-	}
 
 }

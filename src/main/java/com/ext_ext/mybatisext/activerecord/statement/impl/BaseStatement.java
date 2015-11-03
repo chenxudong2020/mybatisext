@@ -14,11 +14,13 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.ext_ext.mybatisext.activerecord.DB;
+import com.ext_ext.mybatisext.activerecord.Table;
 import com.ext_ext.mybatisext.activerecord.meta.TableMeta;
+import com.ext_ext.mybatisext.activerecord.statement.Statement;
 import com.ext_ext.mybatisext.helper.PropertyHelper;
 
 @SuppressWarnings("unchecked")
-public abstract class BaseStatement<TABLE, ID> {
+public abstract class BaseStatement<TABLE, ID> implements Statement<TABLE, ID> {
 
 	protected Log logger = LogFactory.getLog(this.getClass());
 
@@ -138,4 +140,11 @@ public abstract class BaseStatement<TABLE, ID> {
 		return statement.build();
 	}
 
+
+	@Override
+	public Table<TABLE, ID> getTable() {
+
+		return tableMeta.getTable();
+
+	}
 }

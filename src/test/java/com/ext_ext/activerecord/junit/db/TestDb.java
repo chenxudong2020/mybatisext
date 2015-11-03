@@ -67,7 +67,7 @@ public class TestDb extends BaseTest {
 
 		Assert.assertEquals(1, listPerson.size());
 
-		listPerson = db.queryScript("select * from person where name=#{name}", Person.class, "bobo");
+		listPerson = db.listScript("select * from person where name=#{name}", Person.class, "bobo");
 
 		Assert.assertEquals(1, listPerson.size());
 

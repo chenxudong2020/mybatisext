@@ -80,7 +80,19 @@ public interface DB {
 
 	// 执行脚本
 	@Trans
-	public <T> List<T> queryScript( String script, Class<T> type, Object parameter );
+	public <T> List<T> listScript( String script, Class<T> type, Object parameter );
+
+
+	@Trans
+	public List<Record> listScript( String script, Object parameter );
+
+
+	@Trans
+	public <T> T oneScript( String script, Class<T> type, Object parameter );
+
+
+	@Trans
+	public Record oneScript( String script, Object parameter );
 
 
 	@Trans
@@ -89,6 +101,10 @@ public interface DB {
 
 	@Trans
 	public <T> Page<T> pagingScript( Page<T> page, String script, Class<T> type, Object parameter );
+
+
+	@Trans
+	public Page<Record> pagingScript( Page<Record> page, String script, Object parameter );
 
 
 	@Trans

@@ -73,7 +73,7 @@ public class TestTable extends BaseTest {
 		Assert.assertEquals(3, personList.size());
 
 
-		personList = table1.queryScript("select * from person where name=#{name}", "bobo");
+		personList = table1.listScript("select * from person where name=#{name}", "bobo");
 
 		Assert.assertEquals(1, personList.size());
 
@@ -83,7 +83,7 @@ public class TestTable extends BaseTest {
 		Assert.assertNotNull(persion);
 
 
-		personList = table1.queryScript("select * from person where name=#{name}", "bobo");
+		personList = table1.listScript("select * from person where name=#{name}", "bobo");
 
 		Assert.assertEquals(1, personList.size());
 

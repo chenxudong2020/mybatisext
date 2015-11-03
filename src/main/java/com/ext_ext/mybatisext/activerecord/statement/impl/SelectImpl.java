@@ -11,7 +11,6 @@ import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.mapping.SqlSource;
 
 import com.ext_ext.mybatisext.activerecord.Record;
-import com.ext_ext.mybatisext.activerecord.Table;
 import com.ext_ext.mybatisext.activerecord.meta.TableMeta;
 import com.ext_ext.mybatisext.activerecord.sql.SelectSQLBuilder;
 import com.ext_ext.mybatisext.activerecord.statement.Select;
@@ -94,14 +93,6 @@ public class SelectImpl<TABLE, ID> extends BaseStatement<TABLE, ID> implements S
 		} else {
 			param.put(SelectSQLBuilder.DYNAMIC_COLUMN, SelectSQLBuilder.buildDynamicColumn(tableMeta, columns));
 		}
-	}
-
-
-	@Override
-	public Table<TABLE, ID> getTable() {
-
-		return tableMeta.getTable();
-
 	}
 
 

@@ -318,7 +318,7 @@ public class DBImpl implements DB {
 
 
 	@Override
-	public <T> List<T> queryScript( String script, Class<T> type, Object parameter ) {
+	public <T> List<T> listScript( String script, Class<T> type, Object parameter ) {
 		StringBuilder sql = new StringBuilder("<script>");
 		sql.append(script);
 		sql.append("</script>");
@@ -389,7 +389,7 @@ public class DBImpl implements DB {
 			page.getPageSize(), script);
 
 		String countSql = dbMeta.getDialectSQL().getPagingCountSQL(script);
-		List<T> records = queryScript(pagingSql, type, parameter);
+		List<T> records = listScript(pagingSql, type, parameter);
 		int count = countScript(countSql, parameter);
 
 		page.setCount(count);
@@ -448,6 +448,47 @@ public class DBImpl implements DB {
 			logger.error("", e);
 			throw new RuntimeException(e);
 		}
+
+	}
+
+
+	@Override
+	public List<Record> listScript( String script, Object parameter ) {
+
+
+		return listScript(script, Record.class, parameter);
+
+	}
+
+
+	@Override
+	public <T> T oneScript( String script, Class<T> type, Object parameter ) {
+
+		List<T> list = listScript(script, type, parameter);
+		if ( list.size() == 1 ) {
+			return list.get(0);
+		}
+		if ( list.size() > 1 ) {
+			throw new RuntimeException("查询结果多于一条记录");
+		}
+		return null;
+
+	}
+
+
+	@Override
+	public Record oneScript( String script, Object parameter ) {
+
+		return oneScript(script, Record.class, parameter);
+
+	}
+
+
+	@Override
+	public Page<Record> pagingScript( Page<Record> page, String script, Object parameter ) {
+
+
+		return pagingScript(page, script, Record.class, parameter);
 
 	}
 

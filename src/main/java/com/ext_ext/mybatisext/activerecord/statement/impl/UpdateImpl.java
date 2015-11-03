@@ -8,7 +8,6 @@ import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.mapping.SqlSource;
 
 import com.ext_ext.mybatisext.activerecord.Record;
-import com.ext_ext.mybatisext.activerecord.Table;
 import com.ext_ext.mybatisext.activerecord.meta.TableMeta;
 import com.ext_ext.mybatisext.activerecord.sql.UpdateSQLBuilder;
 import com.ext_ext.mybatisext.activerecord.statement.Update;
@@ -95,14 +94,6 @@ public class UpdateImpl<TABLE, ID> extends BaseStatement<TABLE, ID> implements U
 		// 合并  相同字段会替换
 		where.putAll(sets);
 		return update(updateCondition, where);
-
-	}
-
-
-	@Override
-	public Table<TABLE, ID> getTable() {
-
-		return tableMeta.getTable();
 
 	}
 

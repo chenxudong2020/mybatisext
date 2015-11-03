@@ -206,7 +206,7 @@ public class TableImpl<TABLE, ID> implements Table<TABLE, ID> {
 			sql.append(" ");
 		}
 
-		return tm.getDb().queryScript(sql.toString(), tm.getType(), parameter);
+		return tm.getDb().listScript(sql.toString(), tm.getType(), parameter);
 	}
 
 
@@ -318,9 +318,9 @@ public class TableImpl<TABLE, ID> implements Table<TABLE, ID> {
 
 
 	@Override
-	public List<TABLE> queryScript( String script, Object parameter ) {
+	public List<TABLE> listScript( String script, Object parameter ) {
 
-		return tm.getDb().queryScript(script, tm.getType(), parameter);
+		return tm.getDb().listScript(script, tm.getType(), parameter);
 
 	}
 
@@ -360,7 +360,30 @@ public class TableImpl<TABLE, ID> implements Table<TABLE, ID> {
 		String pagingSql = tm.getDb().getDBMeta().getDialectSQL().getPagingSQL((pageNo - 1) * size, size, script);
 
 
-		return tm.getDb().queryScript(pagingSql, tm.getType(), parameter);
+		return tm.getDb().listScript(pagingSql, tm.getType(), parameter);
+	}
+
+
+	@Override
+	public TABLE oneScript( String script, Object parameter ) {
+
+		List<TABLE> list = listScript(script, parameter);
+		if ( list.size() == 1 ) {
+			return list.get(0);
+		}
+		if ( list.size() > 1 ) {
+			throw new RuntimeException("查询结果多于一条记录");
+		}
+		return null;
+
+	}
+
+
+	@Override
+	public DB getDB() {
+
+		return tm.getDb();
+
 	}
 
 }

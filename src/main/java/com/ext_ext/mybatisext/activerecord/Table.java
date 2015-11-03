@@ -26,6 +26,15 @@ public interface Table<TABLE, ID> {
 
 
 	/**
+	 * 数据库操作对象
+	 * <p>
+	 *
+	 * @return
+	*/
+	public DB getDB();
+
+
+	/**
 	 * 插入操作对象
 	 * <p>
 	 *
@@ -79,7 +88,11 @@ public interface Table<TABLE, ID> {
 
 	//脚本执行
 	@Trans
-	public List<TABLE> queryScript( String script, Object parameter );
+	public List<TABLE> listScript( String script, Object parameter );
+
+
+	@Trans
+	public TABLE oneScript( String script, Object parameter );
 
 
 	@Trans

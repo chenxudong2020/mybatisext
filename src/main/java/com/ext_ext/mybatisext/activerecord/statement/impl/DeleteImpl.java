@@ -6,7 +6,6 @@ import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.scripting.defaults.RawSqlSource;
 
 import com.ext_ext.mybatisext.activerecord.Record;
-import com.ext_ext.mybatisext.activerecord.Table;
 import com.ext_ext.mybatisext.activerecord.meta.TableMeta;
 import com.ext_ext.mybatisext.activerecord.sql.DeleteSQLBuilder;
 import com.ext_ext.mybatisext.activerecord.statement.Delete;
@@ -77,12 +76,5 @@ public class DeleteImpl<TABLE, ID> extends BaseStatement<TABLE, ID> implements D
 
 	}
 
-
-	@Override
-	public Table<TABLE, ID> getTable() {
-
-		return tableMeta.getTable();
-
-	}
 
 }
