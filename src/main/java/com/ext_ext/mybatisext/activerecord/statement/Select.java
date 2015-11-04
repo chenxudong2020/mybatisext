@@ -45,13 +45,10 @@ public interface Select<TABLE, ID> extends Statement<TABLE, ID> {
 	public int count( String field, Object value );
 
 
-	// 更多条数查询
-	//  分页查询
 	@Trans
 	public Page<TABLE> paging( Page<TABLE> page, TABLE condition, String... columns );
 
 
-	// 页码,从0开始,每页条数
 	@Trans
 	public List<TABLE> paging( int pageNo, int size, TABLE condition, String... columns );
 
