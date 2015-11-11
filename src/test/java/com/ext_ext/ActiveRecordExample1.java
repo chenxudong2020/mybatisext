@@ -1,7 +1,3 @@
-/**
- * ActiveRecordExample.java com.ext_ext Copyright (c) 2015, 北京微课创景教育科技有限公司版权所有.
- */
-
 package com.ext_ext;
 
 import java.util.List;

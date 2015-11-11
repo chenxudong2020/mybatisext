@@ -2,8 +2,6 @@ package com.ext_ext.mybatisext.test;
 
 import org.junit.Test;
 
-import com.ext_ext.mybatisext.activerecord.DB;
-import com.ext_ext.mybatisext.activerecord.MybatisExt;
 import com.ext_ext.mybatisext.test.entity.User;
 
 
@@ -19,7 +17,7 @@ public class ActiveRecordTest extends DaoTests {
 
 	@Test
 	public void test() {
-		DB db = MybatisExt.open();
+		//DB db = MybatisExt.open();
 
 		User user = new User();
 		user.setAge(100);

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.ext_ext.mybatisext.activerecord.DB;
 import com.ext_ext.mybatisext.test.mapper.UserMapper;
 
 /**
@@ -23,10 +24,13 @@ public class DaoTests {
 	@Autowired
 	protected UserMapper userMapper;
 
+	@Autowired
+	protected DB db;
+
 
 	@Before
 	public void before() {
-		String creatTable = "create table T_USER(id bigint primary key,name varchar(30),age int)";
+		String creatTable = "create table T_USER(id bigint identity primary key,name varchar(30),age int)";
 		userMapper.update(creatTable);
 	}
 

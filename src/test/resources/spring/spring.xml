@@ -55,6 +55,8 @@
 		<property name="ignoreResourceNotFound" value="true" />
 		<property name="ignoreUnresolvablePlaceholders" value="true" />
 	</bean>
-
-
+	<!-- DB注入支持 -->
+	<bean class="com.ext_ext.mybatisext.activerecord.spring.SpringSupportBean">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
 </beans>
