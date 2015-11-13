@@ -132,7 +132,7 @@ public class ColumnsMapping {
 				String property = column;
 				//如果自定义映射关系不为null
 				if ( adaptor != null ) {
-					property = adaptor.adaptor(meta.getName(), column);
+					property = adaptor.adaptor(column);
 				}
 				ResultMapping.Builder mapping = null;
 				JdbcType type = JdbcType.forCode(rsmd.getColumnType(i));

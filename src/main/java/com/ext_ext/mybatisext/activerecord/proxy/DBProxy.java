@@ -30,7 +30,8 @@ public class DBProxy implements InvocationHandler {
 
 	@Override
 	public Object invoke( Object proxy, Method method, Object[] args ) throws Throwable {
-		if ( method.getAnnotation(Trans.class) == null ) {
+		Trans annot = method.getAnnotation(Trans.class);
+		if ( annot == null ) {
 			return method.invoke(db, args);
 		}
 		Transaction trans = TransactionHolder.get();
@@ -44,7 +45,9 @@ public class DBProxy implements InvocationHandler {
 			// 调用接口
 			result = method.invoke(db, args);
 			// 提交
-			trans.commit();
+			if ( "update".equals(annot.value()) ) {
+				trans.commit();
+			}
 		} catch ( Exception e ) {
 			// 回滚
 			trans.rollback();

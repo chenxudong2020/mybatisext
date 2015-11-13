@@ -32,6 +32,17 @@ public interface DB {
 
 
 	/**
+	 * 表名和实体类型
+	 * <p>
+	 *
+	 * @param name
+	 * @param tableType
+	 * @return
+	*/
+	public <TABLE> Table<TABLE, Long> active( String name, Class<TABLE> tableType );
+
+
+	/**
 	 * 带TableName注解的class;
 	 * 实体java类需带有注解，里面规定表名称、主键等信息
 	 * <p>
@@ -159,7 +170,7 @@ public interface DB {
 	 * @param parameter 参数，不支持返回自增主键
 	 * @return
 	*/
-	@Trans
+	@Trans("update")
 	public int update( String sql, Object... parameter );
 
 
@@ -272,7 +283,7 @@ public interface DB {
 	 * @param parameter 传入参数
 	 * @return
 	*/
-	@Trans
+	@Trans("update")
 	public int updateScript( String script, Object parameter );
 
 
@@ -296,6 +307,6 @@ public interface DB {
 	 * @param parameter 传入参数
 	 * @return
 	*/
-	@Trans
+	@Trans("update")
 	public int update( MappedStatement statement, Object parameter );
 }

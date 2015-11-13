@@ -17,5 +17,5 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface Trans {
 
-	String value() default "update";
+	String value() default "select";
 }

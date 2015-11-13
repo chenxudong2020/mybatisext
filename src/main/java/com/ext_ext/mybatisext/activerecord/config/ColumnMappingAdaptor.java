@@ -14,5 +14,5 @@ public interface ColumnMappingAdaptor {
 	 *            数据库字段名称
 	 * @return 映射的java字段名称
 	 */
-	public String adaptor(String tableName, String column);
+	public String adaptor( String column );
 }

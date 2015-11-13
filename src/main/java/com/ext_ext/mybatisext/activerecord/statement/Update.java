@@ -12,7 +12,7 @@ public interface Update<TABLE, ID> extends Statement<TABLE, ID> {
 	 * @param data
 	 * @return
 	*/
-	@Trans
+	@Trans("update")
 	public int updateById( TABLE data );
 
 
@@ -24,7 +24,7 @@ public interface Update<TABLE, ID> extends Statement<TABLE, ID> {
 	 * @param isAll
 	 * @return
 	*/
-	@Trans
+	@Trans("update")
 	public int updateById( TABLE data, boolean isAll );
 
 
@@ -37,7 +37,7 @@ public interface Update<TABLE, ID> extends Statement<TABLE, ID> {
 	 * @param value
 	 * @return
 	*/
-	@Trans
+	@Trans("update")
 	public int update( TABLE condition, TABLE value );
 
 
@@ -50,7 +50,7 @@ public interface Update<TABLE, ID> extends Statement<TABLE, ID> {
 	 * @param value 值
 	 * @return
 	*/
-	@Trans
+	@Trans("update")
 	public int update( TABLE condition, String property, Object value );
 
 
@@ -64,7 +64,7 @@ public interface Update<TABLE, ID> extends Statement<TABLE, ID> {
 	 * @param value 值
 	 * @return
 	*/
-	@Trans
+	@Trans("update")
 	public int update( String conditionProperty, Object conditionValue, String property, Object value );
 
 

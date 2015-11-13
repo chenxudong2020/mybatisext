@@ -3,11 +3,9 @@ package com.ext_ext.mybatisext.activerecord.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.ibatis.executor.Executor;
@@ -26,6 +24,7 @@ import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 
 import com.ext_ext.mybatisext.activerecord.DB;
+import com.ext_ext.mybatisext.activerecord.MybatisExt;
 import com.ext_ext.mybatisext.activerecord.Record;
 import com.ext_ext.mybatisext.activerecord.Table;
 import com.ext_ext.mybatisext.activerecord.meta.DBMeta;
@@ -34,7 +33,7 @@ import com.ext_ext.mybatisext.activerecord.proxy.TransactionHolder;
 import com.ext_ext.mybatisext.annotation.TableName;
 import com.ext_ext.mybatisext.helper.CloseHelper;
 import com.ext_ext.mybatisext.helper.Page;
-import com.ext_ext.mybatisext.helper.PropertyHelper;
+import com.ext_ext.mybatisext.helper.ResultSetWrapper;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class DBImpl implements DB {
@@ -60,84 +59,64 @@ public class DBImpl implements DB {
 	}
 
 
-	private List<Record> getList( ResultSet set ) throws SQLException {
-		List<Record> result = new ArrayList<Record>();
-		ResultSetMetaData meta = set.getMetaData();
-		while ( set.next() ) {
-			Record rec = new Record();
-			for ( int i = 1 , size = meta.getColumnCount() ; i <= size ; i++ ) {
-				String label = meta.getColumnLabel(i);
-				rec.put(label, set.getObject(i));
+	private boolean applyAutomaticMappings( ResultSetWrapper rsw, ResultMap resultMap, MetaObject metaObject )
+		throws SQLException {
+		final List<String> unmappedColumnNames = rsw.getUnmappedColumnNames(resultMap, null);
+		boolean foundValues = false;
+		for ( String columnName : unmappedColumnNames ) {
+			String propertyName = columnName;
+			if ( MybatisExt.adaptor != null ) {
+				propertyName = MybatisExt.adaptor.adaptor(columnName);
 			}
-			result.add(rec);
+			final String property = metaObject.findProperty(propertyName, dbMeta.getConfiguration()
+					.isMapUnderscoreToCamelCase());
+			if ( property != null && metaObject.hasSetter(property) ) {
+				final Class<?> propertyType = metaObject.getSetterType(property);
+				if ( dbMeta.getConfiguration().getTypeHandlerRegistry().hasTypeHandler(propertyType) ) {
+					final TypeHandler<?> typeHandler = rsw.getTypeHandler(propertyType, columnName);
+					final Object value = typeHandler.getResult(rsw.getResultSet(), columnName);
+					if ( value != null || dbMeta.getConfiguration().isCallSettersOnNulls() ) { // issue #377, call setter on nulls
+						if ( value != null || !propertyType.isPrimitive() ) {
+							metaObject.setValue(property, value);
+						}
+						foundValues = true;
+					}
+				}
+			}
+		}
+		return foundValues;
+	}
+
+
+	private <T> List<T> getList( ResultSet set, Class<T> type ) throws SQLException {
+		List<T> result = new ArrayList<T>();
+		ObjectFactory factory = dbMeta.getConfiguration().getObjectFactory();
+
+
+		ResultMap.Builder builder = new ResultMap.Builder(dbMeta.getConfiguration(), "DB_ResultMap", type,
+				new ArrayList<ResultMapping>(1), true);
+		ResultSetWrapper rsWrapper = new ResultSetWrapper(set, dbMeta.getConfiguration());
+
+		while ( rsWrapper.getResultSet().next() ) {
+			T newObj = factory.create(type);
+			final MetaObject metaObject = dbMeta.getConfiguration().newMetaObject(newObj);
+			applyAutomaticMappings(rsWrapper, builder.build(), metaObject);
+
+			result.add(newObj);
 		}
 
 		return result;
 	}
 
 
-	private Record getOne( ResultSet set ) throws SQLException {
-		ResultSetMetaData meta = set.getMetaData();
-		Record rec = new Record();
-		if ( set.next() ) {
-			for ( int i = 1 , size = meta.getColumnCount() ; i <= size ; i++ ) {
-				String label = meta.getColumnLabel(i);
-				rec.put(label, set.getObject(i));
-			}
-		}
-		return rec;
-	}
-
-
 	@Override
 	public List<Record> list( String sql, Object... parameter ) {
-		PreparedStatement prepare = null;
-		ResultSet set = null;
-		try {
-			Connection conn = TransactionHolder.get().getConnection();
-			prepare = conn.prepareStatement(sql);
-			if ( parameter.length > 0 ) {
-				setPs(prepare, parameter);
-			}
-			set = prepare.executeQuery();
-			return getList(set);
-		} catch ( SQLException e ) {
-			logger.error("", e);
-			throw new RuntimeException(e);
-		} finally {
-			CloseHelper.close(null, prepare, set);
-		}
-	}
-
-
-	private <T> List<T> copyList( List<Record> recordList, Class<T> type ) {
-		List<T> objList = new ArrayList<T>();
-		ObjectFactory factory = dbMeta.getConfiguration().getObjectFactory();
-		for ( Record record : recordList ) {
-			T newObj = factory.create(type);
-			MetaObject metaObj = dbMeta.getConfiguration().newMetaObject(newObj);
-
-			for ( Map.Entry<String, Object> t : record.entrySet() ) {
-				metaObj.setValue(t.getKey(), t.getValue());
-			}
-
-			objList.add((T) metaObj.getOriginalObject());
-
-		}
-		return objList;
+		return list(sql, Record.class, parameter);
 	}
 
 
 	@Override
 	public <T> List<T> list( String sql, Class<T> type, Object... parameter ) {
-		List<Record> recordList = list(sql, parameter);
-
-		return copyList(recordList, type);
-	}
-
-
-	@Override
-	public Record one( String sql, Object... parameter ) {
 		PreparedStatement prepare = null;
 		ResultSet set = null;
 		try {
@@ -147,7 +126,7 @@ public class DBImpl implements DB {
 				setPs(prepare, parameter);
 			}
 			set = prepare.executeQuery();
-			return getOne(set);
+			return getList(set, type);
 		} catch ( SQLException e ) {
 			logger.error("", e);
 			throw new RuntimeException(e);
@@ -158,12 +137,22 @@ public class DBImpl implements DB {
 
 
 	@Override
-	public <T> T one( String sql, Class<T> type, Object... parameter ) {
-		Record rec = one(sql, parameter);
-		T newObj = dbMeta.getConfiguration().getObjectFactory().create(type);
-		PropertyHelper.map2Object(rec, newObj);
+	public Record one( String sql, Object... parameter ) {
+		return one(sql, Record.class, parameter);
+	}
 
-		return newObj;
+
+	@Override
+	public <T> T one( String sql, Class<T> type, Object... parameter ) {
+		List<T> result = list(sql, type, parameter);
+		if ( result.size() == 1 ) {
+			return result.get(0);
+		}
+
+		if ( result.size() > 1 ) {
+			throw new RuntimeException("查询结果多余一条");
+		}
+		return null;
 	}
 
 
@@ -217,11 +206,19 @@ public class DBImpl implements DB {
 		if ( table != null ) {
 			return table;
 		}
-		table = new TableImpl<TABLE, ID>(dbProxy, name, tableType, idField, idType).getTableProxy();
+		table = new TableImpl<TABLE, ID>(dbProxy, name, tableType, idField, idType);//.getTableProxy();
 
 		// 加入缓存
 		tableCache.put(key.toString(), table);
 		return table;
+	}
+
+
+	@Override
+	public <TABLE> Table<TABLE, Long> active( String name, Class<TABLE> tableType ) {
+
+		return active(name, tableType, "id", Long.class);
+
 	}
 
 
@@ -327,14 +324,19 @@ public class DBImpl implements DB {
 		MappedStatement.Builder statement = new MappedStatement.Builder(dbMeta.getConfiguration(),
 				"DB.queryScript(String,Class,Object)", sqlSource, SqlCommandType.SELECT);
 
+		ArrayList<ResultMapping> mappings = new ArrayList<ResultMapping>();
+		//mappings.add(new ResultMapping.Builder(dbMeta.getConfiguration(), "personId", "person_id", Long.class).build());
 		List<ResultMap> resultMaps = new ArrayList<ResultMap>(1);
-		ResultMap.Builder builder = new ResultMap.Builder(dbMeta.getConfiguration(), "DB_ResultMap", type,
-				new ArrayList<ResultMapping>(1));
+		ResultMap.Builder builder = new ResultMap.Builder(dbMeta.getConfiguration(), "DB_ResultMap", type, mappings,
+				true);
+
 		resultMaps.add(builder.build());
 		statement.resultMaps(resultMaps);
 
 		MappedStatement select = statement.build();
 
+		//
+		//dbMeta.getConfiguration().newParameterHandler(select, parameterObject, boundSql)
 		return query(select, parameter);
 
 	}
@@ -419,7 +421,7 @@ public class DBImpl implements DB {
 
 		List<ResultMap> resultMaps = new ArrayList<ResultMap>(1);
 		ResultMap.Builder builder = new ResultMap.Builder(dbMeta.getConfiguration(), "DB_ResultMap", Integer.class,
-				new ArrayList<ResultMapping>(1));
+				new ArrayList<ResultMapping>(1), true);
 		resultMaps.add(builder.build());
 		statement.resultMaps(resultMaps);
 
@@ -491,5 +493,6 @@ public class DBImpl implements DB {
 		return pagingScript(page, script, Record.class, parameter);
 
 	}
+
 
 }

@@ -12,7 +12,7 @@ public interface Delete<TABLE, ID> extends Statement<TABLE, ID> {
 	 * @param id
 	 * @return
 	*/
-	@Trans
+	@Trans("update")
 	public int deleteById( ID id );
 
 
@@ -23,7 +23,7 @@ public interface Delete<TABLE, ID> extends Statement<TABLE, ID> {
 	 * @param condition
 	 * @return
 	*/
-	@Trans
+	@Trans("update")
 	public int delete( TABLE condition );
 
 
@@ -35,7 +35,7 @@ public interface Delete<TABLE, ID> extends Statement<TABLE, ID> {
 	 * @param value
 	 * @return
 	*/
-	@Trans
+	@Trans("update")
 	public int delete( String property, Object value );
 
 
@@ -48,7 +48,7 @@ public interface Delete<TABLE, ID> extends Statement<TABLE, ID> {
 	 * @param value
 	 * @return
 	*/
-	@Trans
+	@Trans("update")
 	public int delete( String property, String operator, Object value );
 
 

@@ -98,7 +98,7 @@ public class TestCRUD extends BaseTest {
 
 	@Test
 	public void _2testSelect() {
-		Person person = table1.getSelect().selectById(1L);
+		Person person = table1.getSelect().selectById(0L);
 		Assert.assertNotNull(person);
 
 		table1.getSelect().list("name", "bobo", "id");
@@ -157,7 +157,7 @@ public class TestCRUD extends BaseTest {
 		Assert.assertEquals(6, count);
 
 		value = new Person();
-		value.setId(1L);
+		value.setId(0L);
 		value.setAge(10);
 		count = table1.getUpdate().updateById(value);
 		Assert.assertEquals(1, count);
@@ -197,7 +197,7 @@ public class TestCRUD extends BaseTest {
 	@Test
 	public void _5testDelete() {
 
-		int count = table1.getDelete().deleteById(1L);
+		int count = table1.getDelete().deleteById(0L);
 		Assert.assertEquals(1, count);
 		count = table1.getDelete().delete("id", "=", 2L);
 		Assert.assertEquals(1, count);

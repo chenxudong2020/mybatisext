@@ -85,7 +85,7 @@ public interface Table<TABLE, ID> {
 	 * @param insertSql
 	 * @return
 	*/
-	@Trans
+	@Trans("update")
 	public int excute( InsertSQL insertSql );
 
 
@@ -107,7 +107,7 @@ public interface Table<TABLE, ID> {
 	 * @param updateSql
 	 * @return
 	*/
-	@Trans
+	@Trans("update")
 	public int excute( UpdateSQL updateSql );
 
 
@@ -118,7 +118,7 @@ public interface Table<TABLE, ID> {
 	 * @param deleteSql
 	 * @return
 	*/
-	@Trans
+	@Trans("update")
 	public int excute( DeleteSQL deleteSql );
 
 
@@ -154,7 +154,7 @@ public interface Table<TABLE, ID> {
 	 * @param parameter
 	 * @return
 	*/
-	@Trans
+	@Trans("update")
 	public int updateScript( String script, Object parameter );
 
 
@@ -230,7 +230,7 @@ public interface Table<TABLE, ID> {
 	 * @param parameter 传入参数
 	 * @return
 	*/
-	@Trans
+	@Trans("update")
 	public int update( String sql, Object... parameter );
 
 

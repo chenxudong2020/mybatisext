@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.ext_ext.mybatisext.helper.Page;
+import com.ext_ext.mybatisext.helper.PageImpl;
 import com.ext_ext.mybatisext.test.entity.User;
 
 /**
@@ -25,7 +26,7 @@ public class PagingMapperTest extends DaoTests {
 	public void testInsert() {
 		List<User> list = new ArrayList<User>();
 
-		for (int i = 0; i < 10; i++) {
+		for ( int i = 0 ; i < 10 ; i++ ) {
 			User user = new User();
 			user.setAge(1);
 			user.setName("li");
@@ -38,12 +39,14 @@ public class PagingMapperTest extends DaoTests {
 		userMapper.selectByName("li");
 	}
 
+
 	@After
 	public void testDelete() {
-		for (int i = 0; i < 10; i++) {
+		for ( int i = 0 ; i < 10 ; i++ ) {
 			userMapper.getDelete().deleteById((long) i);
 		}
 	}
+
 
 	@Test
 	public void testPaging() {

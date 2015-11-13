@@ -13,7 +13,7 @@ public interface Insert<TABLE, ID> extends Statement<TABLE, ID> {
 	 * @param data
 	 * @return
 	*/
-	@Trans
+	@Trans("update")
 	public int insert( TABLE data );
 
 
@@ -24,7 +24,7 @@ public interface Insert<TABLE, ID> extends Statement<TABLE, ID> {
 	 * @param data
 	 * @return
 	*/
-	@Trans
+	@Trans("update")
 	public int insert( List<TABLE> data );
 
 
