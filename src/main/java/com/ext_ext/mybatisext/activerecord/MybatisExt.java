@@ -42,7 +42,7 @@ public abstract class MybatisExt {
 	 * @return
 	 */
 	public static DB open(SqlSessionFactory sessionFactory) {
-		return connector.open();
+		return connector.open(sessionFactory);
 	}
 
 	/**

@@ -9,7 +9,6 @@ import com.ext_ext.mybatisext.activerecord.Record;
 import com.ext_ext.mybatisext.activerecord.Table;
 import com.ext_ext.mybatisext.test.ColumnMappingAdaptorImpl;
 
-
 /**
  * <p>
 
@@ -21,8 +20,7 @@ public class ActiveRecordExample2 {
 
 	static DB db;
 
-
-	public static void main( String[] args ) {
+	public static void main(String[] args) {
 		MybatisExt.setColumnMappingAdaptor(new ColumnMappingAdaptorImpl());
 		//创建连接
 		db = MybatisExt.open("org.hsqldb.jdbcDriver", "jdbc:hsqldb:mem:db_name", "sa", "");
@@ -42,14 +40,11 @@ public class ActiveRecordExample2 {
 		db.update("insert into person_book(person_id,book_id) values(?,?)", 1, 1);
 		db.update("insert into person_book(person_id,book_id) values(?,?)", 1, 2);
 
-
 		//连接多条查询
 		List<PersonBook> data = db
-				.list(
-					"select person.name,book.title,person_book.person_id ,person_book.book_id from person join person_book on person.id=person_book.person_id join book on person_book.book_id=book.id where person.id=?",
-					PersonBook.class, 1);
+				.list("select person.name,book.title,person_book.person_id ,person_book.book_id from person join person_book on person.id=person_book.person_id join book on person_book.book_id=book.id where person.id=?",
+						PersonBook.class, 1);
 		System.out.println(JSON.toJSONString(data));
-
 
 		Table<PersonBook, Long> table1 = db.active("person_book", PersonBook.class);
 

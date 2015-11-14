@@ -27,13 +27,13 @@ import com.ext_ext.mybatisext.activerecord.DB;
 import com.ext_ext.mybatisext.activerecord.MybatisExt;
 import com.ext_ext.mybatisext.activerecord.Record;
 import com.ext_ext.mybatisext.activerecord.Table;
+import com.ext_ext.mybatisext.activerecord.ext.ResultSetWrapper;
 import com.ext_ext.mybatisext.activerecord.meta.DBMeta;
 import com.ext_ext.mybatisext.activerecord.proxy.DBProxy;
 import com.ext_ext.mybatisext.activerecord.proxy.TransactionHolder;
 import com.ext_ext.mybatisext.annotation.TableName;
 import com.ext_ext.mybatisext.helper.CloseHelper;
 import com.ext_ext.mybatisext.helper.Page;
-import com.ext_ext.mybatisext.helper.ResultSetWrapper;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class DBImpl implements DB {
@@ -44,39 +44,35 @@ public class DBImpl implements DB {
 
 	protected DBMeta dbMeta;
 
-
 	protected DB dbProxy;
 
-
-	public DBImpl( SqlSessionFactory factory ) {
+	public DBImpl(SqlSessionFactory factory) {
 		dbMeta = new DBMeta(factory);
 		dbProxy = DBProxy.getDBProxy(this);
 	}
-
 
 	public DB getDBProxy() {
 		return dbProxy;
 	}
 
-
-	private boolean applyAutomaticMappings( ResultSetWrapper rsw, ResultMap resultMap, MetaObject metaObject )
-		throws SQLException {
+	private boolean applyAutomaticMappings(ResultSetWrapper rsw, ResultMap resultMap, MetaObject metaObject)
+			throws SQLException {
 		final List<String> unmappedColumnNames = rsw.getUnmappedColumnNames(resultMap, null);
 		boolean foundValues = false;
-		for ( String columnName : unmappedColumnNames ) {
+		for (String columnName : unmappedColumnNames) {
 			String propertyName = columnName;
-			if ( MybatisExt.adaptor != null ) {
+			if (MybatisExt.adaptor != null) {
 				propertyName = MybatisExt.adaptor.adaptor(columnName);
 			}
 			final String property = metaObject.findProperty(propertyName, dbMeta.getConfiguration()
 					.isMapUnderscoreToCamelCase());
-			if ( property != null && metaObject.hasSetter(property) ) {
+			if (property != null && metaObject.hasSetter(property)) {
 				final Class<?> propertyType = metaObject.getSetterType(property);
-				if ( dbMeta.getConfiguration().getTypeHandlerRegistry().hasTypeHandler(propertyType) ) {
+				if (dbMeta.getConfiguration().getTypeHandlerRegistry().hasTypeHandler(propertyType)) {
 					final TypeHandler<?> typeHandler = rsw.getTypeHandler(propertyType, columnName);
 					final Object value = typeHandler.getResult(rsw.getResultSet(), columnName);
-					if ( value != null || dbMeta.getConfiguration().isCallSettersOnNulls() ) { // issue #377, call setter on nulls
-						if ( value != null || !propertyType.isPrimitive() ) {
+					if (value != null || dbMeta.getConfiguration().isCallSettersOnNulls()) { // issue #377, call setter on nulls
+						if (value != null || !propertyType.isPrimitive()) {
 							metaObject.setValue(property, value);
 						}
 						foundValues = true;
@@ -87,17 +83,15 @@ public class DBImpl implements DB {
 		return foundValues;
 	}
 
-
-	private <T> List<T> getList( ResultSet set, Class<T> type ) throws SQLException {
+	private <T> List<T> getList(ResultSet set, Class<T> type) throws SQLException {
 		List<T> result = new ArrayList<T>();
 		ObjectFactory factory = dbMeta.getConfiguration().getObjectFactory();
-
 
 		ResultMap.Builder builder = new ResultMap.Builder(dbMeta.getConfiguration(), "DB_ResultMap", type,
 				new ArrayList<ResultMapping>(1), true);
 		ResultSetWrapper rsWrapper = new ResultSetWrapper(set, dbMeta.getConfiguration());
 
-		while ( rsWrapper.getResultSet().next() ) {
+		while (rsWrapper.getResultSet().next()) {
 			T newObj = factory.create(type);
 			final MetaObject metaObject = dbMeta.getConfiguration().newMetaObject(newObj);
 			applyAutomaticMappings(rsWrapper, builder.build(), metaObject);
@@ -108,26 +102,24 @@ public class DBImpl implements DB {
 		return result;
 	}
 
-
 	@Override
-	public List<Record> list( String sql, Object... parameter ) {
+	public List<Record> list(String sql, Object... parameter) {
 		return list(sql, Record.class, parameter);
 	}
 
-
 	@Override
-	public <T> List<T> list( String sql, Class<T> type, Object... parameter ) {
+	public <T> List<T> list(String sql, Class<T> type, Object... parameter) {
 		PreparedStatement prepare = null;
 		ResultSet set = null;
 		try {
 			Connection conn = TransactionHolder.get().getConnection();
 			prepare = conn.prepareStatement(sql);
-			if ( parameter.length > 0 ) {
+			if (parameter.length > 0) {
 				setPs(prepare, parameter);
 			}
 			set = prepare.executeQuery();
 			return getList(set, type);
-		} catch ( SQLException e ) {
+		} catch (SQLException e) {
 			logger.error("", e);
 			throw new RuntimeException(e);
 		} finally {
@@ -135,32 +127,29 @@ public class DBImpl implements DB {
 		}
 	}
 
-
 	@Override
-	public Record one( String sql, Object... parameter ) {
+	public Record one(String sql, Object... parameter) {
 		return one(sql, Record.class, parameter);
 	}
 
-
 	@Override
-	public <T> T one( String sql, Class<T> type, Object... parameter ) {
+	public <T> T one(String sql, Class<T> type, Object... parameter) {
 		List<T> result = list(sql, type, parameter);
-		if ( result.size() == 1 ) {
+		if (result.size() == 1) {
 			return result.get(0);
 		}
 
-		if ( result.size() > 1 ) {
+		if (result.size() > 1) {
 			throw new RuntimeException("查询结果多余一条");
 		}
 		return null;
 	}
 
-
-	private void setPs( PreparedStatement prepared, Object... parameter ) throws SQLException {
+	private void setPs(PreparedStatement prepared, Object... parameter) throws SQLException {
 		TypeHandlerRegistry typeRegistry = dbMeta.getConfiguration().getTypeHandlerRegistry();
-		for ( int i = 0 ; i < parameter.length ; i++ ) {
+		for (int i = 0; i < parameter.length; i++) {
 			Object value = parameter[i];
-			if ( value == null ) {
+			if (value == null) {
 				TypeHandler type = typeRegistry.getTypeHandler(Object.class);
 				type.setParameter(prepared, i + 1, null, dbMeta.getConfiguration().getJdbcTypeForNull());
 			} else {
@@ -170,9 +159,8 @@ public class DBImpl implements DB {
 		}
 	}
 
-
 	@Override
-	public int update( String sql, Object... parameter ) {
+	public int update(String sql, Object... parameter) {
 		int count = 0;
 		PreparedStatement prepare = null;
 		try {
@@ -184,7 +172,7 @@ public class DBImpl implements DB {
 			//			if ( result.next() ) {
 			//				result.getLong(1);
 			//			}
-		} catch ( SQLException e ) {
+		} catch (SQLException e) {
 			logger.error("", e);
 			throw new RuntimeException(e);
 		} finally {
@@ -193,9 +181,8 @@ public class DBImpl implements DB {
 		return count;
 	}
 
-
 	@Override
-	public <TABLE, ID> Table<TABLE, ID> active( String name, Class<TABLE> tableType, String idField, Class<ID> idType ) {
+	public <TABLE, ID> Table<TABLE, ID> active(String name, Class<TABLE> tableType, String idField, Class<ID> idType) {
 
 		StringBuilder key = new StringBuilder(name);
 		key.append(tableType.getName());
@@ -203,7 +190,7 @@ public class DBImpl implements DB {
 		key.append(idType.getName());
 
 		Table<TABLE, ID> table = (Table<TABLE, ID>) tableCache.get(key.toString());
-		if ( table != null ) {
+		if (table != null) {
 			return table;
 		}
 		table = new TableImpl<TABLE, ID>(dbProxy, name, tableType, idField, idType);//.getTableProxy();
@@ -213,51 +200,47 @@ public class DBImpl implements DB {
 		return table;
 	}
 
-
 	@Override
-	public <TABLE> Table<TABLE, Long> active( String name, Class<TABLE> tableType ) {
+	public <TABLE> Table<TABLE, Long> active(String name, Class<TABLE> tableType) {
 
 		return active(name, tableType, "id", Long.class);
 
 	}
 
-
 	@Override
-	public <ID> Table<Record, ID> active( String name, String idField, Class<ID> idType ) {
+	public <ID> Table<Record, ID> active(String name, String idField, Class<ID> idType) {
 
 		return active(name, Record.class, idField, idType);
 	}
 
-
 	@Override
-	public <TABLE, ID> Table<TABLE, ID> active( Class<TABLE> tableType ) {
+	public <TABLE, ID> Table<TABLE, ID> active(Class<TABLE> tableType) {
 
 		// 检测有没有注解
 		TableName tableName = tableType.getAnnotation(TableName.class);
-		if ( tableName == null ) {
+		if (tableName == null) {
 			throw new RuntimeException("实体类没有TableName注解");
 		}
-		if ( tableName.type() == Void.class ) {
+		if (tableName.type() == Void.class) {
 			return active(tableName.name(), tableType, tableName.id(), tableName.idType());
 		}
 		return active(tableName.name(), tableName.type(), tableName.id(), tableName.idType());
 
 	}
 
-
 	@Override
-	public int count( String sql, Object... parameter ) {
+	public int count(String sql, Object... parameter) {
 		PreparedStatement prepare = null;
 		ResultSet set = null;
 		try {
 			Connection conn = TransactionHolder.get().getConnection();
 			prepare = conn.prepareStatement(sql);
-			if ( parameter.length > 0 ) {
+			if (parameter.length > 0) {
 				setPs(prepare, parameter);
 			}
 			set = prepare.executeQuery();
 			return getCount(set);
-		} catch ( SQLException e ) {
+		} catch (SQLException e) {
 			logger.error("", e);
 			throw new RuntimeException(e);
 		} finally {
@@ -266,61 +249,56 @@ public class DBImpl implements DB {
 
 	}
 
-
-	private int getCount( ResultSet set ) throws SQLException {
+	private int getCount(ResultSet set) throws SQLException {
 		int count = 0;
-		if ( set.next() ) {
+		if (set.next()) {
 			Object obj = set.getObject(1);
-			if ( obj != null ) {
+			if (obj != null) {
 				count = Integer.parseInt(obj.toString());
 			}
 		}
 		return count;
 	}
 
-
 	@Override
-	public <TABLE> List<TABLE> query( MappedStatement statement, Object parameter ) {
+	public <TABLE> List<TABLE> query(MappedStatement statement, Object parameter) {
 		try {
 			Executor executor = dbMeta.getConfiguration().newExecutor(TransactionHolder.get());
 			List<TABLE> list = executor.query(statement, dbMeta.wrapCollection(parameter), RowBounds.DEFAULT, null,
-				null, null);
+					null, null);
 			return list;
-		} catch ( SQLException e ) {
+		} catch (SQLException e) {
 			logger.error("", e);
 			throw new RuntimeException(e);
 		}
 	}
 
-
 	@Override
-	public int update( MappedStatement statement, Object parameter ) {
+	public int update(MappedStatement statement, Object parameter) {
 		try {
 			Executor executor = dbMeta.getConfiguration().newExecutor(TransactionHolder.get());
 			return executor.update(statement, dbMeta.wrapCollection(parameter));
-		} catch ( SQLException e ) {
+		} catch (SQLException e) {
 			logger.error("", e);
 			throw new RuntimeException(e);
 		}
 
 	}
 
-
 	@Override
-	public Table<Record, Long> active( String name ) {
+	public Table<Record, Long> active(String name) {
 
 		return active(name, "id", Long.class);
 
 	}
 
-
 	@Override
-	public <T> List<T> listScript( String script, Class<T> type, Object parameter ) {
+	public <T> List<T> listScript(String script, Class<T> type, Object parameter) {
 		StringBuilder sql = new StringBuilder("<script>");
 		sql.append(script);
 		sql.append("</script>");
 		SqlSource sqlSource = dbMeta.getXMLDriver().createSqlSource(dbMeta.getConfiguration(), sql.toString(),
-			parameter.getClass());
+				parameter.getClass());
 		MappedStatement.Builder statement = new MappedStatement.Builder(dbMeta.getConfiguration(),
 				"DB.queryScript(String,Class,Object)", sqlSource, SqlCommandType.SELECT);
 
@@ -341,15 +319,14 @@ public class DBImpl implements DB {
 
 	}
 
-
 	@Override
-	public int updateScript( String script, Object parameter ) {
+	public int updateScript(String script, Object parameter) {
 
 		StringBuilder sql = new StringBuilder("<script>");
 		sql.append(script);
 		sql.append("</script>");
 		SqlSource sqlSource = dbMeta.getXMLDriver().createSqlSource(dbMeta.getConfiguration(), sql.toString(),
-			parameter.getClass());
+				parameter.getClass());
 		MappedStatement.Builder statement = new MappedStatement.Builder(dbMeta.getConfiguration(),
 				"DB.updateScript(String,Object)", sqlSource, SqlCommandType.UNKNOWN);
 
@@ -359,19 +336,17 @@ public class DBImpl implements DB {
 
 	}
 
-
 	@Override
-	public Page<Record> paging( Page<Record> page, String sql, Object... parameter ) {
+	public Page<Record> paging(Page<Record> page, String sql, Object... parameter) {
 
 		return paging(page, sql, Record.class, parameter);
 	}
 
-
 	@Override
-	public <T> Page<T> paging( Page<T> page, String sql, Class<T> type, Object... parameter ) {
+	public <T> Page<T> paging(Page<T> page, String sql, Class<T> type, Object... parameter) {
 
 		String pagingSql = dbMeta.getDialectSQL().getPagingSQL((page.getPageNo() - 1) * page.getPageSize(),
-			page.getPageSize(), sql);
+				page.getPageSize(), sql);
 		String countSql = dbMeta.getDialectSQL().getPagingCountSQL(sql);
 
 		int count = count(countSql, parameter);
@@ -384,11 +359,10 @@ public class DBImpl implements DB {
 
 	}
 
-
 	@Override
-	public <T> Page<T> pagingScript( Page<T> page, String script, Class<T> type, Object parameter ) {
+	public <T> Page<T> pagingScript(Page<T> page, String script, Class<T> type, Object parameter) {
 		String pagingSql = dbMeta.getDialectSQL().getPagingSQL((page.getPageNo() - 1) * page.getPageSize(),
-			page.getPageSize(), script);
+				page.getPageSize(), script);
 
 		String countSql = dbMeta.getDialectSQL().getPagingCountSQL(script);
 		List<T> records = listScript(pagingSql, type, parameter);
@@ -401,21 +375,19 @@ public class DBImpl implements DB {
 
 	}
 
-
 	@Override
 	public DBMeta getDBMeta() {
 		return this.dbMeta;
 	}
 
-
 	@Override
-	public int countScript( String script, Object parameter ) {
+	public int countScript(String script, Object parameter) {
 
 		StringBuilder sql = new StringBuilder("<script>");
 		sql.append(script);
 		sql.append("</script>");
 		SqlSource sqlSource = dbMeta.getXMLDriver().createSqlSource(dbMeta.getConfiguration(), sql.toString(),
-			parameter.getClass());
+				parameter.getClass());
 		MappedStatement.Builder statement = new MappedStatement.Builder(dbMeta.getConfiguration(),
 				"DB.count(String,Object)", sqlSource, SqlCommandType.SELECT);
 
@@ -430,69 +402,61 @@ public class DBImpl implements DB {
 
 	}
 
+	private int count(MappedStatement statement, Object parameter) {
 
-	private int count( MappedStatement statement, Object parameter ) {
-
-		if ( statement.getSqlCommandType() != SqlCommandType.SELECT ) {
+		if (statement.getSqlCommandType() != SqlCommandType.SELECT) {
 			throw new RuntimeException("不是查询语句");
 		}
 		try {
 			Executor executor = dbMeta.getConfiguration().newExecutor(TransactionHolder.get());
 			List list = executor.query(statement, parameter, RowBounds.DEFAULT, null, null, null);
-			if ( list.size() == 1 ) {
+			if (list.size() == 1) {
 				return Integer.parseInt(list.get(0).toString());
 			}
-			if ( list.size() > 1 ) {
+			if (list.size() > 1) {
 				throw new RuntimeException("count语句结果不能大于1");
 			}
 			return 0;
-		} catch ( SQLException e ) {
+		} catch (SQLException e) {
 			logger.error("", e);
 			throw new RuntimeException(e);
 		}
 
 	}
 
-
 	@Override
-	public List<Record> listScript( String script, Object parameter ) {
-
+	public List<Record> listScript(String script, Object parameter) {
 
 		return listScript(script, Record.class, parameter);
 
 	}
 
-
 	@Override
-	public <T> T oneScript( String script, Class<T> type, Object parameter ) {
+	public <T> T oneScript(String script, Class<T> type, Object parameter) {
 
 		List<T> list = listScript(script, type, parameter);
-		if ( list.size() == 1 ) {
+		if (list.size() == 1) {
 			return list.get(0);
 		}
-		if ( list.size() > 1 ) {
+		if (list.size() > 1) {
 			throw new RuntimeException("查询结果多于一条记录");
 		}
 		return null;
 
 	}
 
-
 	@Override
-	public Record oneScript( String script, Object parameter ) {
+	public Record oneScript(String script, Object parameter) {
 
 		return oneScript(script, Record.class, parameter);
 
 	}
 
-
 	@Override
-	public Page<Record> pagingScript( Page<Record> page, String script, Object parameter ) {
-
+	public Page<Record> pagingScript(Page<Record> page, String script, Object parameter) {
 
 		return pagingScript(page, script, Record.class, parameter);
 
 	}
-
 
 }

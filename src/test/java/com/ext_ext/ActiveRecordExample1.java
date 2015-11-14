@@ -10,7 +10,6 @@ import com.ext_ext.mybatisext.activerecord.Record;
 import com.ext_ext.mybatisext.helper.Page;
 import com.ext_ext.mybatisext.helper.PageImpl;
 
-
 /**
  * <p>
 
@@ -22,8 +21,8 @@ public class ActiveRecordExample1 {
 
 	static DB db;
 
-
-	public static void main( String[] args ) {
+	public static void main(String[] args) {
+		//MybatisExt.setColumnMappingAdaptor(new ColumnMappingAdaptorImpl());
 		//创建连接
 		db = MybatisExt.open("org.hsqldb.jdbcDriver", "jdbc:hsqldb:mem:db_name", "sa", "");
 		//创建person表
@@ -43,9 +42,8 @@ public class ActiveRecordExample1 {
 		db.update("insert into person_book(person_id,book_id) values(?,?)", 1, 2);
 		//连接多条查询
 		List<Record> data = db
-				.list(
-					"select person.name,book.title,person_book.person_id,person_book.book_id from person join person_book on person.id=person_book.person_id join book on person_book.book_id=book.id where person.id=?",
-					1);
+				.list("select person.name,book.title,person_book.person_id,person_book.book_id from person join person_book on person.id=person_book.person_id join book on person_book.book_id=book.id where person.id=?",
+						1);
 		System.out.println(JSON.toJSONString(data));
 		//单条查询
 		Record rec = db.one("select * from person limit 1");
@@ -71,6 +69,11 @@ public class ActiveRecordExample1 {
 
 		System.out.println(JSON.toJSONString(person));
 
+		data = db
+				.listScript(
+						"select person.name,book.title,person_book.person_id,person_book.book_id from person join person_book on person.id=person_book.person_id join book on person_book.book_id=book.id where person.id=#{id}",
+						1);
+		System.out.println(JSON.toJSONString(data));
 
 	}
 

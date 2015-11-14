@@ -38,29 +38,27 @@ public class ColumnsMapping {
 
 	protected DBMeta dbMeta;
 
-
-	public ColumnsMapping( DBMeta dbMeta ) {
+	public ColumnsMapping(DBMeta dbMeta) {
 		this.dbMeta = dbMeta;
 	}
 
-
-	public <TABLE, ID> Map<String, String> propertyColumnMapping( TableMeta<TABLE, ID> meta ) {
+	public <TABLE, ID> Map<String, String> propertyColumnMapping(TableMeta<TABLE, ID> meta) {
 		// 根据属性名称得到数据库字段名称
 		String key = meta.getName() + "_" + meta.getType().getName();
 		Map<String, String> result = propertyMappingCache.get(key);
-		if ( result != null ) {
+		if (result != null) {
 			return result;
 		}
 		List<ResultMapping> mapping = getResultMapping(meta);
 		result = new LinkedHashMap<String, String>();
 
-		if ( mapping.isEmpty() && !meta.isMapType() ) {
+		if (mapping.isEmpty() && !meta.isMapType()) {
 			String[] property = PropertyHelper.getProperties(meta.getType());
-			for ( int i = 0 ; i < property.length ; i++ ) {
+			for (int i = 0; i < property.length; i++) {
 				result.put(property[i], property[i]);
 			}
 		} else {
-			for ( ResultMapping resultMapping : mapping ) {
+			for (ResultMapping resultMapping : mapping) {
 				result.put(resultMapping.getProperty(), resultMapping.getColumn());
 			}
 		}
@@ -69,17 +67,16 @@ public class ColumnsMapping {
 		return result;
 	}
 
-
-	public <TABLE, ID> List<ParameterMapping> getParameterMapping( TableMeta<TABLE, ID> meta ) {
+	public <TABLE, ID> List<ParameterMapping> getParameterMapping(TableMeta<TABLE, ID> meta) {
 		String key = meta.getName() + "_" + meta.getType().getName();
 		List<ParameterMapping> parameterMappings = parameterMappingCache.get(key);
-		if ( parameterMappings != null ) {
+		if (parameterMappings != null) {
 			return parameterMappings;
 		}
 
 		parameterMappings = new ArrayList<ParameterMapping>();
 		List<ResultMapping> resultMapping = getResultMapping(meta);
-		for ( ResultMapping result : resultMapping ) {
+		for (ResultMapping result : resultMapping) {
 			ParameterMapping.Builder mapping = new ParameterMapping.Builder(dbMeta.getConfiguration(),
 					result.getProperty(), result.getTypeHandler());
 			mapping.jdbcType(result.getJdbcType());
@@ -91,27 +88,17 @@ public class ColumnsMapping {
 		return parameterMappings;
 	}
 
-
-	public <TABLE, ID> List<ResultMapping> getResultMapping( TableMeta<TABLE, ID> meta ) {
+	public <TABLE, ID> List<ResultMapping> getResultMapping(TableMeta<TABLE, ID> meta) {
 		String key = meta.getName() + "_" + meta.getType().getName();
 		List<ResultMapping> columnMap = columnMappingCache.get(key);
-		if ( columnMap != null ) {
+		if (columnMap != null) {
 			return columnMap;
 		}
 		Configuration config = dbMeta.getConfiguration();
 		ColumnMappingAdaptor adaptor = MybatisExt.adaptor;
 		columnMap = new ArrayList<ResultMapping>();
 
-		Map<String, Class<?>> entityType = null;
-		if ( !meta.isMapType() ) {
-			//有实体类对应根据实体类建立关系
-			entityType = PropertyHelper.getPropertiesType(meta.getType());
-			for ( Map.Entry<String, Class<?>> data : entityType.entrySet() ) {
-				ResultMapping.Builder mapping = new ResultMapping.Builder(config, data.getKey(), data.getKey(),
-						data.getValue());
-				columnMap.add(mapping.build());
-			}
-
+		if (!meta.isMapType()) {
 			return columnMap;
 		}
 		Transaction trans = dbMeta.getTransaction();
@@ -125,13 +112,13 @@ public class ColumnsMapping {
 			st = conn.prepareStatement(sql);
 			rs = st.executeQuery();
 			ResultSetMetaData rsmd = rs.getMetaData();
-			for ( int i = 1 ; i <= rsmd.getColumnCount() ; i++ ) {
+			for (int i = 1; i <= rsmd.getColumnCount(); i++) {
 				// 全部小写
 				String column = rsmd.getColumnLabel(i).toLowerCase();
 
 				String property = column;
 				//如果自定义映射关系不为null
-				if ( adaptor != null ) {
+				if (adaptor != null) {
 					property = adaptor.adaptor(column);
 				}
 				ResultMapping.Builder mapping = null;
@@ -139,7 +126,7 @@ public class ColumnsMapping {
 				mapping = new ResultMapping.Builder(config, property, column, registry.getTypeHandler(type));
 				columnMap.add(mapping.build());
 			}
-		} catch ( Exception e ) {
+		} catch (Exception e) {
 			logger.error("查询映射关系", e);
 		} finally {
 			CloseHelper.close(trans, st, rs);
