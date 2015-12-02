@@ -1,3 +1,8 @@
+
+
+> 技术讨论 QQ 群 492238239
+
+
 MybatisExt项目扩展自Mybatis，具有以下特点:
 
 
@@ -113,7 +118,6 @@ table.getDelete().delete(...);
 ```
 
 欢迎使用并提交问题.
-
 
 
 
