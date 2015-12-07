@@ -1,6 +1,10 @@
 
+![MybatisExt](http://git.oschina.net/uploads/images/2015/1203/212241_b3cc5b8d_12260.png "雕虫小技")
+
 
 > 技术讨论 QQ 群 492238239
+
+http://www.oschina.net/p/mybatisext
 
 
 MybatisExt项目扩展自Mybatis，具有以下特点:
@@ -118,7 +122,6 @@ table.getDelete().delete(...);
 ```
 
 欢迎使用并提交问题.
-
 
 
 
