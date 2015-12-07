@@ -21,33 +21,39 @@ public class ConnectorImpl implements Connector {
 
 	private final SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();
 
+
 	@Override
 	public DB open() {
 		// spring配置
 		SqlSessionFactory factory = SqlSessionFactoryHolder.getSqlSessionFactory();
-		if (factory == null) {
+		if ( factory == null ) {
 			throw new RuntimeException("请初始化SqlSessionFactoryBeanExt");
 		}
 		DB db = new DBImpl(factory).getDBProxy();
 		return db;
 	}
 
+
 	@Override
-	public DB open(String driver, String url, String username, String password) {
+	public DB open( String driver, String url, String username, String password ) {
 		JdbcTransactionFactory factory = new JdbcTransactionFactory();
 		PooledDataSource pool = new PooledDataSource(driver, url, username, password);
+		pool.setPoolPingEnabled(true);
+		pool.setPoolPingQuery(" select 'x' ");
 		DB db = new DBImpl(getSessionFactory(JdbcTransactionFactory.class.getName(), factory, pool)).getDBProxy();
 		return db;
 	}
 
+
 	@Override
-	public DB open(DataSource pool) {
+	public DB open( DataSource pool ) {
 		ManagedTransactionFactory factory = new ManagedTransactionFactory();
 		DB db = new DBImpl(getSessionFactory(ManagedTransactionFactory.class.getName(), factory, pool)).getDBProxy();
 		return db;
 	}
 
-	private SqlSessionFactory getSessionFactory(String id, TransactionFactory factory, DataSource ds) {
+
+	private SqlSessionFactory getSessionFactory( String id, TransactionFactory factory, DataSource ds ) {
 		Environment environment = new Environment(id, factory, ds);
 		ConfigurationExt configuration = new ConfigurationExt(environment);
 		//添加拦截器
@@ -56,8 +62,9 @@ public class ConnectorImpl implements Connector {
 		return sqlSessionFactoryBuilder.build(configuration);
 	}
 
+
 	@Override
-	public DB open(SqlSessionFactory sessionFactory) {
+	public DB open( SqlSessionFactory sessionFactory ) {
 		DB db = new DBImpl(sessionFactory).getDBProxy();
 		return db;
 	}
