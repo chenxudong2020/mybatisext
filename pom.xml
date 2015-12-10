@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ext-ext</groupId>
 	<artifactId>mybatis-ext</artifactId>
-	<version>0.0.3</version>
+	<version>0.0.4-snapshot</version>
 	<properties>
 		<jdk.version>1.6</jdk.version>
 		<sourceEncoding>UTF-8</sourceEncoding>
