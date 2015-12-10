@@ -20,6 +20,7 @@
 		<property name="interceptors">
 			<list>
 				<bean class="com.ext_ext.mybatisext.interceptor.GenericMapperInterceptor" />
+				<bean class="com.ext_ext.mybatisext.interceptor.CommonMapperInterceptor" />
 			</list>
 		</property>
 		<!-- plugin配置 -->
@@ -31,6 +32,7 @@
 					<!-- <property name="dialect"> <bean class="com.ext_ext.mybatisext.activerecord.dialect.impl.MysqlDialect" /> </property> -->
 				</bean>
 				<bean class="com.ext_ext.mybatisext.plugin.IdentityPlugin" />
+				<bean class="com.ext_ext.mybatisext.plugin.BatchPlugin" />
 			</list>
 		</property>
 	</bean>

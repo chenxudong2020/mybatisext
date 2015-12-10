@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.ext_ext.mybatisext.activerecord.Table;
 import com.ext_ext.mybatisext.annotation.TableName;
 import com.ext_ext.mybatisext.helper.Page;
+import com.ext_ext.mybatisext.mapper.CommonMapper;
 import com.ext_ext.mybatisext.test.entity.User;
 
 
@@ -16,7 +17,7 @@ import com.ext_ext.mybatisext.test.entity.User;
  *
  */
 @TableName(name = "T_USER", type = User.class)
-public interface UserMapper extends Table<User, Long> {
+public interface UserMapper extends Table<User, Long>, CommonMapper<User> {
 
 
 	List<User> selectByName( @Param("name") String name );
