@@ -9,11 +9,13 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
+import org.apache.ibatis.logging.Log;
+import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.reflection.MetaClass;
 import org.apache.ibatis.session.Configuration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
+
+import com.ext_ext.mybatisext.activerecord.config.ColumnsMapping;
 
 
 /**
@@ -25,7 +27,7 @@ import org.springframework.core.io.ByteArrayResource;
  */
 public class MapperGenerate {
 
-	private static Logger logger = LoggerFactory.getLogger(MapperGenerate.class);
+	protected static Log logger = LogFactory.getLog(ColumnsMapping.class);
 
 	private final String tableName;
 
@@ -65,7 +67,7 @@ public class MapperGenerate {
 			if ( !propertySet.contains(lower) ) {
 				propertyType.put(property, metaClass.getGetterType(property).getName());
 			} else {
-				logger.info(beanName + "存在相同属性:" + property + ",请查看getter方法命名");
+				logger.warn(beanName + "存在相同属性:" + property + ",请查看getter方法命名");
 			}
 		}
 		return propertyType;
