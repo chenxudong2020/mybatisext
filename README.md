@@ -22,6 +22,7 @@ MybatisExt项目扩展自Mybatis，具有以下特点:
 3. MySQL查询语句性能分析功能(IndexingPlugin)
 4. 分页拦截器(PagingPlugin)
 5. XML文件修改后自动加载功能(XMLMapperLoader)
+6. 批量处理拦截器(BatchPlugin)
 
 **三、扩展Mybatis，实现拦截Mapper接口方法功能**
 
@@ -30,6 +31,8 @@ MybatisExt项目扩展自Mybatis，具有以下特点:
 **四、内置默认生成的增、删、改、查方法**
 
 Mapper接口继承Table或DB自动添加系统自带方法进行简单的操作，如果不合适可以继续在接口中和xml文件中添加自定义方法。
+
+新增通用Mapper处理，通过继承实现大部分的增删改查操作。
 
 **五、自带了entity、mapper和xml生成工具**
 
@@ -122,6 +125,5 @@ table.getDelete().delete(...);
 ```
 
 欢迎使用并提交问题.
-
 
 
