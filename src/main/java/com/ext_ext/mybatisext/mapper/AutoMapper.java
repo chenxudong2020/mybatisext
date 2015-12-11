@@ -69,12 +69,44 @@ public interface AutoMapper<T, K> {
 	int updateByIdSelectiveBatch( List<T> recordList );
 
 
+	/**
+	 * 统计查询
+	 * <p>
+	 *
+	 * @param record
+	 * @return
+	*/
+	int count( T record );
+
+
+	/**
+	 * 查询list
+	 * <p>
+	 *
+	 * @param record
+	 * @param ordered 排序字段
+	 * @return
+	*/
 	List<T> selectList( @Param("record") T record, @Param("ordered") String ordered );
 
 
+	/**
+	 * 查询单条信息,多条会报错
+	 * <p>
+	 *
+	 * @param record
+	 * @return
+	*/
 	T selectOne( @Param("record") T record );
 
 
+	/**
+	 * 选择性删除
+	 * <p>
+	 *
+	 * @param record
+	 * @return
+	*/
 	int deleteSelective( T record );
 
 }

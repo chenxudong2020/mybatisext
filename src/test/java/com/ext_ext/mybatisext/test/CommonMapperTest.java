@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.alibaba.fastjson.JSON;
 import com.ext_ext.mybatisext.test.entity.User;
 
 
@@ -31,5 +32,14 @@ public class CommonMapperTest extends DaoTests {
 		recordList.add(user);
 
 		userMapper.insertSelectiveBatch(recordList);
+		user = new User();
+		user.setAge(126);
+		user.setName("bobo1111");
+		int count = userMapper.count(user);
+
+		System.out.println(count);
+
+		user = userMapper.selectOne(user);
+		System.out.println(JSON.toJSONString(user));
 	}
 }

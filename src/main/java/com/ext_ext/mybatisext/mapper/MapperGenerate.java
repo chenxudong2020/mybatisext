@@ -317,7 +317,8 @@ public class MapperGenerate {
 		bw.write(selectList);
 		bw.write(select);
 
-
+		String count = countSelect("count", columns);
+		bw.write(count);
 		bw.write("\r\n");
 	}
 
@@ -364,9 +365,9 @@ public class MapperGenerate {
 			writer.write("</if>");
 		}
 
-		if ( isOne ) {
-			writer.write("\t\t limit 1\r\n");
-		}
+		//if ( isOne ) {
+		//	writer.write("\t\t limit 1\r\n");
+		//}
 		writer.write("\t</select>");
 		writer.write("\r\n");
 		writer.write("\r\n");
@@ -400,6 +401,37 @@ public class MapperGenerate {
 
 		writer.write("\t\t </where>\r\n");
 		writer.write("\t</delete>");
+		writer.write("\r\n");
+		writer.write("\r\n");
+		// 查询完
+		return writer.toString();
+	}
+
+
+	private String countSelect( String id, List<String> newColumns ) {
+
+		int size = newColumns.size();
+		StringWriter writer = new StringWriter();
+		// 查询（根据主键ID查询）
+		writer.write("\r\n");
+		writer.write("\t<select id=\"" + id + "\" resultType=\"int\">");
+		writer.write("\r\n");
+		writer.write("\t\t SELECT count(1) ");
+		writer.write("\r\n");
+		writer.write("\t\t FROM " + tableName);
+		writer.write("\r\n");
+		writer.write("\t\t <where>\r\n");
+
+		String tempField = null;
+		for ( int i = 0 ; i < size ; i++ ) {
+			tempField = newColumns.get(i);
+			writer.write("\t\t\t<if test=\"" + tempField + "!=null\">\r\n");
+			writer.write("\t\t\t AND " + tempField + "=#{" + tempField + "}\r\n");
+			writer.write("\t\t\t</if>\r\n");
+		}
+
+		writer.write("\t\t </where>\r\n");
+		writer.write("\t</select>");
 		writer.write("\r\n");
 		writer.write("\r\n");
 		// 查询完
