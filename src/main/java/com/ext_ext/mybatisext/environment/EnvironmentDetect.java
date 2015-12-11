@@ -1,6 +1,9 @@
 package com.ext_ext.mybatisext.environment;
 
 import java.io.StringReader;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -29,6 +32,16 @@ public class EnvironmentDetect implements RunEnvironment, RunConfig, Initializin
 
 	public static String PRODUCT = "PRODUCT";
 
+	protected static final String DOMAIN_NAME = "environment.config";
+
+	protected static final byte[] LOCAL_HOSTS = new byte[ ] { 1, 0, 0, 0 };
+
+	protected static final byte[] DEVELOP_HOSTS = new byte[ ] { 2, 0, 0, 0 };
+
+	protected static final byte[] TEST_HOSTS = new byte[ ] { 3, 0, 0, 0 };
+
+	protected static final byte[] PRODUCT_HOSTS = new byte[ ] { 4, 0, 0, 0 };
+
 	private Resource[] resources;
 
 	private Properties properties;
@@ -47,7 +60,7 @@ public class EnvironmentDetect implements RunEnvironment, RunConfig, Initializin
 		}
 		Environment env = null;
 		logger.warn("开始检测环境类型...");
-		String env_string = System.getProperty("env", PRODUCT);
+		String env_string = System.getProperty("env");
 		if ( env_string != null ) {
 			if ( LOCAL.equals(env_string) ) {
 				env = Environment.LOCAL;
@@ -60,9 +73,33 @@ public class EnvironmentDetect implements RunEnvironment, RunConfig, Initializin
 			}
 		}
 		if ( env == null ) {
-			env = Environment.PRODUCT;
+			//判断hosts
+			env = detectHostsEnvironment();
 		}
 		logger.warn("当前是:" + env.getName());
+		return env;
+	}
+
+
+	private static Environment detectHostsEnvironment() {
+		Environment env = null;
+		try {
+			InetAddress address = InetAddress.getByName(DOMAIN_NAME);
+			if ( address != null ) {
+				byte[] addressBytes = address.getAddress();
+				if ( Arrays.equals(LOCAL_HOSTS, addressBytes) ) {
+					env = Environment.LOCAL;
+				} else if ( Arrays.equals(DEVELOP_HOSTS, addressBytes) ) {
+					env = Environment.DEVELOP;
+				} else if ( Arrays.equals(TEST_HOSTS, addressBytes) ) {
+					env = Environment.TEST;
+				} else if ( Arrays.equals(PRODUCT_HOSTS, addressBytes) ) {
+					env = Environment.PRODUCT;
+				}
+			}
+		} catch ( UnknownHostException e ) {
+			env = Environment.PRODUCT;
+		}
 		return env;
 	}
 

@@ -36,6 +36,9 @@ public class BatchPlugin implements Interceptor {
 	@Override
 	public Object intercept( Invocation invocation ) throws Throwable {
 		MyBatisInvocation inv = MapperProxyExt.getMyBatisInvocation();
+		if ( inv == null ) {
+			return invocation.proceed();
+		}
 		Batch batch = inv.getMethod().getAnnotation(Batch.class);
 		if ( batch != null ) {
 			Object[] args = inv.getArgs();
