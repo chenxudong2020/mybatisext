@@ -120,7 +120,7 @@ table.getDelete().delete(...);
 <dependency>
     <groupId>com.ext-ext</groupId>
     <artifactId>mybatis-ext</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
 </dependency>
 ```
 
