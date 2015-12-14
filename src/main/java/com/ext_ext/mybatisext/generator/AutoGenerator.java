@@ -71,14 +71,17 @@ public class AutoGenerator {
 		 */
 		try {
 			String osName = System.getProperty("os.name");
-			if (osName != null && osName.contains("Mac")) {
-				Runtime.getRuntime().exec("open " + config.getSaveDir());
-			} else {
-				Runtime.getRuntime().exec("cmd /c start " + config.getSaveDir());
+			if ( osName != null ) {
+				if (osName.contains("Mac")) {
+					Runtime.getRuntime().exec("open " + config.getSaveDir());
+				} else if (osName.contains("Windows")) {
+					Runtime.getRuntime().exec("cmd /c start " + config.getSaveDir());
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println(" generate success! ");
 		
 	}
 	
