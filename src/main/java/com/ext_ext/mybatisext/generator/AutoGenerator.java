@@ -58,6 +58,14 @@ public class AutoGenerator {
 		}
 		
 		/**
+		 * 检查文件夹是否存在
+		 */
+		File gf = new File(config.getSaveDir());
+		if ( !gf.exists() ) {
+			gf.mkdirs();
+		}
+		
+		/**
 		 * 开启生成映射关系
 		 */
 		new AutoGenerator(config).generate();
@@ -349,14 +357,14 @@ public class AutoGenerator {
 		bw.newLine();
 		bw.write("import com.ext_ext.mybatisext.annotation.TableName;");
 		bw.newLine();
-		bw.write("import com.ext_ext.mybatisext.activerecord.Table;");
+		bw.write("import com.ext_ext.mybatisext.mapper.CommonMapper;");
 		bw.newLine();
 
 		bw = buildClassComment(bw, mapperName + "数据库操作接口类");
 		bw.newLine();
 		bw.write("@TableName(name = \"" + tableName + "\", type = " + beanName + ".class)");
 		bw.newLine();
-		bw.write("public interface " + mapperName + " extends Table<" + beanName + ",Long>{");
+		bw.write("public interface " + mapperName + " extends CommonMapper<" + beanName + ">{");
 		bw.newLine();
 		bw.newLine();
 
