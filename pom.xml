@@ -71,6 +71,7 @@
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity</artifactId>
 			<version>${velocity.version}</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
