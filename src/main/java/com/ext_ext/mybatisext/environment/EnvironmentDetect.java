@@ -100,6 +100,10 @@ public class EnvironmentDetect implements RunEnvironment, RunConfig, Initializin
 		} catch ( UnknownHostException e ) {
 			env = Environment.PRODUCT;
 		}
+    	if ( env == null ) {
+			//默认产品环境
+			env = Environment.PRODUCT;
+		}
 		return env;
 	}
 
