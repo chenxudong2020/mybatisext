@@ -2,6 +2,7 @@ package com.ext_ext.mybatisext;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
@@ -9,6 +10,7 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 
+import com.ext_ext.mybatisext.helper.ArrayTypeHandlerExt;
 import com.ext_ext.mybatisext.helper.SmartDate;
 import com.ext_ext.mybatisext.helper.SmartDateTypeHandler;
 import com.ext_ext.mybatisext.helper.SqlSessionFactoryHolder;
@@ -61,6 +63,12 @@ public class SqlSessionFactoryBeanExt extends SqlSessionFactoryBean {
 			config.getTypeHandlerRegistry().register(java.util.Date.class, SmartDateTypeHandler.class);
 			config.getTypeHandlerRegistry().register(java.sql.Date.class, SmartDateTypeHandler.class);
 			config.getTypeHandlerRegistry().register(SmartDate.class, SmartDateTypeHandler.class);
+			config.getTypeHandlerRegistry().register(String[].class, ArrayTypeHandlerExt.class);
+			config.getTypeHandlerRegistry().register(Integer[].class, ArrayTypeHandlerExt.class);
+			config.getTypeHandlerRegistry().register(BigDecimal[].class, ArrayTypeHandlerExt.class);
+			config.getTypeHandlerRegistry().register(Double[].class, ArrayTypeHandlerExt.class);
+			config.getTypeHandlerRegistry().register(Float[].class, ArrayTypeHandlerExt.class);
+			config.getTypeHandlerRegistry().register(Long[].class, ArrayTypeHandlerExt.class);
 		} catch ( Exception e ) {
 			logger.error(e.getMessage(), e);
 		}

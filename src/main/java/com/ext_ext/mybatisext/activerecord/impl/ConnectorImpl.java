@@ -1,5 +1,7 @@
 package com.ext_ext.mybatisext.activerecord.impl;
 
+import java.sql.Array;
+
 import javax.sql.DataSource;
 
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
@@ -8,11 +10,16 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
-import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
+import org.mybatis.spring.transaction.SpringManagedTransactionFactory;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ext_ext.mybatisext.activerecord.Connector;
 import com.ext_ext.mybatisext.activerecord.DB;
 import com.ext_ext.mybatisext.activerecord.ext.ConfigurationExt;
+import com.ext_ext.mybatisext.helper.ArrayTypeHandler;
+import com.ext_ext.mybatisext.helper.JSONTypeHandler;
+import com.ext_ext.mybatisext.helper.SmartDate;
+import com.ext_ext.mybatisext.helper.SmartDateTypeHandler;
 import com.ext_ext.mybatisext.helper.SqlSessionFactoryHolder;
 import com.ext_ext.mybatisext.plugin.IndexingPlugin;
 import com.ext_ext.mybatisext.plugin.SQLPrintPlugin;
@@ -47,8 +54,8 @@ public class ConnectorImpl implements Connector {
 
 	@Override
 	public DB open( DataSource pool ) {
-		ManagedTransactionFactory factory = new ManagedTransactionFactory();
-		DB db = new DBImpl(getSessionFactory(ManagedTransactionFactory.class.getName(), factory, pool)).getDBProxy();
+		SpringManagedTransactionFactory factory = new SpringManagedTransactionFactory();
+		DB db = new DBImpl(getSessionFactory(SpringManagedTransactionFactory.class.getName(), factory, pool)).getDBProxy();
 		return db;
 	}
 
@@ -59,6 +66,12 @@ public class ConnectorImpl implements Connector {
 		//添加拦截器
 		configuration.addInterceptor(new SQLPrintPlugin());
 		configuration.addInterceptor(new IndexingPlugin());
+		configuration.getTypeHandlerRegistry().register(java.util.Date.class, SmartDateTypeHandler.class);
+		configuration.getTypeHandlerRegistry().register(java.sql.Date.class, SmartDateTypeHandler.class);
+		configuration.getTypeHandlerRegistry().register(SmartDate.class, SmartDateTypeHandler.class);
+		//configuration.getTypeHandlerRegistry().register(List.class, ListTypeHandler.class);
+		configuration.getTypeHandlerRegistry().register(JSONObject.class, JSONTypeHandler.class);
+		configuration.getTypeHandlerRegistry().register(Array.class, ArrayTypeHandler.class);
 		return sqlSessionFactoryBuilder.build(configuration);
 	}
 

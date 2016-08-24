@@ -7,8 +7,6 @@ import java.util.Locale;
 import java.util.Properties;
 
 import org.apache.ibatis.executor.Executor;
-import org.apache.ibatis.logging.Log;
-import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ParameterMapping;
@@ -22,13 +20,13 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.type.TypeHandlerRegistry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ext_ext.mybatisext.environment.EnvironmentDetect;
 
-@Intercepts({
-		@Signature(type = Executor.class, method = "update", args = { MappedStatement.class, Object.class }),
-		@Signature(type = Executor.class, method = "query", args = { MappedStatement.class, Object.class,
-				RowBounds.class, ResultHandler.class }) })
+@Intercepts({ @Signature(type = Executor.class, method = "update", args = { MappedStatement.class, Object.class }),
+		@Signature(type = Executor.class, method = "query", args = { MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class }) })
 public class SQLPrintPlugin implements Interceptor {
 
 	@Override
@@ -53,12 +51,12 @@ public class SQLPrintPlugin implements Interceptor {
 				long time = (end - start);
 				// 打印查询时间大于50ms的sql语句
 				String sql = getSql(configuration, boundSql, sqlId, time);
-				Log logger = LogFactory.getLog(sqlId);
+				Logger logger = LoggerFactory.getLogger(sqlId);
 				if ( time > 100 ) {
 					logger.warn(sql);
 					System.err.println(sql);
 				} else {
-					logger.debug(sql);
+					logger.info(sql);
 				}
 			}
 
@@ -68,7 +66,6 @@ public class SQLPrintPlugin implements Interceptor {
 	}
 
 
-	@SuppressWarnings("unused")
 	public static String getSql( Configuration configuration, BoundSql boundSql, String sqlId, long time ) {
 		StringBuilder str;
 		try {
