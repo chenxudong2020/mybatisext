@@ -59,7 +59,7 @@ public class EnvironmentDetect implements RunEnvironment, RunConfig, Initializin
 			return environment;
 		}
 		Environment env = null;
-		logger.warn("开始检测环境类型...");
+		logger.warn("start environment ...");
 		String env_string = System.getProperty("env");
 		if ( env_string != null ) {
 			if ( LOCAL.equals(env_string) ) {
@@ -76,7 +76,7 @@ public class EnvironmentDetect implements RunEnvironment, RunConfig, Initializin
 			//判断hosts
 			env = detectHostsEnvironment();
 		}
-		logger.warn("当前是:" + env.getName());
+		logger.warn("current environment is :" + env.getName());
 		return env;
 	}
 

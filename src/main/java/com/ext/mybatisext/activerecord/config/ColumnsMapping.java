@@ -1,5 +1,6 @@
 package com.ext.mybatisext.activerecord.config;
 
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.ext.mybatisext.annotation.Column;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.mapping.ParameterMapping;
@@ -24,6 +26,11 @@ import com.ext.mybatisext.activerecord.meta.DBMeta;
 import com.ext.mybatisext.activerecord.meta.TableMeta;
 import com.ext.mybatisext.helper.CloseHelper;
 import com.ext.mybatisext.helper.PropertyHelper;
+import org.springframework.beans.PropertyAccessorUtils;
+import org.springframework.beans.annotation.AnnotationBeanUtils;
+import org.springframework.cglib.core.ReflectUtils;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.util.ReflectionUtils;
 
 // 获取数据库表字段，简历映射关系
 public class ColumnsMapping {
@@ -55,7 +62,20 @@ public class ColumnsMapping {
 		if (mapping.isEmpty() && !meta.isMapType()) {
 			String[] property = PropertyHelper.getProperties(meta.getType());
 			for (int i = 0; i < property.length; i++) {
-				result.put(property[i], property[i]);
+
+				Field field = ReflectionUtils.findField(meta.getType(), property[i]);
+				if(field !=null){
+					ReflectionUtils.makeAccessible(field);
+				}
+				if(field.isAnnotationPresent(Column.class)){
+					Column column=field.getAnnotation(Column.class);
+					result.put(property[i],column.value());
+				}else{
+					result.put(property[i], property[i]);
+				}
+
+
+
 			}
 		} else {
 			for (ResultMapping resultMapping : mapping) {
@@ -119,7 +139,7 @@ public class ColumnsMapping {
 				String property = column;
 				//如果自定义映射关系不为null
 				if (adaptor != null) {
-					property = adaptor.adaptor(column);
+					property = adaptor.adaptor(meta.getType(),column);
 				}
 				ResultMapping.Builder mapping = null;
 				JdbcType type = JdbcType.forCode(rsmd.getColumnType(i));

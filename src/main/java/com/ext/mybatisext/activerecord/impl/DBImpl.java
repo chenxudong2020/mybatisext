@@ -12,6 +12,7 @@ import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.ibatis.executor.Executor;
+import org.apache.ibatis.executor.result.DefaultResultHandler;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -69,7 +70,7 @@ public class DBImpl implements DB {
 		for ( String columnName : unmappedColumnNames ) {
 			String propertyName = columnName;
 			if ( MybatisExt.adaptor != null ) {
-				propertyName = MybatisExt.adaptor.adaptor(columnName);
+				propertyName = MybatisExt.adaptor.adaptor(resultMap.getType(),columnName);
 			}
 			final String property = metaObject.findProperty(propertyName, dbMeta.getConfiguration().isMapUnderscoreToCamelCase());
 			if ( property != null && metaObject.hasSetter(property) ) {

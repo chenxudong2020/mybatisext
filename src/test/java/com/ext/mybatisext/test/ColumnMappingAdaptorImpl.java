@@ -6,6 +6,7 @@
 package com.ext.mybatisext.test;
 
 import com.ext.mybatisext.activerecord.config.ColumnMappingAdaptor;
+import com.ext.mybatisext.activerecord.config.DefaultColumnMappingAdaptor;
 
 
 /**
@@ -15,13 +16,7 @@ import com.ext.mybatisext.activerecord.config.ColumnMappingAdaptor;
  * @date	 2015年11月13日 
  * @version  1.0.0	 
  */
-public class ColumnMappingAdaptorImpl implements ColumnMappingAdaptor {
+public class ColumnMappingAdaptorImpl extends DefaultColumnMappingAdaptor {
 
-	@Override
-	public String adaptor( String column ) {
-
-		return column.replace("_", "");
-
-	}
 
 }

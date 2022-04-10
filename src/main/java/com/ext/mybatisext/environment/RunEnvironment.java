@@ -7,7 +7,7 @@ public interface RunEnvironment {
 	 * @author bo 本地,开发,测试,产品
 	 */
 	public enum Environment {
-		LOCAL("本地环境", "LOCAL"), DEVELOP("开发环境", "DEVELOP"), TEST("测试环境", "TEST"), PRODUCT("产品环境", "PRODUCT");
+		LOCAL("local", "LOCAL"), DEVELOP("develop", "DEVELOP"), TEST("test", "TEST"), PRODUCT("product", "PRODUCT");
 
 		String name;
 

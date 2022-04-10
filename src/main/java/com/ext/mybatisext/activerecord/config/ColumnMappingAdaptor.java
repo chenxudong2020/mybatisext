@@ -8,11 +8,12 @@ package com.ext.mybatisext.activerecord.config;
 public interface ColumnMappingAdaptor {
 
 	/**
-	 * @param tableName
-	 *            数据库表名称
-	 * @param column
-	 *            数据库字段名称
-	 * @return 映射的java字段名称
+	 *
+	 * @param beanClass 表实体
+	 * @param column 数据库字段
+	 * @return  java属性
 	 */
-	public String adaptor( String column );
+	public String adaptor(Class beanClass,String column );
+
+
 }

@@ -9,9 +9,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import com.ext.mybatisext.activerecord.config.MybatisVersionAdaptorWrapper;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.reflection.MetaClass;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.type.AnnotationMetadata;
 
 /**
  * 保留list和bean的某些属性值
@@ -32,7 +35,7 @@ public class PropertyHelper {
 		if (obj == null) {
 			return null;
 		}
-		MetaClass metaClass = MetaClass.forClass(obj.getClass());
+		MetaClass metaClass = MybatisVersionAdaptorWrapper.forClass(obj.getClass());
 		try {
 			return (T) metaClass.getGetInvoker(propertyName).invoke(obj, new Object[] {});
 		} catch (Exception e) {
@@ -43,7 +46,7 @@ public class PropertyHelper {
 	}
 
 	public static Map<String, Object> getPropertiesValue(Object obj) {
-		MetaClass metaClass = MetaClass.forClass(obj.getClass());
+		MetaClass metaClass = MybatisVersionAdaptorWrapper.forClass(obj.getClass());
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			String[] getters = metaClass.getGetterNames();
@@ -64,7 +67,7 @@ public class PropertyHelper {
 	}
 
 	public static Map<String, Class<?>> getPropertiesType(Class<?> cls) {
-		MetaClass metaClass = MetaClass.forClass(cls);
+		MetaClass metaClass = MybatisVersionAdaptorWrapper.forClass(cls);
 		Map<String, Class<?>> result = new HashMap<String, Class<?>>();
 
 		String[] setters = metaClass.getSetterNames();
@@ -78,13 +81,13 @@ public class PropertyHelper {
 	}
 
 	public static String[] getProperties(Class<?> cls) {
-		MetaClass metaClass = MetaClass.forClass(cls);
+		MetaClass metaClass = MybatisVersionAdaptorWrapper.forClass(cls);
 		String[] getters = metaClass.getGetterNames();
 		return getters;
 	}
 
 	public static void map2Object(Map map, Object newObj) {
-		MetaClass metaClass = MetaClass.forClass(newObj.getClass());
+		MetaClass metaClass = MybatisVersionAdaptorWrapper.forClass(newObj.getClass());
 		try {
 			String[] setter = metaClass.getSetterNames();
 			for (String set : setter) {
@@ -110,7 +113,7 @@ public class PropertyHelper {
 		}
 		try {
 			Set<String> setProperty = new HashSet<String>(Arrays.asList(property));
-			MetaClass metaClass = MetaClass.forClass(list.get(0).getClass());
+			MetaClass metaClass = MybatisVersionAdaptorWrapper.forClass(list.get(0).getClass());
 			String[] setter = metaClass.getSetterNames();
 			for (String set : setter) {
 				// 不保留这些属性
@@ -139,7 +142,7 @@ public class PropertyHelper {
 		}
 		try {
 			Set<String> setProperty = new HashSet<String>(Arrays.asList(property));
-			MetaClass metaClass = MetaClass.forClass(object.getClass());
+			MetaClass metaClass = MybatisVersionAdaptorWrapper.forClass(object.getClass());
 			String[] setter = metaClass.getSetterNames();
 			for (String set : setter) {
 				// 不保留这些属性
@@ -165,8 +168,8 @@ public class PropertyHelper {
 			throw new RuntimeException("对象不能为null");
 		}
 		try {
-			MetaClass oldClass = MetaClass.forClass(oldObj.getClass());
-			MetaClass newClass = MetaClass.forClass(newObj.getClass());
+			MetaClass oldClass = MybatisVersionAdaptorWrapper.forClass(oldObj.getClass());
+			MetaClass newClass = MybatisVersionAdaptorWrapper.forClass(newObj.getClass());
 			String[] getter = oldClass.getGetterNames();
 			String[] setter = newClass.getSetterNames();
 			Set<String> getProperty = new HashSet<String>(Arrays.asList(getter));

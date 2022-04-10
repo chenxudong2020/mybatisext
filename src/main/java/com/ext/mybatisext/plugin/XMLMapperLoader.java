@@ -99,10 +99,10 @@ public class XMLMapperLoader implements DisposableBean, InitializingBean, Applic
 		public void run() {
 			try {
 				if ( scanner.isChanged() ) {
-					logger.debug("*Mapper.xml文件改变,重新加载.");
+					logger.debug("*Mapper.xml changed,reloading.");
 					scanner.reloadXML();
 
-					logger.debug("加载完毕.");
+					logger.debug("reload finish.");
 				}
 			} catch ( Exception e ) {
 				logger.error(e.getMessage(), e);

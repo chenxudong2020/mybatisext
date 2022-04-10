@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.ext.mybatisext.activerecord.config.MybatisVersionAdaptorWrapper;
 import org.apache.ibatis.reflection.MetaClass;
 import org.springframework.util.ReflectionUtils;
 
@@ -38,7 +39,7 @@ public abstract class CollectionHelper {
 					map.put((K) m.get(property), v);
 					continue;
 				}
-				MetaClass meta = MetaClass.forClass(v.getClass());
+				MetaClass meta = MybatisVersionAdaptorWrapper.forClass(v.getClass());
 				Object fieldValue = meta.getGetInvoker(property).invoke(v, new Object[ ] {});
 				map.put((K) fieldValue, v);
 			}

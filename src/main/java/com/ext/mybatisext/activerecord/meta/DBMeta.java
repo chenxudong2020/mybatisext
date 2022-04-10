@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import com.ext.mybatisext.activerecord.dialect.impl.PostgreSQLDialect;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.mapping.Environment;
@@ -109,6 +110,9 @@ public class DBMeta {
 				dialect = new MysqlDialect();
 			} else if ( dia == Dialect.HSQLDB ) {
 				dialect = new HsqldbDialect();
+			}
+			else if ( dia == Dialect.POSTGRESQL ) {
+				dialect = new PostgreSQLDialect();
 			}
 			trans.close();
 		} catch ( SQLException e ) {

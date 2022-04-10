@@ -1,6 +1,7 @@
 package com.ext.mybatisext.mapper;
 
 import java.io.StringWriter;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -8,14 +9,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.ext.mybatisext.activerecord.config.MybatisVersionAdaptorWrapper;
+import com.ext.mybatisext.annotation.Column;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.reflection.MetaClass;
 import org.apache.ibatis.session.Configuration;
+import org.springframework.cglib.core.ReflectUtils;
 import org.springframework.core.io.ByteArrayResource;
 
 import com.ext.mybatisext.activerecord.config.ColumnsMapping;
+import org.springframework.util.ReflectionUtils;
 
 
 /**
@@ -59,13 +64,18 @@ public class MapperGenerate {
 
 	private Map<String, String> getColumnAndType() {
 		LinkedHashMap<String, String> propertyType = new LinkedHashMap<String, String>();
-		MetaClass metaClass = MetaClass.forClass(beanClass);
+		MetaClass metaClass = MybatisVersionAdaptorWrapper.forClass(beanClass);
 		Set<String> propertySet = new HashSet<String>();
 		String[] getter = metaClass.getGetterNames();
 		for ( String property : getter ) {
 			String lower = property.toLowerCase();
+
 			if ( !propertySet.contains(lower) ) {
-				propertyType.put(property, metaClass.getGetterType(property).getName());
+
+					propertyType.put(property, metaClass.getGetterType(property).getName());
+
+
+
 			} else {
 				logger.warn(beanName + "存在相同属性:" + property + ",请查看getter方法命名");
 			}
@@ -150,7 +160,7 @@ public class MapperGenerate {
 			if ( i != 0 ) {
 				writer.write(",");
 			}
-			writer.write("\t" + columns.get(i));
+			writer.write("\t" + this.getColumn(columns.get(i)));
 		}
 
 
@@ -185,6 +195,18 @@ public class MapperGenerate {
 		return writer.toString();
 	}
 
+	private String getColumn(String property){
+
+		Field field=ReflectionUtils.findField(beanClass,property);
+		if(field!=null){
+			field.setAccessible(true);
+		}
+		if(field.isAnnotationPresent(Column.class)){
+			Column column=field.getAnnotation(Column.class);
+			return column.value();
+		}
+		return property;
+	}
 
 	private String insert( String id2, List<String> columns ) {
 		int size = columns.size();
@@ -205,7 +227,8 @@ public class MapperGenerate {
 			tempField = columns.get(i);
 			bw.write("\t\t\t<if test=\"" + tempField + " != null\">");
 			bw.write("\r\n");
-			bw.write("\t\t\t\t " + tempField + ",");
+
+			bw.write("\t\t\t\t " + this.getColumn(tempField) + ",");
 			bw.write("\r\n");
 			bw.write("\t\t\t</if>");
 			bw.write("\r\n");
@@ -258,7 +281,7 @@ public class MapperGenerate {
 			tempField = columns.get(i);
 			bw.write("\t\t\t<if test=\"" + tempField + " != null\">");
 			bw.write("\r\n");
-			bw.write("\t\t\t\t " + tempField + " = #{" + tempField + "},");
+			bw.write("\t\t\t\t " +this.getColumn(tempField)  + " = #{" + tempField + "},");
 			bw.write("\r\n");
 			bw.write("\t\t\t</if>");
 			bw.write("\r\n");
@@ -340,7 +363,7 @@ public class MapperGenerate {
 			if ( i != 0 ) {
 				writer.write(",");
 			}
-			writer.write("\t" + newColumns.get(i));
+			writer.write("\t" + this.getColumn(newColumns.get(i)));
 		}
 
 
@@ -353,7 +376,7 @@ public class MapperGenerate {
 		for ( int i = 0 ; i < size ; i++ ) {
 			tempField = newColumns.get(i);
 			writer.write("\t\t\t<if test=\"record." + tempField + "!=null\">\r\n");
-			writer.write("\t\t\t AND " + tempField + "=#{record." + tempField + "}\r\n");
+			writer.write("\t\t\t AND " + this.getColumn(tempField) + "=#{record." + tempField + "}\r\n");
 			writer.write("\t\t\t</if>\r\n");
 		}
 
@@ -397,7 +420,7 @@ public class MapperGenerate {
 		for ( int i = 0 ; i < size ; i++ ) {
 			tempField = newColumns.get(i);
 			writer.write("\t\t\t<if test=\"" + tempField + "!=null\">\r\n");
-			writer.write("\t\t\t AND " + tempField + "=#{" + tempField + "}\r\n");
+			writer.write("\t\t\t AND " + this.getColumn(tempField) + "=#{" + tempField + "}\r\n");
 			writer.write("\t\t\t</if>\r\n");
 		}
 
@@ -428,7 +451,7 @@ public class MapperGenerate {
 		for ( int i = 0 ; i < size ; i++ ) {
 			tempField = newColumns.get(i);
 			writer.write("\t\t\t<if test=\"" + tempField + "!=null\">\r\n");
-			writer.write("\t\t\t AND " + tempField + "=#{" + tempField + "}\r\n");
+			writer.write("\t\t\t AND " + this.getColumn(tempField) + "=#{" + tempField + "}\r\n");
 			writer.write("\t\t\t</if>\r\n");
 		}
 

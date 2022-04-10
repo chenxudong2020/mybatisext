@@ -98,8 +98,9 @@ public class ConfigurationExt extends Configuration {
 
 	}
 
+
 	@Override
-	public void setLogImpl(Class<?> logImpl) {
+	public void setLogImpl(Class logImpl) {
 		if (config != null) {
 			config.setLogImpl(logImpl);
 			return;

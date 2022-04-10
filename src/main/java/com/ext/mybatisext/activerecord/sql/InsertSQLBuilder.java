@@ -52,7 +52,7 @@ public abstract class InsertSQLBuilder {
 		sql.append(" <trim prefix=\"(\" suffix=\")\" suffixOverrides=\",\"> ");
 
 		for ( Map.Entry<String, String> property : mapping.entrySet() ) {
-			sql.append("<if test=\"" + property.getValue() + "!=null\">");
+			sql.append("<if test=\"" + property.getKey() + "!=null\">");
 			sql.append(property.getValue());
 			sql.append(",");
 			sql.append("</if>");
@@ -62,9 +62,9 @@ public abstract class InsertSQLBuilder {
 		sql.append(" </trim> ");
 		sql.append("<trim prefix=\"VALUES (\" suffix=\")\" suffixOverrides=\",\">");
 		for ( Map.Entry<String, String> property : mapping.entrySet() ) {
-			sql.append("<if test=\"" + property.getValue() + "!=null\">");
+			sql.append("<if test=\"" + property.getKey() + "!=null\">");
 			sql.append("#{");
-			sql.append(property.getValue());
+			sql.append(property.getKey());
 			sql.append("},");
 			sql.append("</if>");
 		}

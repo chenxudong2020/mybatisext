@@ -13,13 +13,10 @@ import org.springframework.util.StringValueResolver;
 @SuppressWarnings("synthetic-access")
 public class ConfigPropertyConfigurer extends PropertyPlaceholderConfigurer {
 
-	//ApplicationContext context;
+
 	RunEnvironment environment;
 
 
-	//	public ConfigPropertyConfigurer(ApplicationContext context) {
-	//		this.context = context;
-	//	}
 
 	public ConfigPropertyConfigurer() {
 		super();

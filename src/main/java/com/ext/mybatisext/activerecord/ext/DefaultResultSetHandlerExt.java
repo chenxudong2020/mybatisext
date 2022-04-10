@@ -12,7 +12,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import com.ext.mybatisext.activerecord.config.MybatisVersionAdaptorWrapper;
 import org.apache.ibatis.cache.CacheKey;
+
 import org.apache.ibatis.executor.ErrorContext;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.executor.ExecutorException;
@@ -29,6 +31,7 @@ import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.mapping.ParameterMode;
 import org.apache.ibatis.mapping.ResultMap;
 import org.apache.ibatis.mapping.ResultMapping;
+
 import org.apache.ibatis.reflection.MetaClass;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.factory.ObjectFactory;
@@ -98,6 +101,8 @@ public class DefaultResultSetHandlerExt implements ResultSetHandler {
 	// HANDLE OUTPUT PARAMETER
 	//
 
+
+
 	@Override
 	public void handleOutputParameters(CallableStatement cs) throws SQLException {
 		final Object parameterObject = parameterHandler.getParameterObject();
@@ -156,7 +161,7 @@ public class DefaultResultSetHandlerExt implements ResultSetHandler {
 					ArrayList<ResultMapping> mappings = new ArrayList<ResultMapping>();
 					for (String column : rsw.getColumnNames()) {
 						String property = column;
-						property = MybatisExt.adaptor.adaptor(column);
+						property = MybatisExt.adaptor.adaptor(resultMap.getType(),column);
 						Class<?> propertyType = entityType.get(property.toUpperCase(Locale.ENGLISH));
 						if (propertyType != null) {
 							mappings.add(new ResultMapping.Builder(configuration, property, column, propertyType)
@@ -172,7 +177,7 @@ public class DefaultResultSetHandlerExt implements ResultSetHandler {
 					List<String> names = rsw.getColumnNames();
 					for (int i = 0; i < names.size(); i++) {
 						String property = names.get(i);
-						property = MybatisExt.adaptor.adaptor(names.get(i));
+						property = MybatisExt.adaptor.adaptor(Map.class,names.get(i));
 						TypeHandler<?> handler = typeHandlerRegistry.getTypeHandler(types.get(i));
 						if (handler != null) {
 							mappings.add(new ResultMapping.Builder(configuration, property, names.get(i), handler)
@@ -1008,7 +1013,7 @@ public class DefaultResultSetHandlerExt implements ResultSetHandler {
 
 	protected void createRowKeyForUnmappedProperties(ResultMap resultMap, ResultSetWrapper rsw, CacheKey cacheKey,
 			String columnPrefix) throws SQLException {
-		final MetaClass metaType = MetaClass.forClass(resultMap.getType());
+		final MetaClass metaType = MybatisVersionAdaptorWrapper.forClass(resultMap.getType());
 		List<String> unmappedColumnNames = rsw.getUnmappedColumnNames(resultMap, columnPrefix);
 		for (String column : unmappedColumnNames) {
 			String property = column;
