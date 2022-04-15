@@ -34,7 +34,7 @@ public class MapperProxyExt<T> implements InvocationHandler, Serializable {
 	public MapperProxyExt(
 			SqlSession sqlSession,
 			Class<T> mapperInterface,
-			Map<Method, MapperMethod> methodCache,
+			Map methodCache,
 			MyBatisInterceptor[] interceptors ) {
 		this.sqlSession = sqlSession;
 		this.mapperInterface = mapperInterface;

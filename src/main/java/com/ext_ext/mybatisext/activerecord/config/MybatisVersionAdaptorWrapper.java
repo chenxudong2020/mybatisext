@@ -17,7 +17,7 @@ public class MybatisVersionAdaptorWrapper {
         } catch (Exception e) {
 
             defaultReflectorFactory=null;
-
+            e.printStackTrace();
         }
     }
 
