@@ -1,6 +1,6 @@
-package com.ext_ext.mybatisext.activerecord.dialect.impl;
+package com.ext.mybatisext.activerecord.dialect.impl;
 
-import com.ext_ext.mybatisext.activerecord.dialect.DialectSQL;
+import com.ext.mybatisext.activerecord.dialect.DialectSQL;
 
 public class MysqlDialect extends DialectSQL {
 

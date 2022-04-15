@@ -1,6 +1,6 @@
-package com.ext_ext.mybatisext.activerecord.statement;
+package com.ext.mybatisext.activerecord.statement;
 
-import com.ext_ext.mybatisext.annotation.Trans;
+import com.ext.mybatisext.annotation.Trans;
 
 
 public interface Delete<TABLE, ID> extends Statement<TABLE, ID> {

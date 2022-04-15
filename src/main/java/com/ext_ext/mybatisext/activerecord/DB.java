@@ -1,12 +1,12 @@
-package com.ext_ext.mybatisext.activerecord;
+package com.ext.mybatisext.activerecord;
 
 import java.util.List;
 
 import org.apache.ibatis.mapping.MappedStatement;
 
-import com.ext_ext.mybatisext.activerecord.meta.DBMeta;
-import com.ext_ext.mybatisext.annotation.Trans;
-import com.ext_ext.mybatisext.helper.Page;
+import com.ext.mybatisext.activerecord.meta.DBMeta;
+import com.ext.mybatisext.annotation.Trans;
+import com.ext.mybatisext.helper.Page;
 
 /**
  * 数据库操作对象

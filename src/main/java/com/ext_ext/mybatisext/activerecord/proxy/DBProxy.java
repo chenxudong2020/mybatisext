@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.activerecord.proxy;
+package com.ext.mybatisext.activerecord.proxy;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -7,8 +7,8 @@ import java.lang.reflect.Proxy;
 
 import org.apache.ibatis.transaction.Transaction;
 
-import com.ext_ext.mybatisext.activerecord.DB;
-import com.ext_ext.mybatisext.annotation.Trans;
+import com.ext.mybatisext.activerecord.DB;
+import com.ext.mybatisext.annotation.Trans;
 
 /**
  * 数据库操作代理

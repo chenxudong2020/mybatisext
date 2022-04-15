@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.generator;
+package com.ext.mybatisext.generator;
 
 /**
  * 

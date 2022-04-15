@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.activerecord.statement.impl;
+package com.ext.mybatisext.activerecord.statement.impl;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -7,10 +7,10 @@ import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.mapping.SqlSource;
 
-import com.ext_ext.mybatisext.activerecord.Record;
-import com.ext_ext.mybatisext.activerecord.meta.TableMeta;
-import com.ext_ext.mybatisext.activerecord.sql.UpdateSQLBuilder;
-import com.ext_ext.mybatisext.activerecord.statement.Update;
+import com.ext.mybatisext.activerecord.Record;
+import com.ext.mybatisext.activerecord.meta.TableMeta;
+import com.ext.mybatisext.activerecord.sql.UpdateSQLBuilder;
+import com.ext.mybatisext.activerecord.statement.Update;
 
 /**
  * <p>

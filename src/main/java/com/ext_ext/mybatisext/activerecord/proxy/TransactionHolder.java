@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.activerecord.proxy;
+package com.ext.mybatisext.activerecord.proxy;
 
 import org.apache.ibatis.transaction.Transaction;
 

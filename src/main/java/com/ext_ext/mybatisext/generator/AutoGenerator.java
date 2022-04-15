@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.generator;
+package com.ext.mybatisext.generator;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -355,9 +355,9 @@ public class AutoGenerator {
 		bw.newLine();
 		bw.write("import " + config.getEntityPackage() + "." + beanName + ";");
 		bw.newLine();
-		bw.write("import com.ext_ext.mybatisext.annotation.TableName;");
+		bw.write("import com.ext.mybatisext.annotation.TableName;");
 		bw.newLine();
-		bw.write("import com.ext_ext.mybatisext.mapper.CommonMapper;");
+		bw.write("import com.ext.mybatisext.mapper.CommonMapper;");
 		bw.newLine();
 
 		bw = buildClassComment(bw, mapperName + "数据库操作接口类");

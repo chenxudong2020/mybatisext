@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.plugin;
+package com.ext.mybatisext.plugin;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
@@ -18,9 +18,9 @@ import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
-import com.ext_ext.mybatisext.MapperProxyExt;
-import com.ext_ext.mybatisext.annotation.Batch;
-import com.ext_ext.mybatisext.interceptor.MyBatisInvocation;
+import com.ext.mybatisext.MapperProxyExt;
+import com.ext.mybatisext.annotation.Batch;
+import com.ext.mybatisext.interceptor.MyBatisInvocation;
 
 /**
  * 批量处理，如果遇见Batch注解

@@ -1,14 +1,14 @@
-package com.ext_ext.mybatisext.interceptor;
+package com.ext.mybatisext.interceptor;
 
 import java.lang.reflect.Method;
 
 import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 
-import com.ext_ext.mybatisext.activerecord.DB;
-import com.ext_ext.mybatisext.activerecord.MybatisExt;
-import com.ext_ext.mybatisext.activerecord.Table;
-import com.ext_ext.mybatisext.activerecord.ext.ConfigurationExt;
-import com.ext_ext.mybatisext.annotation.TableName;
+import com.ext.mybatisext.activerecord.DB;
+import com.ext.mybatisext.activerecord.MybatisExt;
+import com.ext.mybatisext.activerecord.Table;
+import com.ext.mybatisext.activerecord.ext.ConfigurationExt;
+import com.ext.mybatisext.annotation.TableName;
 
 /**
  * 用于支持共通的mapper增删改查操作

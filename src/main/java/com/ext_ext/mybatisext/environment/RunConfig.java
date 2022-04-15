@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.environment;
+package com.ext.mybatisext.environment;
 
 import java.util.Properties;
 

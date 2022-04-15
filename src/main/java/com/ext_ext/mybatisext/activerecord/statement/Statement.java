@@ -1,6 +1,6 @@
-package com.ext_ext.mybatisext.activerecord.statement;
+package com.ext.mybatisext.activerecord.statement;
 
-import com.ext_ext.mybatisext.activerecord.Table;
+import com.ext.mybatisext.activerecord.Table;
 
 
 /**

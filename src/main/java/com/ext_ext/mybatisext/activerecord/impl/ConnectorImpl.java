@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.activerecord.impl;
+package com.ext.mybatisext.activerecord.impl;
 
 import java.sql.Array;
 
@@ -13,16 +13,16 @@ import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.mybatis.spring.transaction.SpringManagedTransactionFactory;
 
 import com.alibaba.fastjson.JSONObject;
-import com.ext_ext.mybatisext.activerecord.Connector;
-import com.ext_ext.mybatisext.activerecord.DB;
-import com.ext_ext.mybatisext.activerecord.ext.ConfigurationExt;
-import com.ext_ext.mybatisext.helper.ArrayTypeHandler;
-import com.ext_ext.mybatisext.helper.JSONTypeHandler;
-import com.ext_ext.mybatisext.helper.SmartDate;
-import com.ext_ext.mybatisext.helper.SmartDateTypeHandler;
-import com.ext_ext.mybatisext.helper.SqlSessionFactoryHolder;
-import com.ext_ext.mybatisext.plugin.IndexingPlugin;
-import com.ext_ext.mybatisext.plugin.SQLPrintPlugin;
+import com.ext.mybatisext.activerecord.Connector;
+import com.ext.mybatisext.activerecord.DB;
+import com.ext.mybatisext.activerecord.ext.ConfigurationExt;
+import com.ext.mybatisext.helper.ArrayTypeHandler;
+import com.ext.mybatisext.helper.JSONTypeHandler;
+import com.ext.mybatisext.helper.SmartDate;
+import com.ext.mybatisext.helper.SmartDateTypeHandler;
+import com.ext.mybatisext.helper.SqlSessionFactoryHolder;
+import com.ext.mybatisext.plugin.IndexingPlugin;
+import com.ext.mybatisext.plugin.SQLPrintPlugin;
 
 public class ConnectorImpl implements Connector {
 

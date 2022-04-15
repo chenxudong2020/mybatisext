@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.activerecord.sql;
+package com.ext.mybatisext.activerecord.sql;
 
 /**
  * SQL语句构造器。

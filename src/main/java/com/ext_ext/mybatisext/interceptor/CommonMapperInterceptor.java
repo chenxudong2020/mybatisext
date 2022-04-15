@@ -1,13 +1,13 @@
-package com.ext_ext.mybatisext.interceptor;
+package com.ext.mybatisext.interceptor;
 
 import java.lang.reflect.Method;
 
 import org.apache.ibatis.session.Configuration;
 
-import com.ext_ext.mybatisext.annotation.TableName;
-import com.ext_ext.mybatisext.mapper.AutoMapper;
-import com.ext_ext.mybatisext.mapper.CommonMapper;
-import com.ext_ext.mybatisext.mapper.MapperGenerate;
+import com.ext.mybatisext.annotation.TableName;
+import com.ext.mybatisext.mapper.AutoMapper;
+import com.ext.mybatisext.mapper.CommonMapper;
+import com.ext.mybatisext.mapper.MapperGenerate;
 
 
 /**

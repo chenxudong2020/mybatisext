@@ -1,9 +1,9 @@
-package com.ext_ext.mybatisext.activerecord.statement;
+package com.ext.mybatisext.activerecord.statement;
 
 import java.util.List;
 
-import com.ext_ext.mybatisext.annotation.Trans;
-import com.ext_ext.mybatisext.helper.Page;
+import com.ext.mybatisext.annotation.Trans;
+import com.ext.mybatisext.helper.Page;
 
 public interface Select<TABLE, ID> extends Statement<TABLE, ID> {
 

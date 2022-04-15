@@ -1,14 +1,14 @@
-package com.ext_ext.mybatisext.activerecord.statement.impl;
+package com.ext.mybatisext.activerecord.statement.impl;
 
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.scripting.defaults.RawSqlSource;
 
-import com.ext_ext.mybatisext.activerecord.Record;
-import com.ext_ext.mybatisext.activerecord.meta.TableMeta;
-import com.ext_ext.mybatisext.activerecord.sql.DeleteSQLBuilder;
-import com.ext_ext.mybatisext.activerecord.statement.Delete;
+import com.ext.mybatisext.activerecord.Record;
+import com.ext.mybatisext.activerecord.meta.TableMeta;
+import com.ext.mybatisext.activerecord.sql.DeleteSQLBuilder;
+import com.ext.mybatisext.activerecord.statement.Delete;
 
 /**
  * <p>

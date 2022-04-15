@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.activerecord.dialect;
+package com.ext.mybatisext.activerecord.dialect;
 
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;

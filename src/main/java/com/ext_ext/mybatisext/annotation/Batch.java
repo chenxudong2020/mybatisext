@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.annotation;
+package com.ext.mybatisext.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.plugin;
+package com.ext.mybatisext.plugin;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,10 +25,10 @@ import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.transaction.Transaction;
 
-import com.ext_ext.mybatisext.activerecord.dialect.DialectSQL;
-import com.ext_ext.mybatisext.activerecord.dialect.DialectSQL.Dialect;
-import com.ext_ext.mybatisext.environment.EnvironmentDetect;
-import com.ext_ext.mybatisext.environment.RunEnvironment.Environment;
+import com.ext.mybatisext.activerecord.dialect.DialectSQL;
+import com.ext.mybatisext.activerecord.dialect.DialectSQL.Dialect;
+import com.ext.mybatisext.environment.EnvironmentDetect;
+import com.ext.mybatisext.environment.RunEnvironment.Environment;
 
 /**
  * 

@@ -1,18 +1,18 @@
-package com.ext_ext.mybatisext.activerecord;
+package com.ext.mybatisext.activerecord;
 
 import java.util.List;
 
-import com.ext_ext.mybatisext.activerecord.meta.TableMeta;
-import com.ext_ext.mybatisext.activerecord.sql.DeleteSQL;
-import com.ext_ext.mybatisext.activerecord.sql.InsertSQL;
-import com.ext_ext.mybatisext.activerecord.sql.SelectSQL;
-import com.ext_ext.mybatisext.activerecord.sql.UpdateSQL;
-import com.ext_ext.mybatisext.activerecord.statement.Delete;
-import com.ext_ext.mybatisext.activerecord.statement.Insert;
-import com.ext_ext.mybatisext.activerecord.statement.Select;
-import com.ext_ext.mybatisext.activerecord.statement.Update;
-import com.ext_ext.mybatisext.annotation.Trans;
-import com.ext_ext.mybatisext.helper.Page;
+import com.ext.mybatisext.activerecord.meta.TableMeta;
+import com.ext.mybatisext.activerecord.sql.DeleteSQL;
+import com.ext.mybatisext.activerecord.sql.InsertSQL;
+import com.ext.mybatisext.activerecord.sql.SelectSQL;
+import com.ext.mybatisext.activerecord.sql.UpdateSQL;
+import com.ext.mybatisext.activerecord.statement.Delete;
+import com.ext.mybatisext.activerecord.statement.Insert;
+import com.ext.mybatisext.activerecord.statement.Select;
+import com.ext.mybatisext.activerecord.statement.Update;
+import com.ext.mybatisext.annotation.Trans;
+import com.ext.mybatisext.helper.Page;
 
 /**
  * 表操作对象

@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.activerecord.meta;
+package com.ext.mybatisext.activerecord.meta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +8,8 @@ import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.mapping.ResultMap;
 import org.apache.ibatis.mapping.ResultMapping;
 
-import com.ext_ext.mybatisext.activerecord.DB;
-import com.ext_ext.mybatisext.activerecord.Table;
+import com.ext.mybatisext.activerecord.DB;
+import com.ext.mybatisext.activerecord.Table;
 
 public class TableMeta<TABLE, ID> {
 

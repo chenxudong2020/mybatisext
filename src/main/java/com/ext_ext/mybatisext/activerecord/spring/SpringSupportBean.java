@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.activerecord.spring;
+package com.ext.mybatisext.activerecord.spring;
 
 import javax.sql.DataSource;
 
@@ -6,8 +6,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 
-import com.ext_ext.mybatisext.activerecord.DB;
-import com.ext_ext.mybatisext.activerecord.MybatisExt;
+import com.ext.mybatisext.activerecord.DB;
+import com.ext.mybatisext.activerecord.MybatisExt;
 
 
 /**

@@ -1,12 +1,12 @@
-package com.ext_ext.mybatisext.activerecord;
+package com.ext.mybatisext.activerecord;
 
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import com.ext_ext.mybatisext.activerecord.config.ColumnMappingAdaptor;
-import com.ext_ext.mybatisext.activerecord.dialect.DialectSQL;
-import com.ext_ext.mybatisext.activerecord.impl.ConnectorImpl;
+import com.ext.mybatisext.activerecord.config.ColumnMappingAdaptor;
+import com.ext.mybatisext.activerecord.dialect.DialectSQL;
+import com.ext.mybatisext.activerecord.impl.ConnectorImpl;
 
 /**
  * 入口类

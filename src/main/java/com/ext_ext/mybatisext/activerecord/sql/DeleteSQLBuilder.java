@@ -1,8 +1,8 @@
-package com.ext_ext.mybatisext.activerecord.sql;
+package com.ext.mybatisext.activerecord.sql;
 
 import java.util.Map;
 
-import com.ext_ext.mybatisext.activerecord.meta.TableMeta;
+import com.ext.mybatisext.activerecord.meta.TableMeta;
 
 public abstract class DeleteSQLBuilder {
 

@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.interceptor;
+package com.ext.mybatisext.interceptor;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.plugin;
+package com.ext.mybatisext.plugin;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -23,7 +23,7 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ext_ext.mybatisext.environment.EnvironmentDetect;
+import com.ext.mybatisext.environment.EnvironmentDetect;
 
 @Intercepts({ @Signature(type = Executor.class, method = "update", args = { MappedStatement.class, Object.class }),
 		@Signature(type = Executor.class, method = "query", args = { MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class }) })

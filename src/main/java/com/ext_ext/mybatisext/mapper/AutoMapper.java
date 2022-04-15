@@ -1,10 +1,10 @@
-package com.ext_ext.mybatisext.mapper;
+package com.ext.mybatisext.mapper;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.ext_ext.mybatisext.annotation.Batch;
+import com.ext.mybatisext.annotation.Batch;
 
 /**
  * 基础增删改查操作,子类继承此接口,并加TableName注解

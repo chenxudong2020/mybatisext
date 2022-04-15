@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.mapper;
+package com.ext.mybatisext.mapper;
 
 
 /**

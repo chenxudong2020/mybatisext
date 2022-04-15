@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.helper;
+package com.ext.mybatisext.helper;
 
 import java.util.List;
 

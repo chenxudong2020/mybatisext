@@ -1,10 +1,10 @@
-package com.ext_ext.mybatisext.plugin.paging;
+package com.ext.mybatisext.plugin.paging;
 
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.session.Configuration;
 
-import com.ext_ext.mybatisext.activerecord.dialect.DialectSQL;
-import com.ext_ext.mybatisext.helper.Page;
+import com.ext.mybatisext.activerecord.dialect.DialectSQL;
+import com.ext.mybatisext.helper.Page;
 
 
 /**

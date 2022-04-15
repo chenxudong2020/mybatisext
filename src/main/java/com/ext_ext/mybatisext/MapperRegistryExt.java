@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext;
+package com.ext.mybatisext;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Proxy;
@@ -12,7 +12,7 @@ import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
 
-import com.ext_ext.mybatisext.interceptor.MyBatisInterceptor;
+import com.ext.mybatisext.interceptor.MyBatisInterceptor;
 
 /**
  * @author songrubo

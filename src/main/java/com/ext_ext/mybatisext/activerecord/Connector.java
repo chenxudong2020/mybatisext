@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.activerecord;
+package com.ext.mybatisext.activerecord;
 
 import javax.sql.DataSource;
 

@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.activerecord.statement.impl;
+package com.ext.mybatisext.activerecord.statement.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,11 +10,11 @@ import org.apache.ibatis.mapping.ResultMapping;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.mapping.SqlSource;
 
-import com.ext_ext.mybatisext.activerecord.Record;
-import com.ext_ext.mybatisext.activerecord.meta.TableMeta;
-import com.ext_ext.mybatisext.activerecord.sql.SelectSQLBuilder;
-import com.ext_ext.mybatisext.activerecord.statement.Select;
-import com.ext_ext.mybatisext.helper.Page;
+import com.ext.mybatisext.activerecord.Record;
+import com.ext.mybatisext.activerecord.meta.TableMeta;
+import com.ext.mybatisext.activerecord.sql.SelectSQLBuilder;
+import com.ext.mybatisext.activerecord.statement.Select;
+import com.ext.mybatisext.helper.Page;
 
 /**
  * 查询实现

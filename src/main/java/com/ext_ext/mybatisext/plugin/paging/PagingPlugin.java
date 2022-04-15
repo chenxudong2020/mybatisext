@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.plugin.paging;
+package com.ext.mybatisext.plugin.paging;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,11 +29,11 @@ import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.transaction.Transaction;
 
-import com.ext_ext.mybatisext.MapperProxyExt;
-import com.ext_ext.mybatisext.activerecord.MybatisExt;
-import com.ext_ext.mybatisext.activerecord.dialect.DialectSQL;
-import com.ext_ext.mybatisext.helper.Page;
-import com.ext_ext.mybatisext.interceptor.MyBatisInvocation;
+import com.ext.mybatisext.MapperProxyExt;
+import com.ext.mybatisext.activerecord.MybatisExt;
+import com.ext.mybatisext.activerecord.dialect.DialectSQL;
+import com.ext.mybatisext.helper.Page;
+import com.ext.mybatisext.interceptor.MyBatisInvocation;
 
 /**
  *

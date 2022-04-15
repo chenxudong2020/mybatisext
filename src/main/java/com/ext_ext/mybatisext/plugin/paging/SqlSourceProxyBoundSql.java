@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.plugin.paging;
+package com.ext.mybatisext.plugin.paging;
 
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.SqlSource;

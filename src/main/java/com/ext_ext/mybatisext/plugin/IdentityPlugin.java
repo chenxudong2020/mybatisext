@@ -1,4 +1,4 @@
-package com.ext_ext.mybatisext.plugin;
+package com.ext.mybatisext.plugin;
 
 import java.util.List;
 import java.util.Map;
@@ -13,8 +13,8 @@ import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.plugin.Signature;
 
-import com.ext_ext.mybatisext.helper.IdWorker;
-import com.ext_ext.mybatisext.helper.Identity;
+import com.ext.mybatisext.helper.IdWorker;
+import com.ext.mybatisext.helper.Identity;
 
 /**
  * 

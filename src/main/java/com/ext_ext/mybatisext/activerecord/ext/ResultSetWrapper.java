@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.ext_ext.mybatisext.activerecord.ext;
+package com.ext.mybatisext.activerecord.ext;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;

@@ -1,12 +1,14 @@
-package com.ext_ext.mybatisext.test.entity;
+package com.ext.mybatisext.test.entity;
 
 import java.io.Serializable;
 
-import com.ext_ext.mybatisext.helper.Identity;
+import com.ext.mybatisext.annotation.Column;
+import com.ext.mybatisext.helper.Identity;
 
 public class User extends Identity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
 
 	private String name;
 
