@@ -3,9 +3,13 @@ package com.ext.mybatisext;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.util.Map;
 
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
+import org.apache.ibatis.reflection.MetaObject;
+import org.apache.ibatis.reflection.wrapper.ObjectWrapper;
+import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -69,6 +73,8 @@ public class SqlSessionFactoryBeanExt extends SqlSessionFactoryBean {
 			config.getTypeHandlerRegistry().register(Double[].class, ArrayTypeHandlerExt.class);
 			config.getTypeHandlerRegistry().register(Float[].class, ArrayTypeHandlerExt.class);
 			config.getTypeHandlerRegistry().register(Long[].class, ArrayTypeHandlerExt.class);
+			//TODO 设置Map值的key为驼峰处理
+			config.setObjectWrapperFactory(new ExtObjectWrapperFactory());
 		} catch ( Exception e ) {
 			logger.error(e.getMessage(), e);
 		}
