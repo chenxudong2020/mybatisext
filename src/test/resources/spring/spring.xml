@@ -9,56 +9,26 @@
 
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
 		<property name="url" value="${jdbc.url}" />
+		<property name="driverClassName" value="${jdbc.driver}"></property>
 		<property name="username" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
 	</bean>
 	<!-- Mybatis相关配置 -->
-	<bean id="sqlSessionFactory" class="com.ext.mybatisext.SqlSessionFactoryBeanExt">
+	<bean id="sqlSessionFactory" class="com.gitee.fastmybatis.core.ext.SqlSessionFactoryBeanExt">
 		<property name="dataSource" ref="dataSource" />
-		<property name="typeAliasesPackage" value="com.ext_ext.mybatisext.test.entity" />
-		<!-- 拦截器配置 -->
-		<property name="interceptors">
-			<list>
-				<bean class="com.ext.mybatisext.interceptor.GenericMapperInterceptor" />
-				<bean class="com.ext.mybatisext.interceptor.CommonMapperInterceptor" />
-			</list>
-		</property>
-		<!-- plugin配置 -->
-		<property name="plugins">
-			<list>
-				<bean class="com.ext.mybatisext.plugin.SQLPrintPlugin" />
-				<bean class="com.ext.mybatisext.plugin.IndexingPlugin" />
-				<bean class="com.ext.mybatisext.plugin.paging.PagingPlugin">
-					<!-- <property name="dialect"> <bean class="com.ext_ext.mybatisext.activerecord.dialect.impl.MysqlDialect" /> </property> -->
-				</bean>
-				<bean class="com.ext.mybatisext.plugin.IdentityPlugin" />
-				<bean class="com.ext.mybatisext.plugin.BatchPlugin" />
-			</list>
-		</property>
+		<property name="basePackage" value="com.ext.mybatisext.test.mapper" />
+		<property name="typeAliasesPackage" value="com.ext.mybatisext.test.entity" />
 	</bean>
 
 	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.ext.mybatisext.test.mapper" />
 	</bean>
-	<!-- mapper.xml文件自动加载 -->
-	<bean class="com.ext.mybatisext.plugin.XMLMapperLoader" />
 
-	<!-- 运行时加虚拟机参数-Denv=LOCAL|DEVELOP|TEST|PRODUCT 代表四个环境,不加是生产环境 -->
-	<bean id="environment" class="com.ext.mybatisext.environment.EnvironmentDetect">
-		<property name="resources">
-			<list>
-				<value>classpath:properties/*.properties</value>
-			</list>
+
+	<bean id="environment" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" >
+				<value>classpath:properties/jdbc.properties</value>
 		</property>
 	</bean>
-	<!-- Properties读取配置 -->
-	<bean class="com.ext.mybatisext.environment.ConfigPropertyConfigurer">
-		<property name="environment" ref="environment" />
-		<property name="ignoreResourceNotFound" value="true" />
-		<property name="ignoreUnresolvablePlaceholders" value="true" />
-	</bean>
-	<!-- DB注入支持 -->
-	<bean class="com.ext.mybatisext.activerecord.spring.SpringSupportBean">
-		<property name="dataSource" ref="dataSource"/>
-	</bean>
+
 </beans>

@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ext_ext.mybatisext.test.mapper.UserMapper">
+<mapper namespace="com.ext.mybatisext.test.mapper.UserMapper">
 
 	<sql id="Base_Column_List">
-		id, name, age
+		id, user_name, user_age
 	</sql>
 
 
 	<select id="selectByName" resultType="user">
 		SELECT
 		<include refid="Base_Column_List" />
-		FROM t_user WHERE name=#{name}
+		FROM t_user WHERE user_name=#{name}
 	</select>
 
-	<select id="selectByNamePaging" resultType="user">
-		SELECT
-		<include refid="Base_Column_List" />
-		FROM t_user WHERE name=#{name}
-	</select>
+
 </mapper>

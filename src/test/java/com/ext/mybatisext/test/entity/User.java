@@ -1,35 +1,48 @@
 package com.ext.mybatisext.test.entity;
 
+import com.gitee.fastmybatis.annotation.Column;
+import com.gitee.fastmybatis.annotation.Pk;
+import com.gitee.fastmybatis.annotation.PkStrategy;
+import com.gitee.fastmybatis.annotation.Table;
+import com.gitee.fastmybatis.core.support.Record;
+
 import java.io.Serializable;
 
-import com.ext.mybatisext.helper.Identity;
 
-public class User extends Identity implements Serializable {
-
-	private static final long serialVersionUID = 1L;
-
-	private String name;
-
-	private Integer age;
+@Table(name = "t_user", pk = @Pk(name = "id"))
+public class User implements Record {
 
 
-	public void setName( String name ) {
-		this.name = name;
+
+	private Long id;
+
+
+
+	private String user_NAME;
+
+	private Integer user_AGE;
+
+	public String getUser_NAME() {
+		return user_NAME;
 	}
 
-
-	public String getName() {
-		return this.name;
+	public void setUser_NAME(String user_NAME) {
+		this.user_NAME = user_NAME;
 	}
 
-
-	public void setAge( Integer age ) {
-		this.age = age;
+	public Integer getUser_AGE() {
+		return user_AGE;
 	}
 
-
-	public Integer getAge() {
-		return this.age;
+	public void setUser_AGE(Integer user_AGE) {
+		this.user_AGE = user_AGE;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 }

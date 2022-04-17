@@ -3,6 +3,7 @@ package com.ext.mybatisext.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gitee.fastmybatis.core.query.Query;
 import org.junit.Test;
 
 import com.alibaba.fastjson.JSON;
@@ -21,25 +22,27 @@ public class CommonMapperTest extends DaoTests {
 	@Test
 	public void test() {
 		User user = new User();
-		user.setAge(12);
-		user.setName("bobo");
-		userMapper.insertSelective(user);
+		user.setUser_AGE(12);
+		user.setUser_NAME("bobo");
+		userMapper.save(user);
 
-		List<User> recordList = new ArrayList<User>();
+		/*List<User> recordList = new ArrayList<User>();
 		user = new User();
 		user.setAge(126);
 		user.setName("bobo1111");
 		recordList.add(user);
 
-		userMapper.insertSelectiveBatch(recordList);
+		userMapper.saveBatch(recordList);
 		user = new User();
 		user.setAge(126);
 		user.setName("bobo1111");
-		int count = userMapper.count(user);
 
-		System.out.println(count);
 
-		user = userMapper.selectOne(user);
-		System.out.println(JSON.toJSONString(user));
+		System.out.println(1);*/
+
+        Query query=new Query();
+		query.eq("user_age",126).eq("user_name","bobo1111");
+		List<User> list=userMapper.list(query);
+		System.out.println(JSON.toJSONString(list));
 	}
 }
