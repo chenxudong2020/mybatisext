@@ -23,16 +23,16 @@ public class MapperTest extends DaoTests {
 	@Before
 	public void testInsert() {
 		User user = new User();
-		user.setAge(1);
-		user.setName("li");
+		user.setUserAGE(1);
+		user.setUSER_Name("li");
 		user.setId(1L);
 
 		// 根据指定id插入
 		userMapper.getInsert().insert(user);
 
 		user = new User();
-		user.setAge(13);
-		user.setName("lei");
+		user.setUserAGE(13);
+		user.setUSER_Name("lei");
 		// 自动生成id
 		userMapper.getInsert().insert(user);
 	}

@@ -15,6 +15,7 @@ import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.reflection.MetaClass;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.util.ReflectionUtils;
 
 /**
  * 保留list和bean的某些属性值
@@ -80,9 +81,12 @@ public class PropertyHelper {
 		return result;
 	}
 
+
+
 	public static String[] getProperties(Class<?> cls) {
 		MetaClass metaClass = MybatisVersionAdaptorWrapper.forClass(cls);
 		String[] getters = metaClass.getGetterNames();
+
 		return getters;
 	}
 

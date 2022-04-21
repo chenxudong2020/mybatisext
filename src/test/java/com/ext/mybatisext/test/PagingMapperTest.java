@@ -28,8 +28,8 @@ public class PagingMapperTest extends DaoTests {
 
 		for ( int i = 0 ; i < 10 ; i++ ) {
 			User user = new User();
-			user.setAge(1);
-			user.setName("li");
+			user.setUserAGE(1);
+			user.setUSER_Name("li");
 			user.setId((long) i);
 			list.add(user);
 		}

@@ -20,8 +20,8 @@ public class ActiveRecordTest extends DaoTests {
 		//DB db = MybatisExt.open();
 
 		User user = new User();
-		user.setAge(100);
-		user.setName("bobo");
+		user.setUserAGE(100);
+		user.setUSER_Name("bobo");
 		db.active("T_USER", User.class, "id", Long.class).getInsert().insert(user);
 	}
 }

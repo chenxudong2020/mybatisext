@@ -11,6 +11,7 @@ import java.util.Set;
 
 import com.ext.mybatisext.activerecord.config.MybatisVersionAdaptorWrapper;
 import com.ext.mybatisext.annotation.Column;
+import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
@@ -151,7 +152,8 @@ public class MapperGenerate {
 		// 查询（根据主键ID查询）
 		writer.write("\t<!-- 查询（根据主键ID查询） -->");
 		writer.write("\r\n");
-		writer.write("\t<select id=\"" + id + "\" resultType=\"" + beanName + "\">");
+		String resultMapName=String.format("%s%s",tableName,"Map");
+		writer.write("\t<select id=\"" + id + "\" resultMap=\"" + resultMapName + "\">");
 		writer.write("\r\n");
 		writer.write("\t\t SELECT");
 		writer.write("\r\n");
@@ -207,6 +209,25 @@ public class MapperGenerate {
 		}
 		return property;
 	}
+
+	private void writeResultMap( List<String> columns,StringWriter bw){
+		int size = columns.size();
+		String resultMapName=String.format("%s%s",tableName,"Map");
+		bw.write("\t<resultMap id=\"" + resultMapName + "\"");
+		bw.write(" type=\"" + beanClass.getName() + "\">");
+		bw.write("\r\n");
+		String tempField = null;
+		for ( int i = 0 ; i < size ; i++ ) {
+			tempField = columns.get(i);
+			bw.write("<result column=\"" + this.getColumn(tempField) + "\" property=\"" + tempField + "\" />");
+			bw.write("\r\n");
+		}
+       bw.write("</resultMap>");
+
+	}
+
+
+
 
 	private String insert( String id2, List<String> columns ) {
 		int size = columns.size();
@@ -311,6 +332,9 @@ public class MapperGenerate {
 		}
 		bw.write("\r\n");
 		bw.write("\r\n");
+
+		this.writeResultMap(columns,bw);
+
 		//查询
 		String selectOne = selectById("selectById", columns);
 		String selectBatch = selectById("selectByIdBatch", columns);
@@ -354,7 +378,8 @@ public class MapperGenerate {
 		StringWriter writer = new StringWriter();
 		// 查询（根据主键ID查询）
 		writer.write("\r\n");
-		writer.write("\t<select id=\"" + id + "\" resultType=\"" + beanName + "\">");
+		String resultMapName=String.format("%s%s",tableName,"Map");
+		writer.write("\t<select id=\"" + id + "\" resultMap=\"" + resultMapName + "\">");
 		writer.write("\r\n");
 		writer.write("\t\t SELECT");
 		writer.write("\r\n");

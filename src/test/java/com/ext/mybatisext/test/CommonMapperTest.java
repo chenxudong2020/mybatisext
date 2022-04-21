@@ -21,20 +21,20 @@ public class CommonMapperTest extends DaoTests {
 	@Test
 	public void test() {
 		User user = new User();
-		user.setAge(12);
-		user.setName("bobo");
+		user.setUserAGE(12);
+		user.setUSER_Name("bobo");
 		userMapper.insertSelective(user);
 
 		List<User> recordList = new ArrayList<User>();
 		user = new User();
-		user.setAge(126);
-		user.setName("bobo1111");
+		user.setUserAGE(126);
+		user.setUSER_Name("bobo1111");
 		recordList.add(user);
 
 		userMapper.insertSelectiveBatch(recordList);
 		user = new User();
-		user.setAge(126);
-		user.setName("bobo1111");
+		user.setUserAGE(126);
+		user.setUSER_Name("bobo1111");
 		int count = userMapper.count(user);
 
 		System.out.println(count);

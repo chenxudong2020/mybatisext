@@ -30,7 +30,7 @@ public class DaoTests {
 
 	@Before
 	public void before() {
-		String creatTable = "create table T_USER(id bigint identity primary key,name varchar(30),age int)";
+		String creatTable = "create table T_USER(id bigint identity primary key,user_name varchar(30),user_age int)";
 		userMapper.update(creatTable);
 	}
 
