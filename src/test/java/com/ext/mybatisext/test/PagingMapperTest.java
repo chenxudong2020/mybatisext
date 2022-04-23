@@ -36,7 +36,8 @@ public class PagingMapperTest extends DaoTests {
 
 		userMapper.getInsert().insert(list);
 
-		userMapper.selectByName("li");
+		List<User> list2=userMapper.selectByName2("li");
+
 	}
 
 
