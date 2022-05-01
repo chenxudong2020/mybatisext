@@ -16,7 +16,7 @@ import com.ext.mybatisext.test.entity.User;
  * UserMapper数据库操作接口类
  *
  */
-@TableName(name = "T_USER", type = User.class)
+@TableName(name = "T_USER", type = User.class,isAutoIncrement = true,id ="id",idType = Long.class)
 public interface UserMapper extends Table<User, Long>, CommonMapper<User> {
 
 
