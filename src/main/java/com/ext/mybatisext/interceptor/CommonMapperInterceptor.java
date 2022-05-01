@@ -48,7 +48,6 @@ public class CommonMapperInterceptor implements MyBatisInterceptor {
 	 * <p>
 	 *
 	 * @param configuration
-	 * @param method
 	 * @param mapperClass
 	 * @param tableName 
 	*/
@@ -58,7 +57,7 @@ public class CommonMapperInterceptor implements MyBatisInterceptor {
 			return;
 		}
 		MapperGenerate generate = new MapperGenerate(configuration, tableName.type(), mapperClass, tableName.name(),
-				tableName.id());
+				tableName.id(),tableName.isAutoIncrement());
 		generate.build();
 
 	}
