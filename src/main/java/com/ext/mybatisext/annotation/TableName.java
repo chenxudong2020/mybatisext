@@ -15,7 +15,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-@SuppressWarnings("rawtypes")
 public @interface TableName {
 
 	//表名称
@@ -33,6 +32,10 @@ public @interface TableName {
 
 	//映射的实体名称
 	Class type() default Void.class;
+
+
+	//逐渐是否自动增长 默认false
+	boolean isAutoIncrement() default false;
 
 
 }

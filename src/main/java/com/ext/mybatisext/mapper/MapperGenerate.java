@@ -1,19 +1,27 @@
 package com.ext.mybatisext.mapper;
 
-import com.ext.mybatisext.activerecord.config.ColumnsMapping;
+import java.io.StringWriter;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.ext.mybatisext.activerecord.config.MybatisVersionAdaptorWrapper;
 import com.ext.mybatisext.annotation.Column;
+
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.reflection.MetaClass;
 import org.apache.ibatis.session.Configuration;
+import org.springframework.cglib.core.ReflectUtils;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.util.ReflectionUtils;
 
-import java.io.StringWriter;
-import java.lang.reflect.Field;
-import java.util.*;
+import com.ext.mybatisext.activerecord.config.ColumnsMapping;
+import org.springframework.util.ReflectionUtils;
 
 
 /**
@@ -40,17 +48,22 @@ public class MapperGenerate {
 	private final String idName;
 
 
+	private final boolean isAutoIncrement;
+
+
 	public MapperGenerate(
 			Configuration configuration,
 			Class<?> beanClass,
 			Class<?> mapperClass,
 			String tableName,
-			String idName ) {
+			String idName,
+			boolean isAutoIncrement ) {
 		this.configuration = configuration;
 		this.beanClass = beanClass;
 		this.tableName = tableName;
 		this.mapperClass = mapperClass;
 		this.idName = idName;
+		this.isAutoIncrement=isAutoIncrement;
 		beanName = beanClass.getName();
 	}
 
@@ -58,6 +71,7 @@ public class MapperGenerate {
 	private Map<String, String> getColumnAndType() {
 		LinkedHashMap<String, String> propertyType = new LinkedHashMap<String, String>();
 		MetaClass metaClass = MybatisVersionAdaptorWrapper.forClass(beanClass);
+
 		Set<String> propertySet = new HashSet<String>();
 		String[] getter = metaClass.getGetterNames();
 		for ( String property : getter ) {
@@ -228,7 +242,14 @@ public class MapperGenerate {
 		//---------------  insert方法（匹配有值的字段）
 		bw.write("\t<!-- 添加 （匹配有值的字段）-->");
 		bw.write("\r\n");
-		bw.write("\t<insert id=\"" + id2 + "\">");
+		bw.write("\t<insert id=\"" + id2 + "\" ");
+		if(isAutoIncrement){
+			bw.write("useGeneratedKeys=\"true\"  ");
+			bw.write("keyProperty=\""+idName+"\"");
+			bw.write("\t\t");
+			bw.write("keyColumn=\""+this.getColumn(idName)+"\"");
+		}
+		bw.write(">");
 		bw.write("\r\n");
 		bw.write("\t\t INSERT INTO " + tableName);
 		bw.write("\r\n");
