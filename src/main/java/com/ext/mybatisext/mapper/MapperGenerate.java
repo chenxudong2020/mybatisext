@@ -1,27 +1,19 @@
 package com.ext.mybatisext.mapper;
 
-import java.io.StringWriter;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.ext.mybatisext.activerecord.config.ColumnsMapping;
 import com.ext.mybatisext.activerecord.config.MybatisVersionAdaptorWrapper;
 import com.ext.mybatisext.annotation.Column;
-import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.reflection.MetaClass;
 import org.apache.ibatis.session.Configuration;
-import org.springframework.cglib.core.ReflectUtils;
 import org.springframework.core.io.ByteArrayResource;
-
-import com.ext.mybatisext.activerecord.config.ColumnsMapping;
 import org.springframework.util.ReflectionUtils;
+
+import java.io.StringWriter;
+import java.lang.reflect.Field;
+import java.util.*;
 
 
 /**

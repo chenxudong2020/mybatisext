@@ -1,6 +1,7 @@
 package com.ext.mybatisext.activerecord.config;
 
 import org.apache.ibatis.reflection.MetaClass;
+import org.springframework.util.ClassUtils;
 
 import java.lang.reflect.Method;
 
