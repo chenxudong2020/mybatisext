@@ -2,10 +2,16 @@
 ![MybatisExt](http://git.oschina.net/uploads/images/2015/1203/212241_b3cc5b8d_12260.png "雕虫小技")
 
 
-> 技术讨论 QQ 群 492238239
+> 技术讨论 QQ 群
 
 http://www.oschina.net/p/mybatisext
 
+无侵入式增强mybatis
+
+springboot只需要正常引入mybatis 编译本框架jar包加入，同时加入工程https://github.com/chenxudong2020/spring-boot-mybatisext
+中的类或者编译jar加入工程，然后修改启动类上注解为 @SpringBootApplication(exclued=MybatisAutoConfiguration.class)
+其他配置参照mybatis配置即可。
+spring项目集成参照本框架中的test代码
 
 MybatisExt项目扩展自Mybatis，具有以下特点:
 
@@ -116,12 +122,22 @@ table.getDelete().delete(...);
 
 具体可参见源码中的测试用例
 
-```
-<dependency>
-    <groupId>com.ext-ext</groupId>
-    <artifactId>mybatis-ext</artifactId>
-    <version>0.0.4</version>
-</dependency>
+```    <!--暂时未提交到中央maven仓库可以通过如下编译引入maven依赖 -->
+      <dependency>
+            <groupId>com.ext</groupId>
+            <artifactId>mybatisext</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/mybatisext-1.0.0-SNAPSHOT.jar</systemPath>
+        </dependency>
+          <!--springboot需要引入下面maven -->
+        <dependency>
+            <groupId>org.spring.boot.starter</groupId>
+            <artifactId>mybatisext-spring-boot-starter</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/mybatisext-spring-boot-starter-1.0-SNAPSHOT.jar</systemPath>
+        </dependency>
 ```
 
 欢迎使用并提交问题.
