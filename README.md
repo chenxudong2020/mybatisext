@@ -6,6 +6,9 @@
 
 http://www.oschina.net/p/mybatisext
 
+springboot只需要正常引入mybatis 只需要编译本框架jar包同时 加入工程https://github.com/chenxudong2020/spring-boot-mybatisext中的类
+然后在主类修改启动类上注解 @SpringBootApplication(exclued=MybatisAutoConfiguration.class) 即可
+其他参照mybatis配置即可。
 
 MybatisExt项目扩展自Mybatis，具有以下特点:
 
