@@ -2,12 +2,14 @@
 ![MybatisExt](http://git.oschina.net/uploads/images/2015/1203/212241_b3cc5b8d_12260.png "雕虫小技")
 
 
-> 技术讨论 QQ 群 492238239
+> 技术讨论 QQ 群
 
 http://www.oschina.net/p/mybatisext
 
-springboot只需要正常引入mybatis 只需要编译本框架jar包加入 同时 加入工程https://github.com/chenxudong2020/spring-boot-mybatisext
-中的类，然后修改启动类上注解 @SpringBootApplication(exclued=MybatisAutoConfiguration.class)
+无侵入式增强mybatis
+
+springboot只需要正常引入mybatis 编译本框架jar包加入，同时加入工程https://github.com/chenxudong2020/spring-boot-mybatisext
+中的类或者编译jar加入工程，然后修改启动类上注解为 @SpringBootApplication(exclued=MybatisAutoConfiguration.class)
 其他配置参照mybatis配置即可。
 spring项目集成参照本框架中的test代码
 
