@@ -249,6 +249,7 @@ public class MapperGenerate {
 			bw.write("\t\t");
 			bw.write("keyColumn=\""+this.getColumn(idName)+"\"");
 		}
+		bw.write("\t parameterType=\"" + beanName + "\" ");
 		bw.write(">");
 		bw.write("\r\n");
 		bw.write("\t\t INSERT INTO " + tableName);
