@@ -203,6 +203,24 @@ public class MapperGenerate {
 		return writer.toString();
 	}
 
+
+	private String deleteAll(String id) {
+		StringWriter writer = new StringWriter();
+		// 删除（根据主键ID删除）
+		writer.write("\t<!--删除全部表数据-->");
+		writer.write("\r\n");
+		writer.write("\t<delete id=\"" + id + "\">");
+		writer.write("\r\n");
+		writer.write("\t\t DELETE FROM " + tableName);
+		writer.write("\r\n");
+		writer.write("\t</delete>");
+		writer.write("\r\n");
+		writer.write("\r\n");
+		// 删除完
+		return writer.toString();
+	}
+
+
 	private String getColumn(String property){
 
 		Field field=ReflectionUtils.findField(beanClass,property);
@@ -358,10 +376,11 @@ public class MapperGenerate {
 		String deleteOne = deleteById("deleteById");
 		String deleteBatch = deleteById("deleteByIdBatch");
 		String deleteSelective = deleteList("deleteSelective", columns);
+		String deleteAll = deleteAll("deleteAll");
 		bw.write(deleteOne);
 		bw.write(deleteBatch);
 		bw.write(deleteSelective);
-
+		bw.write(deleteAll);
 		//插入
 		String insertOne = insert("insertSelective", columns);
 		String insertBatch = insert("insertSelectiveBatch", columns);

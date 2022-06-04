@@ -109,4 +109,11 @@ public interface AutoMapper<T, K> {
 	*/
 	int deleteSelective( T record );
 
+
+	/**
+	 * 删除表所有数据
+	 * @return
+	 */
+	int deleteAll();
+
 }
