@@ -74,7 +74,7 @@ public class SqlSessionFactoryBeanExt extends SqlSessionFactoryBean {
 			config.getTypeHandlerRegistry().register(Float[].class, ArrayTypeHandlerExt.class);
 			config.getTypeHandlerRegistry().register(Long[].class, ArrayTypeHandlerExt.class);
 			//TODO 设置Map值的key为驼峰处理
-			config.setObjectWrapperFactory(new ExtObjectWrapperFactory());
+			// config.setObjectWrapperFactory(config.getObjectWrapperFactory());
 		} catch ( Exception e ) {
 			logger.error(e.getMessage(), e);
 		}
