@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ext</groupId>
 	<artifactId>mybatisext</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<properties>
 		<jdk.version>1.6</jdk.version>
 		<sourceEncoding>UTF-8</sourceEncoding>
@@ -139,12 +139,12 @@
 		<repository>
 			<id>releases</id>
 			<name>Internal Releases</name>
-			<url>http://192.168.50.202/nexus/content/repositories/releases</url>
+			<url>http://dubux.eu.org:9091/repository/maven-releases/</url>
 		</repository>
 		<snapshotRepository>
 			<id>snapshots</id>
 			<name>Nexus Snapshot Repository</name>
-			<url>http://192.168.50.202/nexus/content/repositories/snapshots</url>
+			<url>http://dubux.eu.org:9091/repository/maven-snapshots/</url>
 			<uniqueVersion>false</uniqueVersion>
 		</snapshotRepository>
 	</distributionManagement>
